@@ -1,0 +1,17 @@
+flowchart TB
+  Citizen["Cidadão"] --> PWA["PWA Cidadão / Mapa Público\nNext.js + TypeScript"]
+  Manager["Gestor"] --> Dashboard["Dashboard Gestor/Admin\nNext.js + TypeScript"]
+  Admin["Administrador"] --> Dashboard
+
+  PWA -->|HTTPS/JSON| API["API Backend\nNode.js + Express + Prisma"]
+  Dashboard -->|HTTPS/JSON| API
+  PWA --- IndexedDB[("IndexedDB\npending_sync")]
+
+  API -->|Prisma/SQL| PG[("PostgreSQL")]
+  API -->|HTTP/JSON| AI["Serviço IA\nFastAPI + Python"]
+  API -->|dados ambientais| Sources["Fontes ambientais externas"]
+  API -->|mensagens de conta| Email["Serviço de e-mail"]
+
+  AI --> CV["Classificação visual/textual"]
+  AI --> Risk["Previsão de risco"]
+  AI --> XAI["XAI avançada"]

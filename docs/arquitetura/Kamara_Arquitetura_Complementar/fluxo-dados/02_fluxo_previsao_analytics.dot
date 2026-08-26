@@ -1,0 +1,18 @@
+digraph G {
+ graph [rankdir=LR, splines=ortho, bgcolor="white", pad=0.25, label="Kamara — Fluxo de Dados: Analytics e Previsão", labelloc=t, fontsize=20, fontname="Arial Bold"];
+ node [shape=box, style="rounded,filled", fillcolor="#35A6D8", color="#268DBB", fontcolor="white", fontname="Arial"];
+ edge [fontname="Arial", fontsize=9];
+ Sources [label="Fontes ambientais externas", fillcolor="#9A93A5"];
+ DB [shape=cylinder, label="PostgreSQL"];
+ API [label="API Backend", fillcolor="#1F67B1"];
+ AI [label="Serviço IA"];
+ Dash [label="Dashboard / Painel"];
+ Export [label="Exportação CSV / JSON"];
+ Sources -> API [label="dados ambientais"];
+ DB -> API [label="histórico/ocorrências"];
+ API -> AI [label="atributos + região + horizonte"];
+ AI -> API [label="risco + probabilidade + tendência + fatores"];
+ API -> DB [label="previsão + proveniência + versão"];
+ API -> Dash [label="indicadores/previsão"];
+ API -> Export [label="dados anonimizados"];
+}

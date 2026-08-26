@@ -1,0 +1,30 @@
+digraph G {
+ graph [rankdir=TB, splines=ortho, nodesep=0.5, ranksep=0.7, bgcolor="white", pad=0.25, label="Kamara — Arquitetura Geral", labelloc=t, fontsize=22, fontname="Arial Bold"];
+ node [shape=box, style="rounded,filled", fillcolor="#35A6D8", color="#268DBB", fontcolor="white", fontname="Arial", fontsize=11];
+ edge [fontname="Arial", fontsize=9, arrowsize=0.7];
+ Citizen [label="Cidadão", fillcolor="#134B80"];
+ Manager [label="Gestor Ambiental", fillcolor="#134B80"];
+ Admin [label="Administrador", fillcolor="#134B80"];
+ PWA [label="PWA Cidadão / Mapa Público\nReact / Next.js / TypeScript\nIndexedDB para offline"];
+ Dashboard [label="Dashboard Gestor / Administração\nReact / Next.js / TypeScript"];
+ API [label="API Backend\nNode.js / Express / TypeScript / Prisma", fillcolor="#1F67B1"];
+ PG [shape=cylinder, label="PostgreSQL\nBanco relacional"];
+ AI [label="Serviço de IA\nFastAPI / Python"];
+ Sources [label="Fontes Ambientais Externas\nINPE, chuva, estações, satélite", fillcolor="#9A93A5"];
+ Email [label="Serviço de E-mail\nAtivação e recuperação", fillcolor="#9A93A5"];
+ CV [label="Classificação\nvisual/textual", fillcolor="#63B8E8"];
+ Risk [label="Previsão de risco\nexperimental", fillcolor="#63B8E8"];
+ XAI [label="XAI avançada\nGrad-CAM / SHAP", fillcolor="#63B8E8"];
+
+ {rank=same; Citizen; Manager; Admin}
+ Citizen -> PWA [label="usa"];
+ Manager -> Dashboard [label="usa"];
+ Admin -> Dashboard [label="usa"];
+ PWA -> API [label="HTTPS / JSON"];
+ Dashboard -> API [label="HTTPS / JSON"];
+ API -> PG [label="Prisma / SQL"];
+ API -> AI [label="HTTP / JSON"];
+ API -> Sources [label="obtém dados"];
+ API -> Email [label="solicita mensagens"];
+ AI -> CV; AI -> Risk; AI -> XAI;
+}

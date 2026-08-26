@@ -1,0 +1,94 @@
+%% Diagrama de Classes — Frontend: Dashboard Gestor e Administração
+classDiagram
+direction TB
+class LoginPage {
+  <<boundary>>
+  -SessionStore session
+  +entrar()
+  +recuperarSenha()
+}
+class SessionStore {
+  <<service>>
+  -UsuarioSessao usuario
+  -string token
+  -DashboardApiClient api
+  +login()
+  +logout()
+  +pode(permissao)
+}
+class DashboardApiClient {
+  <<gateway>>
+  -string baseUrl
+  +ocorrencias(filtros)
+  +detalhe(id)
+  +validar(id, cmd)
+  +indicadores(filtros)
+  +prever(params)
+  +exportar(params)
+  +administrar(cmd)
+}
+class OperationalMapPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +carregar(filtros)
+  +selecionar(id)
+}
+class OccurrenceListPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +listar(filtros)
+}
+class OccurrenceDetailPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +carregar(id)
+}
+class ValidationPanel {
+  <<boundary>>
+  -DashboardApiClient api
+  +confirmar()
+  +corrigir()
+  +rejeitar()
+  +solicitarComplemento()
+}
+class AnalyticsPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +indicadores(filtros)
+}
+class PredictionPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +prever(regiao,tipo,horizonte)
+}
+class ExportPanel {
+  <<boundary>>
+  -DashboardApiClient api
+  +exportarCSV()
+  +exportarJSON()
+}
+class AdminPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +gerenciarGestores()
+  +configurarCategorias()
+  +configurarLimiares()
+}
+class AuditPage {
+  <<boundary>>
+  -DashboardApiClient api
+  +consultar(filtros)
+}
+LoginPage ..> SessionStore : usa
+SessionStore ..> DashboardApiClient : autenticação
+OperationalMapPage ..> DashboardApiClient : mapa/filtros
+OccurrenceListPage ..> DashboardApiClient : lista/filtros
+OccurrenceDetailPage ..> DashboardApiClient : detalhes
+OccurrenceDetailPage --> ValidationPanel : inclui
+ValidationPanel ..> DashboardApiClient : registra decisão
+AnalyticsPage ..> DashboardApiClient : indicadores
+AnalyticsPage --> ExportPanel : inclui exportação
+ExportPanel ..> DashboardApiClient : exporta
+PredictionPage ..> DashboardApiClient : previsão
+AdminPage ..> DashboardApiClient : administração
+AuditPage ..> DashboardApiClient : auditoria

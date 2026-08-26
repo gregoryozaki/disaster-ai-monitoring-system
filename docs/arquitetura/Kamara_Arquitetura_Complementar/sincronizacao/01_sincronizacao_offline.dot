@@ -1,0 +1,19 @@
+digraph G {
+ graph [rankdir=TB, splines=polyline, bgcolor="white", pad=0.3, nodesep=0.4, ranksep=0.55, label="Kamara — Arquitetura de Sincronização Offline", labelloc=t, fontsize=20, fontname="Arial Bold"];
+ node [shape=box, style="rounded,filled", fillcolor="#35A6D8", color="#268DBB", fontcolor="white", fontname="Arial", fontsize=10, margin="0.15,0.1"];
+ edge [fontname="Arial", fontsize=9, arrowsize=0.7, color="#333333"];
+ Start [shape=circle, width=0.22, fixedsize=true, label="", fillcolor="black", color="black"];
+ S1 [label="1. PWA recebe registro sem conexão\ne gera clientLocalId + idempotencyKey"];
+ S2 [label="2. IndexedDB persiste payload + mídia\nstatus local = pending_sync"];
+ S3 [label="3. SyncManager detecta conectividade\ne lê a fila local"];
+ S4 [label="4. PWA envia POST /occurrences/sync\ncom Idempotency-Key"];
+ S5 [label="5. Backend verifica clientLocalId/idempotencyKey\ne cria ou reutiliza occurrenceId", fillcolor="#1F67B1"];
+ S6 [label="6. PostgreSQL grava ocorrência + histórico\nem transação"];
+ S7 [label="7. Backend solicita pré-análise\nao Serviço IA"];
+ S8 [label="8. Resultado disponível ou indisponível\nnunca bloqueia o registro"];
+ S9 [label="9. PostgreSQL grava classificação/histórico\nquando aplicável"];
+ S10 [label="10. Backend retorna ACK\noccurrenceId + status atual"];
+ S11 [label="11. PWA resolve/remove pending_sync\ne atualiza acompanhamento"];
+ End [shape=doublecircle, width=0.28, fixedsize=true, label="", fillcolor="black", color="black"];
+ Start -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> End;
+}

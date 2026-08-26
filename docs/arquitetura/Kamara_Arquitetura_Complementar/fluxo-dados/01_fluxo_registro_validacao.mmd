@@ -1,0 +1,14 @@
+flowchart LR
+  Citizen["Cidadão"] -->|dados + foto/vídeo + GPS| PWA["PWA"]
+  PWA -->|ocorrência online/sincronizada| API["API Backend"]
+  API -->|persistência| DB[("PostgreSQL")]
+  API -->|imagem + texto/contexto| AI["Serviço IA"]
+  AI -->|categoria prevista + confiança + explicação| API
+  API -->|pré-análise/status| PWA
+  Manager["Gestor"] -->|consulta pendências| Dashboard["Dashboard"]
+  Dashboard --> API
+  API --> DB
+  Manager -->|confirma/corrige/rejeita/pede complemento| Dashboard
+  Dashboard --> API
+  API -->|decisão + histórico| DB
+  API -->|confirmed| Public["Mapa público"]

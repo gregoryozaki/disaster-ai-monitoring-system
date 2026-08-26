@@ -1,0 +1,37 @@
+digraph G {
+ graph [rankdir=LR, splines=polyline, nodesep=0.35, ranksep=0.8, bgcolor="white", pad=0.25, label="Kamara — DER Lógico/Relacional — Núcleo Operacional", labelloc=t, fontsize=20, fontname="Arial Bold"];
+ node [shape=Mrecord, style="filled", fillcolor="#EAF2F8", color="#1F4E78", fontname="Arial", fontsize=9];
+ edge [fontname="Arial", fontsize=8, color="#555555", arrowsize=0.7];
+ Usuario [label="{USUARIO|PK id : UUID\lUK email : VARCHAR\lnome : VARCHAR?\lpasswordHash : VARCHAR\lpapel : ENUM\lstatus : ENUM\l}"];
+ Convite [label="{CONVITE_GESTOR|PK id\lFK criadoPorId\lemail\lUK tokenHash\lexpiresAt\lusedAt?\l}"];
+ Token [label="{TOKEN_RECUPERACAO|PK id\lFK usuarioId\lUK tokenHash\lexpiresAt\lusedAt?\l}"];
+ Categoria [label="{CATEGORIA_DESASTRE|PK id\lUK cobradeCode\lnome\lgrupo?\lativa\l}"];
+ Ocorrencia [label="{OCORRENCIA|PK id\lUK clientLocalId?\lUK idempotencyKey?\lFK reporterId\lFK confirmedCategoryId?\ldescricao?\lurgencia\lriscoHumano\llatitude / longitude\llocationSource\lstatus\lreportedAt\lsyncedAt?\l}", fillcolor="#D6EAF8"];
+ Evidencia [label="{EVIDENCIA_MIDIA|PK id\lFK occurrenceId\lFK complementId?\ltipo / origem\lmimeType\lstorageRef\lsizeBytes?\lsha256?\l}"];
+ ClassIA [label="{CLASSIFICACAO_IA|PK id\lFK occurrenceId\lFK modelVersionId\lFK predictedCategoryId?\lresultStatus\lconfidence?\lvisualConfidence?\ltextConfidence?\lambiguous\lexplanationSimple?\lsignals JSON?\l}"];
+ Validacao [label="{VALIDACAO|PK id\lFK occurrenceId\lFK managerId\ldecision\lFK finalCategoryId?\lrejectionReason?\lnote?\lcreatedAt\l}"];
+ Historico [label="{HISTORICO_STATUS|PK id\lFK occurrenceId\lfromStatus?\ltoStatus\lFK changedByUserId?\lactorType\lreason?\lcreatedAt\l}"];
+ Solicitacao [label="{SOLICITACAO_COMPLEMENTO|PK id\lFK occurrenceId\lFK managerId\lmessage\lstatus\lcreatedAt\lansweredAt?\l}"];
+ Complemento [label="{COMPLEMENTO_OCORRENCIA|PK id\lFK occurrenceId\lFK requestId\lFK citizenId\ltext?\lcreatedAt\l}"];
+ Integridade [label="{SINALIZACAO_INTEGRIDADE|PK id\lFK occurrenceId\lFK relatedOccurrenceId?\ltype\lscore?\lreason?\lresolvedAt?\l}"];
+
+ Usuario -> Ocorrencia [label="1:N reporterId"];
+ Usuario -> Validacao [label="1:N managerId"];
+ Usuario -> Historico [label="1:N changedBy"];
+ Usuario -> Solicitacao [label="1:N managerId"];
+ Usuario -> Complemento [label="1:N citizenId"];
+ Usuario -> Convite [label="1:N createdBy"];
+ Usuario -> Token [label="1:N"];
+ Categoria -> Ocorrencia [label="1:N confirmedCategory"];
+ Categoria -> ClassIA [label="1:N predictedCategory"];
+ Categoria -> Validacao [label="1:N finalCategory"];
+ Ocorrencia -> Evidencia [label="1:N"];
+ Ocorrencia -> ClassIA [label="1:N"];
+ Ocorrencia -> Validacao [label="1:N"];
+ Ocorrencia -> Historico [label="1:N"];
+ Ocorrencia -> Solicitacao [label="1:N"];
+ Ocorrencia -> Complemento [label="1:N"];
+ Ocorrencia -> Integridade [label="1:N"];
+ Solicitacao -> Complemento [label="1:N"];
+ Complemento -> Evidencia [label="1:N opcional"];
+}

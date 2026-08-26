@@ -1,0 +1,8 @@
+﻿ID;Diagrama;C4;RF principais;Artefatos-base
+DC01;Domínio — Usuários, Ocorrências e Validação;API Backend / PostgreSQL;"RF01–RF09; RF12–RF13; RF18";"M01/M03/M06; DE01; DA01/DA02/DA05"
+DC02;Domínio — Previsão, Proveniência, Configuração e Auditoria;API Backend / PostgreSQL;RF11–RF17;"M07/M09/M10; DE05/DE06; DA06/DA07"
+DC03;Backend Operacional;API Backend;"RF01–RF09; RF12–RF13; RF18";"C4 Componentes; DS01–DS04"
+DC04;Backend Analytics/Administração;API Backend;"RF07; RF10–RF18";"C4 Componentes; DS05–DS06"
+DC05;Frontend PWA Cidadão;PWA Cidadão / Mapa Público;"RF01–RF05; RF09; RF18";"M01–M04; DA01–DA04"
+DC06;Frontend Dashboard;Dashboard Gestor/Admin;"RF06–RF12; RF14; RF16–RF18";"M05–M09; DA05–DA07"
+DC07;Serviço de IA;FastAPI/Python;"RF11–RF16; RF20";"C4 IA; M10; DS01/DS05"

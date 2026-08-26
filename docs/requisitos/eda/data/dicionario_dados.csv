@@ -1,0 +1,104 @@
+﻿variavel,natureza,subtipo,derivada,origem
+funcao,qualitativa,nominal,False,funcao
+nivel,qualitativa,nominal,False,nivel
+tempo_exp,qualitativa,ordinal,False,tempo_exp
+tipos_ocorrencia,qualitativa,nominal múltipla,False,tipos_ocorrencia
+notificacao,qualitativa,nominal múltipla,False,notificacao
+desafios,qualitativa,nominal múltipla,False,desafios
+grau_fp,qualitativa,ordinal Likert,False,grau_fp
+dados_registro,qualitativa,nominal múltipla,False,dados_registro
+tempo_resp,qualitativa,ordinal,False,tempo_resp
+internet,qualitativa,ordinal,False,internet
+cadastro,qualitativa,nominal,False,cadastro
+ver_ocorrencias_proximas,qualitativa,nominal,False,ver_ocorrencias_proximas
+telas,qualitativa,nominal múltipla,False,telas
+filtros_mapa,qualitativa,nominal múltipla,False,filtros_mapa
+regra_confirmado,qualitativa,nominal,False,regra_confirmado
+responsavel_validacao,qualitativa,nominal múltipla,False,responsavel_validacao
+fontes_dados,qualitativa,nominal múltipla,False,fontes_dados
+horizonte_prev,qualitativa,nominal múltipla,False,horizonte_prev
+usabilidade,qualitativa,nominal múltipla,False,usabilidade
+usa_modelo,qualitativa,nominal + texto aberto,False,usa_modelo
+verificacao,qualitativa,nominal múltipla,False,verificacao
+explicacao,qualitativa,nominal,False,explicacao
+funcionalidades,qualitativa,texto aberto,False,funcionalidades
+riscos,qualitativa,texto aberto,False,riscos
+grau_util,qualitativa,ordinal Likert,False,grau_util
+aceite_teste,qualitativa,nominal binária,False,aceite_teste
+tempo_exp_ord,quantitativa codificada,ordem auxiliar,True,tempo_exp
+tempo_resp_ord,quantitativa codificada,ordem auxiliar,True,tempo_resp
+internet_ord,quantitativa codificada,ordem auxiliar,True,internet
+usa_modelo_status,qualitativa,nominal derivada,True,usa_modelo
+modelo_informado,qualitativa,texto informado,True,usa_modelo
+tipos_ocorrencia__deslizamento,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__ensino_ambiental,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__incendio_queimada,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__inundacao_alagamento,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__queda_de_arvores,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__resgate,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__seca_estiagem,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__tempestade_vento_forte,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+tipos_ocorrencia__vazamento_de_oleo_no_rio,quantitativa binária,indicador 0/1 de múltipla escolha,True,tipos_ocorrencia
+notificacao__redes_sociais,quantitativa binária,indicador 0/1 de múltipla escolha,True,notificacao
+notificacao__satelite_inpe_queimadas,quantitativa binária,indicador 0/1 de múltipla escolha,True,notificacao
+notificacao__sensores_estacoes,quantitativa binária,indicador 0/1 de múltipla escolha,True,notificacao
+notificacao__sistemas_oficiais,quantitativa binária,indicador 0/1 de múltipla escolha,True,notificacao
+notificacao__telefone_whatsapp,quantitativa binária,indicador 0/1 de múltipla escolha,True,notificacao
+notificacao__vistorias_em_campo,quantitativa binária,indicador 0/1 de múltipla escolha,True,notificacao
+desafios__dados_incompletos,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+desafios__demora_para_triagem,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+desafios__dificuldade_de_priorizar_recursos,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+desafios__falsos_alarmes,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+desafios__falta_de_geolocalizacao_precisa,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+desafios__falta_de_padronizacao_classificacao,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+desafios__pouca_integracao_entre_fontes,quantitativa binária,indicador 0/1 de múltipla escolha,True,desafios
+dados_registro__categoria,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__data_hora_automatica,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__foto,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__indicar_se_ha_vitimas_risco_humano,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__localizacao_gps_automatica,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__nivel_de_urgencia_baixa_media_alta,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__permitir_ajustar_o_ponto_no_mapa,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__subcategoria_detalhe,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__texto_livre,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__video,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+dados_registro__audio,quantitativa binária,indicador 0/1 de múltipla escolha,True,dados_registro
+telas__exportacao_relatorios,quantitativa binária,indicador 0/1 de múltipla escolha,True,telas
+telas__gestao_de_usuarios_logs,quantitativa binária,indicador 0/1 de múltipla escolha,True,telas
+telas__lista_de_ocorrencias,quantitativa binária,indicador 0/1 de múltipla escolha,True,telas
+telas__mapa_em_tempo_real,quantitativa binária,indicador 0/1 de múltipla escolha,True,telas
+telas__painel_analitico_graficos,quantitativa binária,indicador 0/1 de múltipla escolha,True,telas
+telas__previsao_7_dias,quantitativa binária,indicador 0/1 de múltipla escolha,True,telas
+filtros_mapa__confianca_do_modelo,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+filtros_mapa__data_periodo,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+filtros_mapa__fonte_cidadao_satelite_outro,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+filtros_mapa__municipio_bairro,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+filtros_mapa__raio_distancia,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+filtros_mapa__status_confirmado_em_analise,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+filtros_mapa__tipo_de_desastre,quantitativa binária,indicador 0/1 de múltipla escolha,True,filtros_mapa
+responsavel_validacao__equipe_interna_central,quantitativa binária,indicador 0/1 de múltipla escolha,True,responsavel_validacao
+responsavel_validacao__equipes_de_campo,quantitativa binária,indicador 0/1 de múltipla escolha,True,responsavel_validacao
+responsavel_validacao__nao_existe_validacao_formal,quantitativa binária,indicador 0/1 de múltipla escolha,True,responsavel_validacao
+responsavel_validacao__orgao_parceiro,quantitativa binária,indicador 0/1 de múltipla escolha,True,responsavel_validacao
+fontes_dados__chuvas_niveis_de_rio,quantitativa binária,indicador 0/1 de múltipla escolha,True,fontes_dados
+fontes_dados__dados_inpe_focos_de_calor_etc,quantitativa binária,indicador 0/1 de múltipla escolha,True,fontes_dados
+fontes_dados__dados_socioambientais_desmatamento_uso_do_solo,quantitativa binária,indicador 0/1 de múltipla escolha,True,fontes_dados
+fontes_dados__estacoes_meteorologicas,quantitativa binária,indicador 0/1 de múltipla escolha,True,fontes_dados
+fontes_dados__historico_de_ocorrencias_planilhas_sistema,quantitativa binária,indicador 0/1 de múltipla escolha,True,fontes_dados
+fontes_dados__satelite_sentinel_landsat_gee,quantitativa binária,indicador 0/1 de múltipla escolha,True,fontes_dados
+horizonte_prev__15_dias,quantitativa binária,indicador 0/1 de múltipla escolha,True,horizonte_prev
+horizonte_prev__24_48h,quantitativa binária,indicador 0/1 de múltipla escolha,True,horizonte_prev
+horizonte_prev__7_dias,quantitativa binária,indicador 0/1 de múltipla escolha,True,horizonte_prev
+horizonte_prev__sazonal_30_90_dias,quantitativa binária,indicador 0/1 de múltipla escolha,True,horizonte_prev
+usabilidade__alerta_por_regiao_com_nivel_baixo_medio_alto,quantitativa binária,indicador 0/1 de múltipla escolha,True,usabilidade
+usabilidade__historico_comparativo,quantitativa binária,indicador 0/1 de múltipla escolha,True,usabilidade
+usabilidade__justificativa_variaveis_principais,quantitativa binária,indicador 0/1 de múltipla escolha,True,usabilidade
+usabilidade__probabilidade,quantitativa binária,indicador 0/1 de múltipla escolha,True,usabilidade
+usabilidade__tendencia_subindo_descendo,quantitativa binária,indicador 0/1 de múltipla escolha,True,usabilidade
+verificacao__comparacao_com_eventos_anteriores,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao
+verificacao__confianca,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao
+verificacao__evidencia_visual_ex_mapa_de_ativacao_grad_cam,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao
+verificacao__exemplos_parecidos_casos_historicos,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao
+verificacao__nao_preciso_de_explicacao_so_performance,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao
+verificacao__texto_explicativo_em_linguagem_simples,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao
+verificacao__variaveis_mais_importantes_shap,quantitativa binária,indicador 0/1 de múltipla escolha,True,verificacao

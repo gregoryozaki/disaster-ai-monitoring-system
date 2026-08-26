@@ -1,0 +1,65 @@
+digraph G {
+  graph [rankdir=LR, splines=polyline, nodesep=0.35, ranksep=0.75, bgcolor="white", pad=0.3, label="Kamara — DER Conceitual", labelloc=t, fontsize=22, fontname="Arial Bold"];
+  node [shape=box, style="rounded,filled", fillcolor="#EAF2F8", color="#1F4E78", fontname="Arial", fontsize=11, margin="0.12,0.08"];
+  edge [fontname="Arial", fontsize=9, color="#444444", arrowsize=0.7];
+
+  subgraph cluster_identidade {
+    label="Identidade e acesso"; color="#AAB7B8"; style="rounded,dashed";
+    Usuario [label="USUÁRIO"];
+    ConviteGestor [label="CONVITE GESTOR"];
+    TokenSenha [label="TOKEN RECUPERAÇÃO"];
+    Usuario -> ConviteGestor [label="1 : N  cria"];
+    Usuario -> TokenSenha [label="1 : N  possui"];
+  }
+
+  subgraph cluster_operacional {
+    label="Núcleo operacional"; color="#AAB7B8"; style="rounded,dashed";
+    Ocorrencia [label="OCORRÊNCIA", fillcolor="#D6EAF8"];
+    Evidencia [label="EVIDÊNCIA MÍDIA"];
+    Categoria [label="CATEGORIA DESASTRE"];
+    ClassIA [label="CLASSIFICAÇÃO IA"];
+    Validacao [label="VALIDAÇÃO HUMANA"];
+    Historico [label="HISTÓRICO STATUS"];
+    Solicitacao [label="SOLICITAÇÃO COMPLEMENTO"];
+    Complemento [label="COMPLEMENTO OCORRÊNCIA"];
+    Integridade [label="SINALIZAÇÃO INTEGRIDADE"];
+
+    Ocorrencia -> Evidencia [label="1 : N"];
+    Ocorrencia -> ClassIA [label="1 : N"];
+    Ocorrencia -> Validacao [label="1 : N"];
+    Ocorrencia -> Historico [label="1 : N"];
+    Ocorrencia -> Solicitacao [label="1 : N"];
+    Ocorrencia -> Complemento [label="1 : N"];
+    Ocorrencia -> Integridade [label="1 : N"];
+    Solicitacao -> Complemento [label="1 : N"];
+    Categoria -> ClassIA [label="1 : N  prevista"];
+    Categoria -> Validacao [label="1 : N  final"];
+    Categoria -> Ocorrencia [label="1 : N  confirmada"];
+  }
+
+  subgraph cluster_analytics {
+    label="IA, previsão, configuração e auditoria"; color="#AAB7B8"; style="rounded,dashed";
+    Versao [label="VERSÃO MODELO"];
+    Limiar [label="LIMIAR CONFIANÇA"];
+    Fonte [label="FONTE DADO"];
+    Previsao [label="PREVISÃO RISCO"];
+    PFonte [label="PREVISÃO ↔ FONTE"];
+    Auditoria [label="AUDITORIA"];
+    Exportacao [label="EXPORTAÇÃO"];
+
+    Versao -> ClassIA [label="1 : N"];
+    Versao -> Previsao [label="1 : N"];
+    Categoria -> Limiar [label="1 : N"];
+    Categoria -> Previsao [label="1 : N"];
+    Previsao -> PFonte [label="1 : N"];
+    Fonte -> PFonte [label="1 : N"];
+  }
+
+  Usuario -> Ocorrencia [label="1 : N  registra"];
+  Usuario -> Validacao [label="1 : N  realiza"];
+  Usuario -> Solicitacao [label="1 : N  solicita"];
+  Usuario -> Complemento [label="1 : N  envia"];
+  Usuario -> Auditoria [label="1 : N  atua"];
+  Usuario -> Exportacao [label="1 : N  solicita"];
+  Usuario -> Limiar [label="1 : N  configura"];
+}

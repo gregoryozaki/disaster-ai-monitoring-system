@@ -1,0 +1,105 @@
+erDiagram
+  VERSAO_MODELO {
+    uuid id PK
+    enum modelType
+    string name
+    string version
+    string algorithm
+    string framework
+    json metrics
+    json parameters
+    boolean active
+    boolean syntheticData
+    datetime createdAt
+  }
+  LIMIAR_CONFIANCA {
+    uuid id PK
+    uuid categoryId FK
+    uuid createdById FK
+    enum modelType
+    decimal lowUpperBound
+    decimal mediumUpperBound
+    int version
+    boolean active
+    datetime createdAt
+  }
+  FONTE_DADO {
+    uuid id PK
+    string name
+    enum type
+    string externalRef
+    string description
+    boolean active
+  }
+  PREVISAO_RISCO {
+    uuid id PK
+    uuid categoryId FK
+    uuid modelVersionId FK
+    string regionKey
+    string regionName
+    int horizonHours
+    enum riskLevel
+    decimal probability
+    enum trend
+    json factors
+    string explanationSimple
+    boolean synthetic
+    datetime validFrom
+    datetime validUntil
+    datetime createdAt
+  }
+  PREVISAO_FONTE {
+    uuid id PK
+    uuid predictionId FK
+    uuid sourceId FK
+    string datasetVersion
+    datetime retrievedAt
+    json metadata
+  }
+  AUDITORIA {
+    uuid id PK
+    uuid actorUserId FK
+    string action
+    string entityType
+    string entityId
+    json beforeData
+    json afterData
+    json metadata
+    datetime createdAt
+  }
+  EXPORTACAO {
+    uuid id PK
+    uuid requestedById FK
+    enum format
+    enum status
+    json filters
+    boolean anonymized
+    string fileRef
+    string errorMessage
+    datetime createdAt
+    datetime completedAt
+  }
+  CATEGORIA_DESASTRE {
+    uuid id PK
+    string cobradeCode UK
+    string nome
+  }
+  USUARIO {
+    uuid id PK
+    string email UK
+    enum papel
+  }
+  CLASSIFICACAO_IA {
+    uuid id PK
+    uuid modelVersionId FK
+  }
+
+  VERSAO_MODELO ||--o{ CLASSIFICACAO_IA : gera
+  VERSAO_MODELO ||--o{ PREVISAO_RISCO : gera
+  CATEGORIA_DESASTRE ||--o{ LIMIAR_CONFIANCA : configura
+  CATEGORIA_DESASTRE ||--o{ PREVISAO_RISCO : referencia
+  PREVISAO_RISCO ||--o{ PREVISAO_FONTE : possui
+  FONTE_DADO ||--o{ PREVISAO_FONTE : participa
+  USUARIO ||--o{ LIMIAR_CONFIANCA : cria
+  USUARIO ||--o{ AUDITORIA : atua
+  USUARIO ||--o{ EXPORTACAO : solicita

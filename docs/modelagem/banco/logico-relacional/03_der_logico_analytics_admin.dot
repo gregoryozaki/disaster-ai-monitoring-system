@@ -1,0 +1,25 @@
+digraph G {
+ graph [rankdir=LR, splines=polyline, nodesep=0.45, ranksep=0.85, bgcolor="white", pad=0.25, label="Kamara — DER Lógico/Relacional — Analytics, IA e Administração", labelloc=t, fontsize=20, fontname="Arial Bold"];
+ node [shape=Mrecord, style="filled", fillcolor="#EAF2F8", color="#1F4E78", fontname="Arial", fontsize=9];
+ edge [fontname="Arial", fontsize=8, color="#555555", arrowsize=0.7];
+ Usuario [label="{USUARIO|PK id\lemail\lpapel\l}"];
+ Categoria [label="{CATEGORIA_DESASTRE|PK id\lUK cobradeCode\lnome\l}"];
+ Versao [label="{VERSAO_MODELO|PK id\lmodelType\lname / version\lalgorithm / framework\lmetrics JSON?\lparameters JSON?\lactive\lsyntheticData\l}"];
+ Limiar [label="{LIMIAR_CONFIANCA|PK id\lFK categoryId?\lFK createdById\lmodelType\llowUpperBound\lmediumUpperBound\lversion\lactive\l}"];
+ Fonte [label="{FONTE_DADO|PK id\lname\ltype\lexternalRef?\ldescription?\lactive\l}"];
+ Previsao [label="{PREVISAO_RISCO|PK id\lFK categoryId\lFK modelVersionId\lregionKey / regionName\lhorizonHours\lriskLevel\lprobability?\ltrend\lfactors JSON?\lexplanationSimple?\lsynthetic\lvalidFrom / validUntil\l}"];
+ PFonte [label="{PREVISAO_FONTE|PK id\lFK predictionId\lFK sourceId\ldatasetVersion?\lretrievedAt\lmetadata JSON?\l}"];
+ Audit [label="{AUDITORIA|PK id\lFK actorUserId?\laction\lentityType / entityId\lbeforeData JSON?\lafterData JSON?\lmetadata JSON?\lcreatedAt\l}"];
+ Export [label="{EXPORTACAO|PK id\lFK requestedById\lformat\lstatus\lfilters JSON?\lanonymized\lfileRef?\lerrorMessage?\lcreatedAt / completedAt?\l}"];
+ ClassIA [label="{CLASSIFICACAO_IA|PK id\lFK modelVersionId\l...\l}"];
+
+ Versao -> ClassIA [label="1:N"];
+ Versao -> Previsao [label="1:N"];
+ Categoria -> Limiar [label="1:N"];
+ Categoria -> Previsao [label="1:N"];
+ Previsao -> PFonte [label="1:N"];
+ Fonte -> PFonte [label="1:N"];
+ Usuario -> Limiar [label="1:N createdBy"];
+ Usuario -> Audit [label="1:N actor"];
+ Usuario -> Export [label="1:N requestedBy"];
+}

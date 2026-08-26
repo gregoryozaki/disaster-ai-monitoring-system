@@ -1,0 +1,105 @@
+%% Diagrama de Classes — Frontend: PWA Cidadão e Mapa Público
+classDiagram
+direction TB
+class AuthPage {
+  <<boundary>>
+  -AuthStore auth
+  +entrar()
+  +cadastrar()
+  +recuperarSenha()
+}
+class AuthStore {
+  <<service>>
+  -UsuarioSessao usuario
+  -string token
+  -CitizenApiClient api
+  +login()
+  +logout()
+  +restoreSession()
+}
+class OccurrenceFormPage {
+  <<boundary>>
+  -OccurrenceFormModel model
+  +enviar()
+}
+class OccurrenceFormModel {
+  <<service>>
+  -CitizenApiClient api
+  -OfflineOccurrenceRepository offline
+  -MediaCaptureService media
+  -GeolocationService geo
+  +validar()
+  +registrar()
+}
+class MediaCaptureService {
+  <<service>>
+  +capturarFoto()
+  +selecionarVideo()
+}
+class GeolocationService {
+  <<service>>
+  +obterLocalizacao()
+  +usarManual(lat, lon)
+}
+class CitizenApiClient {
+  <<gateway>>
+  -string baseUrl
+  +criarOcorrencia(dto)
+  +historico()
+  +detalhe(id)
+  +listarPublicas(filtros)
+  +enviarComplemento(id,dto)
+}
+class OfflineOccurrenceRepository {
+  <<repository>>
+  -IndexedDBAdapter db
+  +salvarPendente(dto)
+  +listarPendentes()
+  +marcarSincronizada(localId, remotoId)
+}
+class IndexedDBAdapter {
+  <<adapter>>
+  -string dbName
+  +put(store, value)
+  +getAll(store)
+  +delete(store, key)
+}
+class SyncManager {
+  <<service>>
+  -OfflineOccurrenceRepository offline
+  -CitizenApiClient api
+  +sincronizarPendencias()
+  +reagendarFalhas()
+}
+class HistoryPage {
+  <<boundary>>
+  -CitizenApiClient api
+  -OfflineOccurrenceRepository offline
+  +carregarHistorico()
+}
+class OccurrenceDetailPage {
+  <<boundary>>
+  -CitizenApiClient api
+  +carregar(id)
+  +complementar(dto)
+}
+class PublicMapPage {
+  <<boundary>>
+  -CitizenApiClient api
+  +carregarMapa(filtros)
+  +selecionar(id)
+}
+AuthPage ..> AuthStore : usa
+AuthStore ..> CitizenApiClient : autenticação
+OccurrenceFormPage ..> OccurrenceFormModel : usa
+OccurrenceFormModel ..> MediaCaptureService : captura mídia
+OccurrenceFormModel ..> GeolocationService : localização
+OccurrenceFormModel ..> CitizenApiClient : envia online
+OccurrenceFormModel ..> OfflineOccurrenceRepository : salva offline
+OfflineOccurrenceRepository *-- IndexedDBAdapter : persiste local
+SyncManager ..> OfflineOccurrenceRepository : lê pendências
+SyncManager ..> CitizenApiClient : sincroniza
+HistoryPage ..> CitizenApiClient : consulta remoto
+HistoryPage ..> OfflineOccurrenceRepository : consulta pendentes
+OccurrenceDetailPage ..> CitizenApiClient : detalhes/complemento
+PublicMapPage ..> CitizenApiClient : somente confirmed

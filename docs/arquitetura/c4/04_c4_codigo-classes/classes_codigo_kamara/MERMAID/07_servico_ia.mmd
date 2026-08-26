@@ -1,0 +1,130 @@
+%% Diagrama de Classes — Serviço de Inteligência Artificial
+classDiagram
+direction TB
+class InferenceAPI {
+  <<controller>>
+  -InferenceOrchestrator orchestrator
+  +preAnalise(req) InferenceResponse
+  +previsao(req) PredictionResponse
+  +explicar(req) ExplanationResponse
+}
+class InferenceOrchestrator {
+  <<service>>
+  -IClassifier visual
+  -IClassifier textual
+  -IRiskPredictor predictor
+  -IExplainerList explainers
+  -ModelManager models
+  -ResponseBuilder builder
+  +preAnalisar(req)
+  +prever(req)
+  +explicar(req)
+}
+class IClassifier {
+  <<interface>>
+  +classify(input, model) ClassificationResult
+}
+class IRiskPredictor {
+  <<interface>>
+  +predict(input, model) RiskResult
+}
+class IExplainer {
+  <<interface>>
+  +explain(input, result, model) Explanation
+}
+class VisualClassifier {
+  <<component>>
+  -ImagePreprocessor preprocessador
+  +classify(input, model) ClassificationResult
+}
+class TextClassifier {
+  <<component>>
+  -TextPreprocessor preprocessador
+  +classify(input, model) ClassificationResult
+}
+class RiskPredictor {
+  <<component>>
+  +predict(input, model) RiskResult
+}
+class GradCAMExplainer {
+  <<component>>
+  +explain(input,result,model) Explanation
+}
+class SHAPExplainer {
+  <<component>>
+  +explain(input,result,model) Explanation
+}
+class ModelManager {
+  <<service>>
+  -map activeVersions
+  +getModel(tipo, versao?)
+  +reload(config)
+  +versionInfo(tipo)
+}
+class ResponseBuilder {
+  <<component>>
+  +classification(result, meta) InferenceResponse
+  +prediction(result, meta) PredictionResponse
+}
+class ImagePreprocessor {
+  <<component>>
+  +prepare(bytes) Tensor
+}
+class TextPreprocessor {
+  <<component>>
+  +prepare(text) Tokens
+}
+class InferenceRequest {
+  <<DTO>>
+  +string occurrenceId
+  +string imageRef
+  +string text
+}
+class InferenceResponse {
+  <<DTO>>
+  +string category
+  +string cobrade
+  +float confidence
+  +string simpleExplanation
+  +boolean ambiguous
+  +string modelVersion
+}
+class PredictionRequest {
+  <<DTO>>
+  +string region
+  +string disasterType
+  +int horizonHours
+  +map features
+}
+class PredictionResponse {
+  <<DTO>>
+  +string riskLevel
+  +float probability
+  +string trend
+  +string modelVersion
+  +boolean experimental
+}
+class ExplanationResponse {
+  <<DTO>>
+  +string method
+  +map payload
+  +string modelVersion
+}
+InferenceAPI ..> InferenceOrchestrator : delega
+InferenceAPI ..> InferenceRequest : recebe
+InferenceAPI ..> PredictionRequest : recebe
+InferenceAPI ..> InferenceResponse : retorna
+InferenceAPI ..> PredictionResponse : retorna
+InferenceAPI ..> ExplanationResponse : retorna
+InferenceOrchestrator ..> IClassifier : classifica
+InferenceOrchestrator ..> IRiskPredictor : prevê
+InferenceOrchestrator ..> IExplainer : explica
+InferenceOrchestrator ..> ModelManager : obtém modelos/parâmetros
+InferenceOrchestrator ..> ResponseBuilder : padroniza resposta
+IClassifier <|.. VisualClassifier
+IClassifier <|.. TextClassifier
+IRiskPredictor <|.. RiskPredictor
+IExplainer <|.. GradCAMExplainer
+IExplainer <|.. SHAPExplainer
+VisualClassifier *-- ImagePreprocessor : usa
+TextClassifier *-- TextPreprocessor : usa

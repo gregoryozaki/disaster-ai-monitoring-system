@@ -1,0 +1,28 @@
+sequenceDiagram
+  participant C as Cidadão
+  participant P as PWA
+  participant I as IndexedDB
+  participant A as API Backend
+  participant D as PostgreSQL
+  participant AI as Serviço IA
+
+  C->>P: envia ocorrência sem conexão
+  P->>I: salva payload + mídia + clientLocalId\nstatus=pending_sync
+  P-->>C: ocorrência salva localmente
+  Note over P,I: fila local persiste entre sessões
+  P->>P: detecta retorno da conexão
+  P->>I: lê itens pending_sync
+  I-->>P: payload pendente
+  P->>A: POST /occurrences/sync\nIdempotency-Key
+  A->>D: verifica idempotencyKey/clientLocalId
+  alt já sincronizada
+    D-->>A: retorna occurrenceId existente
+  else nova
+    A->>D: cria ocorrência + histórico
+    A->>AI: solicita pré-análise
+    AI-->>A: resultado ou indisponibilidade
+    A->>D: salva classificação se disponível
+  end
+  A-->>P: ACK + occurrenceId + status
+  P->>I: marca item como sincronizado/remove fila
+  P-->>C: atualiza acompanhamento

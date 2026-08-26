@@ -1,0 +1,34 @@
+erDiagram
+    USUARIO ||--o{ OCORRENCIA : registra
+    USUARIO ||--o{ VALIDACAO : realiza
+    USUARIO ||--o{ HISTORICO_STATUS : pode_realizar
+    USUARIO ||--o{ SOLICITACAO_COMPLEMENTO : solicita
+    USUARIO ||--o{ COMPLEMENTO_OCORRENCIA : envia
+    USUARIO ||--o{ CONVITE_GESTOR : cria
+    USUARIO ||--o{ EXPORTACAO : solicita
+
+    OCORRENCIA ||--o{ EVIDENCIA_MIDIA : possui
+    OCORRENCIA ||--o{ CLASSIFICACAO_IA : recebe
+    OCORRENCIA ||--o{ VALIDACAO : recebe
+    OCORRENCIA ||--o{ HISTORICO_STATUS : possui
+    OCORRENCIA ||--o{ SOLICITACAO_COMPLEMENTO : pode_gerar
+    OCORRENCIA ||--o{ COMPLEMENTO_OCORRENCIA : recebe
+    OCORRENCIA ||--o{ SINALIZACAO_INTEGRIDADE : pode_receber
+
+    SOLICITACAO_COMPLEMENTO ||--o{ COMPLEMENTO_OCORRENCIA : recebe
+    COMPLEMENTO_OCORRENCIA ||--o{ EVIDENCIA_MIDIA : pode_incluir
+
+    CATEGORIA_DESASTRE ||--o{ CLASSIFICACAO_IA : categoria_prevista
+    CATEGORIA_DESASTRE ||--o{ VALIDACAO : categoria_final
+    CATEGORIA_DESASTRE ||--o{ OCORRENCIA : categoria_confirmada
+    CATEGORIA_DESASTRE ||--o{ LIMIAR_CONFIANCA : configura
+    CATEGORIA_DESASTRE ||--o{ PREVISAO_RISCO : referencia
+
+    VERSAO_MODELO ||--o{ CLASSIFICACAO_IA : gera
+    VERSAO_MODELO ||--o{ PREVISAO_RISCO : gera
+
+    PREVISAO_RISCO ||--o{ PREVISAO_FONTE : possui
+    FONTE_DADO ||--o{ PREVISAO_FONTE : participa
+
+    USUARIO ||--o{ AUDITORIA : atua
+    USUARIO ||--o{ LIMIAR_CONFIANCA : configura

@@ -1,0 +1,168 @@
+%% Diagrama de Classes — Backend: Analytics, Previsão, Exportação e Administração
+classDiagram
+direction TB
+class AnalyticsController {
+  <<controller>>
+  -AnalyticsService service
+  +indicadores(filtros)
+}
+class PredictionController {
+  <<controller>>
+  -PredictionService service
+  +prever(parametros)
+}
+class ExportController {
+  <<controller>>
+  -ExportService service
+  +exportar(parametros)
+  +status(id)
+}
+class AdminController {
+  <<controller>>
+  -AdminService service
+  +gestores(cmd)
+  +categorias(cmd)
+  +limiares(cmd)
+  +auditoria(filtros)
+}
+class AnalyticsService {
+  <<service>>
+  -IAnalyticsRepository query
+  +indicadores(filtros)
+  +distribuicoes(filtros)
+}
+class PredictionService {
+  <<service>>
+  -IEnvironmentalDataGateway data
+  -IAClient ia
+  -IPredictionRepository repo
+  -ProvenanceService provenance
+  +prever(regiao, tipo, horizonte)
+}
+class ExportService {
+  <<service>>
+  -IAnalyticsRepository query
+  -IExportRepository exportRepo
+  +criarExportacao(usuarioId, formato, filtros)
+  +processar(id)
+}
+class AdminService {
+  <<service>>
+  -IConfigRepository config
+  -AuditService audit
+  -IAClient ia
+  +configurarCategoria(cmd)
+  +configurarLimiar(cmd)
+  +gerenciarGestor(cmd)
+}
+class AuditService {
+  <<service>>
+  -IAuditRepository repo
+  +registrar(acao, usuarioId, entidade)
+  +consultar(filtros)
+}
+class ProvenanceService {
+  <<service>>
+  -IProvenanceRepository repo
+  +registrarInferencia(dados)
+  +registrarFonte(dados)
+}
+class IAClient {
+  <<gateway>>
+  -string baseUrl
+  +prever(payload) PrevisaoDTO
+  +atualizarParametros(payload)
+}
+class IEnvironmentalDataGateway {
+  <<interface>>
+  +obter(regiao, periodo) DadosAmbientais
+}
+class IAnalyticsRepository {
+  <<interface>>
+  +agregar(filtros)
+  +listarParaExportacao(filtros)
+}
+class IPredictionRepository {
+  <<interface>>
+  +salvar(previsao)
+  +listar(filtros)
+}
+class IConfigRepository {
+  <<interface>>
+  +salvarCategoria(categoria)
+  +salvarLimiar(limiar)
+  +obterConfiguracaoAtiva(tipo)
+}
+class IExportRepository {
+  <<interface>>
+  +criar(job)
+  +atualizar(job)
+  +obter(id)
+}
+class IAuditRepository {
+  <<interface>>
+  +registrar(log)
+  +consultar(filtros)
+}
+class IProvenanceRepository {
+  <<interface>>
+  +registrar(proveniencia)
+}
+class EnvironmentalDataClient {
+  <<gateway>>
+  +obter(regiao, periodo)
+}
+class PrismaAnalyticsRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +agregar(filtros)
+  +listarParaExportacao(filtros)
+}
+class PrismaPredictionRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +salvar(previsao)
+  +listar(filtros)
+}
+class PrismaConfigRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +salvarCategoria(categoria)
+  +salvarLimiar(limiar)
+  +obterConfiguracaoAtiva(tipo)
+}
+class PrismaExportRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +criar(job)
+  +atualizar(job)
+  +obter(id)
+}
+class PrismaProvenanceRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +registrar(proveniencia)
+}
+AnalyticsController ..> AnalyticsService : usa
+PredictionController ..> PredictionService : usa
+ExportController ..> ExportService : usa
+AdminController ..> AdminService : usa
+AdminController ..> AuditService : consulta auditoria
+AnalyticsService ..> IAnalyticsRepository : agrega dados
+PredictionService ..> IEnvironmentalDataGateway : dados ambientais
+PredictionService ..> IAClient : inferência
+PredictionService ..> IPredictionRepository : salva previsão
+PredictionService ..> ProvenanceService : rastreia
+ExportService ..> IAnalyticsRepository : consulta dados
+ExportService ..> IExportRepository : job exportação
+AdminService ..> IConfigRepository : configura
+AdminService ..> AuditService : audita
+AdminService ..> IAClient : publica parâmetros quando aplicável
+AuditService ..> IAuditRepository : persiste logs
+ProvenanceService ..> IProvenanceRepository : persiste proveniência
+IEnvironmentalDataGateway <|.. EnvironmentalDataClient
+IAnalyticsRepository <|.. PrismaAnalyticsRepository
+IPredictionRepository <|.. PrismaPredictionRepository
+IConfigRepository <|.. PrismaConfigRepository
+IExportRepository <|.. PrismaExportRepository
+IProvenanceRepository <|.. PrismaProvenanceRepository

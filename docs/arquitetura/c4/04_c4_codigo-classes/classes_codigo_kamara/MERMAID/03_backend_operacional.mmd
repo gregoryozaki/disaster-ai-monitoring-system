@@ -1,0 +1,175 @@
+%% Diagrama de Classes — Backend Operacional
+classDiagram
+direction TB
+class ApiRouter {
+  <<controller>>
+  +registrarRotas()
+}
+class AuthController {
+  <<controller>>
+  -AuthService service
+  +login(req)
+  +ativarConta(req)
+  +recuperarSenha(req)
+}
+class OccurrenceController {
+  <<controller>>
+  -OccurrenceService service
+  +criar(req)
+  +obter(id)
+  +historico(usuarioId)
+}
+class SyncController {
+  <<controller>>
+  -OfflineSyncService service
+  +sincronizar(req)
+}
+class ValidationController {
+  <<controller>>
+  -ValidationService service
+  +validar(id, comando)
+  +solicitarComplemento(id, dados)
+}
+class PublicQueryController {
+  <<controller>>
+  -PublicQueryService service
+  +listar(filtros)
+  +detalhe(id)
+}
+class AuthService {
+  <<service>>
+  -IUserRepository users
+  -NotificationService notifications
+  +autenticar(email, senha)
+  +ativarConta(codigo, senha)
+  +solicitarRecuperacao(email)
+}
+class OccurrenceService {
+  <<service>>
+  -IOccurrenceRepository occurrences
+  -IAClient ia
+  -IAuditRepository audit
+  +criar(dto, cidadaoId)
+  +solicitarPreAnalise(id)
+  +obter(id)
+}
+class OfflineSyncService {
+  <<service>>
+  -OccurrenceService occurrenceService
+  +sincronizar(dtoLocal)
+  +reconciliarId(localId, remotoId)
+}
+class ValidationService {
+  <<service>>
+  -IOccurrenceRepository occurrences
+  -IValidationRepository validations
+  -IAuditRepository audit
+  -NotificationService notifications
+  +confirmar(id, gestorId)
+  +corrigir(id, categoriaId, gestorId)
+  +rejeitar(id, motivo, gestorId)
+  +pedirComplemento(id, mensagem, gestorId)
+}
+class PublicQueryService {
+  <<service>>
+  -IOccurrenceRepository occurrences
+  +listarConfirmadas(filtros)
+  +detalhePublico(id)
+}
+class NotificationService {
+  <<service>>
+  -IEmailGateway email
+  +enviarAtivacao(email, token)
+  +enviarRecuperacao(email, token)
+  +informarComplemento(usuarioId, ocorrenciaId)
+}
+class IAClient {
+  <<gateway>>
+  -string baseUrl
+  +preAnalisar(payload) PreAnaliseDTO
+  +prever(payload) PrevisaoDTO
+}
+class IUserRepository {
+  <<interface>>
+  +obterPorEmail(email)
+  +obterPorId(id)
+  +salvar(usuario)
+}
+class IOccurrenceRepository {
+  <<interface>>
+  +salvar(ocorrencia)
+  +obterPorId(id)
+  +listar(filtros)
+  +listarConfirmadas(filtros)
+}
+class IValidationRepository {
+  <<interface>>
+  +salvar(validacao)
+  +listarPorOcorrencia(id)
+}
+class IAuditRepository {
+  <<interface>>
+  +registrar(evento)
+}
+class IEmailGateway {
+  <<interface>>
+  +enviar(destinatario, assunto, corpo)
+}
+class PrismaUserRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +obterPorEmail(email)
+  +obterPorId(id)
+  +salvar(usuario)
+}
+class PrismaOccurrenceRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +salvar(ocorrencia)
+  +obterPorId(id)
+  +listar(filtros)
+  +listarConfirmadas(filtros)
+}
+class PrismaValidationRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +salvar(validacao)
+  +listarPorOcorrencia(id)
+}
+class PrismaAuditRepository {
+  <<repository>>
+  -PrismaClient prisma
+  +registrar(evento)
+}
+class EmailGateway {
+  <<gateway>>
+  -MailProvider provider
+  +enviar(destinatario, assunto, corpo)
+}
+ApiRouter --> AuthController : /auth
+ApiRouter --> OccurrenceController : /ocorrencias
+ApiRouter --> SyncController : /sync
+ApiRouter --> ValidationController : /validacoes
+ApiRouter --> PublicQueryController : /publico
+AuthController ..> AuthService : usa
+OccurrenceController ..> OccurrenceService : usa
+SyncController ..> OfflineSyncService : usa
+ValidationController ..> ValidationService : usa
+PublicQueryController ..> PublicQueryService : usa
+AuthService ..> IUserRepository : persiste usuários
+AuthService ..> NotificationService : notifica conta
+OccurrenceService ..> IOccurrenceRepository : persiste ocorrência
+OccurrenceService ..> IAClient : pré-análise
+OccurrenceService ..> IAuditRepository : rastreabilidade
+OfflineSyncService ..> OccurrenceService : entrega sincronizada
+ValidationService ..> IOccurrenceRepository : atualiza status
+ValidationService ..> IValidationRepository : grava decisão
+ValidationService ..> IAuditRepository : audita
+ValidationService ..> NotificationService : complemento/atualização
+PublicQueryService ..> IOccurrenceRepository : consulta confirmed
+NotificationService ..> IEmailGateway : envia e-mail
+IUserRepository <|.. PrismaUserRepository
+IOccurrenceRepository <|.. PrismaOccurrenceRepository
+IValidationRepository <|.. PrismaValidationRepository
+IAuditRepository <|.. PrismaAuditRepository
+IEmailGateway <|.. EmailGateway

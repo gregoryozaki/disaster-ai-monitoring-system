@@ -1,0 +1,8 @@
+flowchart LR
+  Sources["Fontes ambientais externas"] -->|dados heterogêneos| API["API Backend"]
+  DB[("PostgreSQL")] -->|histórico/ocorrências| API
+  API -->|atributos + contexto + horizonte| AI["Serviço IA"]
+  AI -->|risco + probabilidade + tendência + fatores| API
+  API -->|previsão + proveniência + versão| DB
+  API --> Dashboard["Dashboard / Painel"]
+  API --> Export["Exportação CSV/JSON"]

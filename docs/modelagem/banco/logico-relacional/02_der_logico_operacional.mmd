@@ -1,0 +1,140 @@
+erDiagram
+  USUARIO {
+    uuid id PK
+    string nome
+    string email UK
+    string passwordHash
+    enum papel
+    enum status
+    datetime createdAt
+    datetime updatedAt
+  }
+  CONVITE_GESTOR {
+    uuid id PK
+    string email
+    string tokenHash UK
+    uuid criadoPorId FK
+    datetime expiresAt
+    datetime usedAt
+  }
+  TOKEN_RECUPERACAO {
+    uuid id PK
+    uuid usuarioId FK
+    string tokenHash UK
+    datetime expiresAt
+    datetime usedAt
+  }
+  CATEGORIA_DESASTRE {
+    uuid id PK
+    string cobradeCode UK
+    string nome
+    string grupo
+    boolean ativa
+  }
+  OCORRENCIA {
+    uuid id PK
+    string clientLocalId UK
+    string idempotencyKey UK
+    uuid reporterId FK
+    uuid confirmedCategoryId FK
+    string descricao
+    enum urgencia
+    boolean riscoHumano
+    decimal latitude
+    decimal longitude
+    enum locationSource
+    enum status
+    datetime reportedAt
+    datetime syncedAt
+  }
+  EVIDENCIA_MIDIA {
+    uuid id PK
+    uuid occurrenceId FK
+    uuid complementId FK
+    enum tipo
+    enum origem
+    string mimeType
+    string storageRef
+    bigint sizeBytes
+    string sha256
+  }
+  CLASSIFICACAO_IA {
+    uuid id PK
+    uuid occurrenceId FK
+    uuid modelVersionId FK
+    uuid predictedCategoryId FK
+    enum resultStatus
+    decimal confidence
+    decimal visualConfidence
+    decimal textConfidence
+    boolean ambiguous
+    string explanationSimple
+    json signals
+    datetime createdAt
+  }
+  VALIDACAO {
+    uuid id PK
+    uuid occurrenceId FK
+    uuid managerId FK
+    enum decision
+    uuid finalCategoryId FK
+    string rejectionReason
+    string note
+    datetime createdAt
+  }
+  HISTORICO_STATUS {
+    uuid id PK
+    uuid occurrenceId FK
+    enum fromStatus
+    enum toStatus
+    uuid changedByUserId FK
+    enum actorType
+    string reason
+    datetime createdAt
+  }
+  SOLICITACAO_COMPLEMENTO {
+    uuid id PK
+    uuid occurrenceId FK
+    uuid managerId FK
+    string message
+    enum status
+    datetime createdAt
+    datetime answeredAt
+  }
+  COMPLEMENTO_OCORRENCIA {
+    uuid id PK
+    uuid occurrenceId FK
+    uuid requestId FK
+    uuid citizenId FK
+    string text
+    datetime createdAt
+  }
+  SINALIZACAO_INTEGRIDADE {
+    uuid id PK
+    uuid occurrenceId FK
+    uuid relatedOccurrenceId FK
+    enum type
+    decimal score
+    string reason
+    datetime resolvedAt
+  }
+
+  USUARIO ||--o{ OCORRENCIA : registra
+  USUARIO ||--o{ VALIDACAO : realiza
+  USUARIO ||--o{ HISTORICO_STATUS : altera
+  USUARIO ||--o{ SOLICITACAO_COMPLEMENTO : cria
+  USUARIO ||--o{ COMPLEMENTO_OCORRENCIA : envia
+  USUARIO ||--o{ TOKEN_RECUPERACAO : possui
+  USUARIO ||--o{ CONVITE_GESTOR : cria
+  CATEGORIA_DESASTRE ||--o{ OCORRENCIA : confirma
+  CATEGORIA_DESASTRE ||--o{ CLASSIFICACAO_IA : preve
+  CATEGORIA_DESASTRE ||--o{ VALIDACAO : finaliza
+  OCORRENCIA ||--o{ EVIDENCIA_MIDIA : possui
+  OCORRENCIA ||--o{ CLASSIFICACAO_IA : recebe
+  OCORRENCIA ||--o{ VALIDACAO : recebe
+  OCORRENCIA ||--o{ HISTORICO_STATUS : possui
+  OCORRENCIA ||--o{ SOLICITACAO_COMPLEMENTO : gera
+  OCORRENCIA ||--o{ COMPLEMENTO_OCORRENCIA : recebe
+  OCORRENCIA ||--o{ SINALIZACAO_INTEGRIDADE : recebe
+  SOLICITACAO_COMPLEMENTO ||--o{ COMPLEMENTO_OCORRENCIA : recebe
+  COMPLEMENTO_OCORRENCIA ||--o{ EVIDENCIA_MIDIA : inclui

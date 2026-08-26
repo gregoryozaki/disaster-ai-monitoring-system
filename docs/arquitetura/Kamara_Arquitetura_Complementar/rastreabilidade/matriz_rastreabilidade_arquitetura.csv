@@ -1,0 +1,10 @@
+﻿Artefato/ADR;Tema;HU;RF;RNF;Base relacionada;Observação
+arquitetura-geral/01_arquitetura_geral;Visão estrutural;HU01–HU62;RF01–RF20;RNF01–RNF12;C4 Contexto/Contêineres;Resume os containers e integrações adotados
+arquitetura-geral/02_topologia_execucao_docker_compose;Execução/deploy local;HU51;RF18;"RNF02; RNF09; RNF10";C4 Contêineres;Representa execução integrada por containers
+arquitetura-geral/api_principais.md;Contrato HTTP inicial;HU01–HU62;RF01–RF20;"RNF03; RNF09; RNF10";Sequência + C4 Componentes;Define fronteiras para iniciar implementação
+fluxo-dados/01_fluxo_registro_validacao;Fluxo operacional;"HU01–HU25; HU37–HU45; HU60";"RF01–RF09; RF12; RF13; RF16";"RNF03; RNF05; RNF06; RNF09";M01/M03/M06/M08 + DS01/DS04;IA preliminar e decisão humana separadas
+fluxo-dados/02_fluxo_previsao_analytics;Fluxo analítico;"HU26–HU34; HU46; HU57; HU58; HU60";RF10–RF17;"RNF05–RNF09; RNF12";M07 + DS05;Previsão experimental e proveniência
+sincronizacao/01_sincronizacao_offline;Offline-first;HU13–HU15;RF04;"RNF01; RNF09";M01/M03 + DE02 + DS02;IndexedDB + idempotência + retry
+ADR-002;Separação backend/IA;HU36–HU40;"RF12; RF13";RNF09;C4 Componentes;Backend mantém regra de negócio
+ADR-005;Human-in-the-loop;"HU22–HU25; HU40";"RF09; RF12; RF13";"RNF05; RNF06";Estados/MoLIC/Sequência;IA não confirma
+ADR-006;Privacidade mapa público;"HU09–HU12; HU47";"RF05; RF18";"RNF04; RNF11";M02/DS03;Somente confirmed e dados minimizados

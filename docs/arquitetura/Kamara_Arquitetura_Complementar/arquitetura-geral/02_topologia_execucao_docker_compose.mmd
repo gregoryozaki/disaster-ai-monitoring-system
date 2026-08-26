@@ -1,0 +1,18 @@
+flowchart LR
+  BrowserCitizen["Browser / dispositivo do cidadão\nIndexedDB"]
+  BrowserManager["Browser gestor/admin"]
+
+  subgraph DockerCompose["Ambiente Docker Compose"]
+    CitizenWeb["citizen-web\nNext.js"]
+    DashboardWeb["dashboard-web\nNext.js"]
+    Api["api\nNode.js/Express/Prisma"]
+    Ai["ai-service\nFastAPI/Python"]
+    Db[("postgres\nPostgreSQL")]
+  end
+
+  BrowserCitizen --> CitizenWeb --> Api
+  BrowserManager --> DashboardWeb --> Api
+  Api --> Db
+  Api --> Ai
+  Api --> Email["Serviço de e-mail externo"]
+  Api --> Sources["Fontes ambientais externas"]

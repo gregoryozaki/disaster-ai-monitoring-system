@@ -1,0 +1,17 @@
+digraph G {
+ graph [rankdir=LR, splines=ortho, bgcolor="white", pad=0.25, label="Kamara — Topologia de Execução / Docker Compose", labelloc=t, fontsize=20, fontname="Arial Bold"];
+ node [shape=box, style="rounded,filled", fillcolor="#35A6D8", color="#268DBB", fontcolor="white", fontname="Arial"];
+ edge [fontname="Arial", fontsize=9];
+ Citizen [label="Browser cidadão\n+ IndexedDB", fillcolor="#134B80"];
+ Manager [label="Browser gestor/admin", fillcolor="#134B80"];
+ subgraph cluster_compose { label="Docker Compose"; style="rounded,dashed"; color="#777777";
+  CW [label="citizen-web\nNext.js"];
+  DW [label="dashboard-web\nNext.js"];
+  API [label="api\nNode.js/Express/Prisma", fillcolor="#1F67B1"];
+  AI [label="ai-service\nFastAPI/Python"];
+  DB [shape=cylinder, label="postgres\nPostgreSQL"];
+ }
+ Email [label="E-mail externo", fillcolor="#9A93A5"];
+ Sources [label="Fontes ambientais", fillcolor="#9A93A5"];
+ Citizen -> CW; Manager -> DW; CW -> API [label="HTTPS/JSON"]; DW -> API [label="HTTPS/JSON"]; API -> DB [label="Prisma/SQL"]; API -> AI [label="HTTP/JSON"]; API -> Email; API -> Sources;
+}

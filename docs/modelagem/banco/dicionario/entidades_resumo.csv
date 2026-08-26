@@ -1,0 +1,20 @@
+﻿Tabela;Grupo;Finalidade
+users;Identidade e acesso;Usuários de todos os papéis
+manager_invites;Identidade e acesso;Ativação autorizada de gestores
+password_reset_tokens;Identidade e acesso;Recuperação de senha
+disaster_categories;Domínio;Categorias COBRADE configuráveis
+occurrences;Operacional;Agregado central de ocorrência
+occurrence_media;Operacional;Foto/vídeo/áudio vinculado à ocorrência
+ai_classifications;IA;Classificação preliminar e confiança
+validations;Operacional;Decisões humanas
+status_history;Auditoria operacional;Histórico de mudanças de status
+information_requests;Operacional;Pedidos de complemento
+occurrence_complements;Operacional;Dados adicionais enviados pelo cidadão
+model_versions;IA/Pesquisa;Versões, métricas e parâmetros de modelos
+confidence_thresholds;Configuração;Limiares versionados
+data_sources;Previsão/Proveniência;Fontes ambientais
+risk_predictions;Previsão;Risco regional experimental
+prediction_sources;Proveniência;Vínculo entre previsão e fonte
+integrity_flags;Integridade;Duplicidade/spam sem exclusão automática
+audit_logs;Auditoria;Ações administrativas e rastreabilidade
+export_jobs;Pesquisa/Exportação;Jobs CSV/JSON

@@ -1,0 +1,125 @@
+﻿Tabela;Campo;Tipo lógico/físico;Nulo?;Chave;Descrição;Regra/observação
+users;id;UUID;não;PK;Identificador do usuário;Gerado pelo sistema
+users;name;VARCHAR;sim;;Nome/apelido do usuário;Minimização: opcional quando possível
+users;email;VARCHAR;não;UK;E-mail de autenticação;"Único; nunca exposto no mapa público"
+users;passwordHash;VARCHAR;não;;Hash da senha;Nunca armazenar senha em texto puro
+users;role;ENUM UserRole;não;;Papel de acesso;CITIZEN/MANAGER/ADMIN/RESEARCHER
+users;status;ENUM UserStatus;não;;Estado da conta;INVITED/ACTIVE/INACTIVE
+manager_invites;id;UUID;não;PK;Convite de ativação de gestor;
+manager_invites;email;VARCHAR;não;;E-mail autorizado;
+manager_invites;tokenHash;VARCHAR;não;UK;Hash do token de convite;Não persistir token em claro
+manager_invites;createdByAdminId;UUID;não;FK;Administrador criador do convite;
+manager_invites;expiresAt;TIMESTAMP;não;;Expiração do convite;
+manager_invites;usedAt;TIMESTAMP;sim;;Data de uso;
+password_reset_tokens;id;UUID;não;PK;Token de recuperação;
+password_reset_tokens;userId;UUID;não;FK;Usuário associado;
+password_reset_tokens;tokenHash;VARCHAR;não;UK;Hash do token;
+password_reset_tokens;expiresAt;TIMESTAMP;não;;Expiração;
+password_reset_tokens;usedAt;TIMESTAMP;sim;;Uso do token;
+disaster_categories;id;UUID;não;PK;Categoria de desastre;
+disaster_categories;cobradeCode;VARCHAR;não;UK;Código COBRADE;Valor deve ser validado contra catálogo adotado
+disaster_categories;name;VARCHAR;não;;Nome da categoria;
+disaster_categories;active;BOOLEAN;não;;Disponibilidade para uso;Permite expansão futura sem apagar histórico
+occurrences;id;UUID;não;PK;Identificador servidor da ocorrência;
+occurrences;clientLocalId;VARCHAR;sim;UK;ID gerado no cliente offline;Reconciliado na sincronização
+occurrences;idempotencyKey;VARCHAR;sim;UK;Chave de idempotência;Evita duplicação em retry
+occurrences;reporterId;UUID;não;FK;Cidadão que registrou;Não expor publicamente
+occurrences;confirmedCategoryId;UUID;sim;FK;Categoria final atual;Definida por validação humana
+occurrences;description;TEXT;sim;;Descrição livre;Pode alimentar NLP
+occurrences;urgency;ENUM;não;;Nível de urgência;
+occurrences;humanRisk;BOOLEAN;não;;Indica vítimas/risco humano;
+occurrences;reportedAt;TIMESTAMP;não;;Data/hora do registro;Automática por padrão
+occurrences;latitude;DECIMAL(9,6);não;;Latitude operacional;Nunca publicar diretamente sem política de aproximação
+occurrences;longitude;DECIMAL(9,6);não;;Longitude operacional;Nunca publicar diretamente sem política de aproximação
+occurrences;locationSource;ENUM;não;;Origem da localização;AUTO/MANUAL
+occurrences;status;ENUM OccurrenceStatus;não;;Estado do ciclo de vida;Somente CONFIRMED pode aparecer no mapa público
+occurrences;syncedAt;TIMESTAMP;sim;;Momento da sincronização;
+occurrence_media;id;UUID;não;PK;Evidência multimídia;
+occurrence_media;occurrenceId;UUID;não;FK;Ocorrência vinculada;
+occurrence_media;complementId;UUID;sim;FK;Complemento de origem;
+occurrence_media;type;ENUM;não;;IMAGE/VIDEO/AUDIO;Áudio futuro/opcional
+occurrence_media;storageRef;VARCHAR;não;;Referência ao objeto/arquivo;Storage físico ainda é decisão pendente
+occurrence_media;sha256;VARCHAR;sim;;Hash de integridade;Útil para deduplicação
+ai_classifications;id;UUID;não;PK;Resultado preliminar da IA;
+ai_classifications;occurrenceId;UUID;não;FK;Ocorrência analisada;
+ai_classifications;modelVersionId;UUID;não;FK;Versão do modelo;Obrigatório para rastreabilidade
+ai_classifications;predictedCategoryId;UUID;sim;FK;Categoria prevista;Não substitui categoria confirmada
+ai_classifications;resultStatus;ENUM;não;;Disponibilidade da inferência;AVAILABLE/UNAVAILABLE/ERROR
+ai_classifications;confidence;DECIMAL(5,4);sim;;Confiança agregada;Confiança não equivale a confirmação
+ai_classifications;ambiguous;BOOLEAN;não;;Indica baixa confiança/divergência;Nunca rejeita automaticamente
+ai_classifications;explanationSimple;TEXT;sim;;Explicação simples;
+ai_classifications;signals;JSONB;sim;;Sinais usados;Imagem/texto/contexto e metadados
+validations;id;UUID;não;PK;Decisão humana;
+validations;occurrenceId;UUID;não;FK;Ocorrência validada;
+validations;managerId;UUID;não;FK;Gestor responsável;Somente gestor autorizado
+validations;decision;ENUM;não;;Decisão;CONFIRM/REJECT/CORRECT/REQUEST_MORE_INFO
+validations;finalCategoryId;UUID;sim;FK;Categoria final escolhida;
+validations;rejectionReason;TEXT;sim;;Motivo da rejeição;Pode ser obrigatório na aplicação
+status_history;id;UUID;não;PK;Registro de transição de estado;Append-only
+status_history;occurrenceId;UUID;não;FK;Ocorrência;
+status_history;fromStatus;ENUM;sim;;Estado anterior;
+status_history;toStatus;ENUM;não;;Novo estado;
+status_history;changedByUserId;UUID;sim;FK;Usuário responsável;Nulo quando ator é sistema
+status_history;actorType;ENUM;não;;USER/SYSTEM;
+status_history;reason;TEXT;sim;;Justificativa;
+information_requests;id;UUID;não;PK;Solicitação de complemento;
+information_requests;occurrenceId;UUID;não;FK;Ocorrência;
+information_requests;managerId;UUID;não;FK;Gestor solicitante;
+information_requests;message;TEXT;não;;Informação solicitada;
+information_requests;status;ENUM;não;;OPEN/ANSWERED/CANCELLED;
+occurrence_complements;id;UUID;não;PK;Resposta do cidadão;
+occurrence_complements;requestId;UUID;não;FK;Solicitação respondida;
+occurrence_complements;citizenId;UUID;não;FK;Cidadão autor;
+occurrence_complements;text;TEXT;sim;;Texto complementar;
+model_versions;id;UUID;não;PK;Versão de modelo;
+model_versions;modelType;ENUM;não;;Tipo de modelo;VISUAL/TEXTUAL/MULTIMODAL/RISK_PREDICTION
+model_versions;name;VARCHAR;não;;Nome do modelo;
+model_versions;version;VARCHAR;não;;Versão;Com nome/tipo deve ser única
+model_versions;metrics;JSONB;sim;;Métricas de avaliação;Incluir F1/recall quando aplicável
+model_versions;parameters;JSONB;sim;;Parâmetros/hiperparâmetros;
+model_versions;syntheticData;BOOLEAN;não;;Treinado/avaliado com dados sintéticos;Transparência acadêmica
+confidence_thresholds;id;UUID;não;PK;Configuração de limiar;
+confidence_thresholds;categoryId;UUID;sim;FK;Categoria específica;Nulo pode representar padrão global
+confidence_thresholds;modelType;ENUM;não;;Tipo de modelo;
+confidence_thresholds;lowUpperBound;DECIMAL(5,4);não;;Limite superior baixa confiança;
+confidence_thresholds;mediumUpperBound;DECIMAL(5,4);não;;Limite superior média confiança;Acima é alta confiança
+confidence_thresholds;version;INT;não;;Versão da configuração;Não retroagir sem reprocessamento explícito
+data_sources;id;UUID;não;PK;Fonte ambiental;
+data_sources;name;VARCHAR;não;;Nome da fonte;
+data_sources;type;ENUM;não;;Tipo da fonte;INPE/chuva/estação/satélite/sintético/etc.
+data_sources;externalRef;VARCHAR;sim;;URI/identificador externo;
+risk_predictions;id;UUID;não;PK;Previsão regional;
+risk_predictions;categoryId;UUID;não;FK;Tipo de desastre;
+risk_predictions;modelVersionId;UUID;não;FK;Versão do modelo;
+risk_predictions;regionKey;VARCHAR;não;;Chave normalizada da região;
+risk_predictions;regionName;VARCHAR;não;;Nome exibível da região;
+risk_predictions;horizonHours;INT;não;;Horizonte em horas;"Priorizar 24–48h; 7 dias complementar"
+risk_predictions;riskLevel;ENUM;não;;LOW/MEDIUM/HIGH;Estimativa experimental
+risk_predictions;probability;DECIMAL(5,4);sim;;Probabilidade estimada;
+risk_predictions;trend;ENUM;não;;Tendência temporal;
+risk_predictions;factors;JSONB;sim;;Fatores explicativos;
+risk_predictions;synthetic;BOOLEAN;não;;Uso de cenário/dado sintético;Deve ser informado ao usuário
+prediction_sources;id;UUID;não;PK;Proveniência da previsão;
+prediction_sources;predictionId;UUID;não;FK;Previsão;
+prediction_sources;sourceId;UUID;não;FK;Fonte;
+prediction_sources;datasetVersion;VARCHAR;sim;;Versão/conjunto de dados;
+prediction_sources;retrievedAt;TIMESTAMP;não;;Momento de obtenção;
+integrity_flags;id;UUID;não;PK;Sinalização de integridade;
+integrity_flags;occurrenceId;UUID;não;FK;Ocorrência sinalizada;
+integrity_flags;relatedOccurrenceId;UUID;sim;FK;Possível duplicata;
+integrity_flags;type;ENUM;não;;DUPLICATE/SPAM/OTHER;Nunca excluir automaticamente
+integrity_flags;score;DECIMAL(5,4);sim;;Score heurístico/modelo;
+audit_logs;id;UUID;não;PK;Auditoria genérica;Append-only
+audit_logs;actorUserId;UUID;sim;FK;Usuário ator;
+audit_logs;action;VARCHAR;não;;Ação executada;
+audit_logs;entityType;VARCHAR;não;;Tipo da entidade alterada;
+audit_logs;entityId;VARCHAR;não;;ID da entidade;
+audit_logs;beforeData;JSONB;sim;;Estado anterior;
+audit_logs;afterData;JSONB;sim;;Estado posterior;
+export_jobs;id;UUID;não;PK;Job de exportação;
+export_jobs;requestedById;UUID;não;FK;Solicitante;
+export_jobs;format;ENUM;não;;CSV/JSON;
+export_jobs;status;ENUM;não;;QUEUED/PROCESSING/READY/FAILED;
+export_jobs;filters;JSONB;sim;;Filtros usados;
+export_jobs;anonymized;BOOLEAN;não;;Indica anonimização/minimização;Padrão true
+export_jobs;fileRef;VARCHAR;sim;;Arquivo gerado;

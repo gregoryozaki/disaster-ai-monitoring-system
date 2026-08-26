@@ -1,0 +1,158 @@
+%% Diagrama de Classes — Domínio: Usuários, Ocorrências e Validação
+classDiagram
+direction TB
+class Usuario {
+  <<entity>>
+  -UUID id
+  -string nome
+  -string email
+  -string senhaHash
+  -PapelUsuario papel
+  -StatusConta status
+  -datetime criadoEm
+  +podeAcessar(permissao) boolean
+}
+class PapelUsuario {
+  <<enumeration>>
+  CIDADAO
+  GESTOR
+  ADMINISTRADOR
+}
+class StatusConta {
+  <<enumeration>>
+  PENDENTE_ATIVACAO
+  ATIVA
+  DESATIVADA
+}
+class ConviteGestor {
+  <<entity>>
+  -UUID id
+  -string emailAutorizado
+  -string codigoHash
+  -datetime expiraEm
+  -datetime usadoEm
+  -UUID criadoPorId
+  +estaValido() boolean
+}
+class Ocorrencia {
+  <<entity>>
+  -UUID id
+  -UUID cidadaoId
+  -UUID categoriaFinalId
+  -string descricao
+  -decimal latitude
+  -decimal longitude
+  -int urgencia
+  -boolean riscoHumano
+  -StatusOcorrencia status
+  -datetime dataHora
+  -datetime criadoEm
+  +alterarStatus(novoStatus)
+  +podeSerPublicada() boolean
+}
+class StatusOcorrencia {
+  <<enumeration>>
+  DRAFT
+  PENDING_SYNC
+  UNDER_REVIEW
+  NEEDS_MORE_INFO
+  CONFIRMED
+  REJECTED
+}
+class EvidenciaMidia {
+  <<entity>>
+  -UUID id
+  -UUID ocorrenciaId
+  -UUID complementoId
+  -TipoMidia tipo
+  -string referencia
+  -datetime criadoEm
+}
+class TipoMidia {
+  <<enumeration>>
+  FOTO
+  VIDEO
+}
+class CategoriaDesastre {
+  <<entity>>
+  -UUID id
+  -string codigoCobrade
+  -string nome
+  -boolean ativa
+}
+class ClassificacaoIA {
+  <<entity>>
+  -UUID id
+  -UUID ocorrenciaId
+  -UUID categoriaPrevistaId
+  -decimal confianca
+  -string explicacaoSimples
+  -boolean ambigua
+  -UUID versaoModeloId
+  -datetime criadoEm
+  +disponivel() boolean
+}
+class Validacao {
+  <<entity>>
+  -UUID id
+  -UUID ocorrenciaId
+  -UUID gestorId
+  -DecisaoValidacao decisao
+  -UUID categoriaFinalId
+  -string observacao
+  -datetime criadoEm
+}
+class DecisaoValidacao {
+  <<enumeration>>
+  CONFIRMAR
+  CORRIGIR
+  REJEITAR
+  SOLICITAR_COMPLEMENTO
+}
+class HistoricoStatus {
+  <<entity>>
+  -UUID id
+  -UUID ocorrenciaId
+  -StatusOcorrencia statusAnterior
+  -StatusOcorrencia statusNovo
+  -UUID usuarioId
+  -string motivo
+  -datetime criadoEm
+}
+class SolicitacaoComplemento {
+  <<entity>>
+  -UUID id
+  -UUID ocorrenciaId
+  -UUID gestorId
+  -string mensagem
+  -datetime criadaEm
+  -datetime respondidaEm
+  +respondida() boolean
+}
+class ComplementoOcorrencia {
+  <<entity>>
+  -UUID id
+  -UUID solicitacaoId
+  -UUID cidadaoId
+  -string texto
+  -datetime criadoEm
+}
+Usuario --> PapelUsuario : papel
+Usuario --> StatusConta : status
+Usuario "1" --> "0..*" Ocorrencia : registra
+Usuario "1" --> "0..*" Validacao : realiza
+Usuario "1" --> "0..*" ConviteGestor : cria
+Ocorrencia --> StatusOcorrencia : status
+Ocorrencia "0..*" --> "0..1" CategoriaDesastre : categoria final
+Ocorrencia "1" *-- "0..*" EvidenciaMidia : possui
+EvidenciaMidia --> TipoMidia : tipo
+Ocorrencia "1" *-- "0..*" ClassificacaoIA : recebe
+ClassificacaoIA "0..*" --> "0..1" CategoriaDesastre : prevê
+Ocorrencia "1" *-- "0..*" Validacao : possui
+Validacao --> DecisaoValidacao : decisão
+Validacao "0..*" --> "0..1" CategoriaDesastre : define categoria
+Ocorrencia "1" *-- "1..*" HistoricoStatus : registra transições
+HistoricoStatus --> StatusOcorrencia : novo status
+Ocorrencia "1" *-- "0..*" SolicitacaoComplemento : pode exigir
+SolicitacaoComplemento "1" *-- "0..1" ComplementoOcorrencia : é respondida por
+ComplementoOcorrencia "0..1" o-- "0..*" EvidenciaMidia : inclui mídia

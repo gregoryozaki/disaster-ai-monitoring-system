@@ -1,0 +1,62 @@
+﻿Diagrama;Classe / Interface;Tipo;C4 — Contêiner/Componente;Responsabilidade;HU relacionadas;RF relacionados;Artefatos relacionados;Observações
+DC01;Usuario;Entity;Backend / Repositórios Prisma;Conta e papel de acesso;"HU49; HU62";RF18;"M04; M05; DE03; DE04";"Papel por enum; evita subclasses de persistência desnecessárias."
+DC01;ConviteGestor;Entity;Autenticação e Acesso / Administração;Ativação controlada de gestor;"HU41; HU49";RF18;"M05; M09";Convite/código com validade.
+DC01;Ocorrencia;Entity;Serviço de Ocorrências;Agregado principal do registro ambiental;"HU01–HU08; HU13–HU25";"RF01; RF03; RF04; RF08; RF09";"M01; M03; M06; DE01; DA01; DA02; DA05";Estado segue ciclo de vida consolidado.
+DC01;EvidenciaMidia;Entity;Serviço de Ocorrências;Foto/vídeo vinculados à ocorrência/complemento;"HU03; HU08";"RF02; RF09";"M01; M03";Referência abstrata: storage físico ainda não definido.
+DC01;CategoriaDesastre;Entity;Ocorrências / Administração;Categoria COBRADE extensível;"HU21; HU42";"RF08; RF14";"M06; M09";Foco inicial fogo e alagamento, extensível.
+DC01;ClassificacaoIA;Entity;Serviço de Ocorrências / IA;Resultado preliminar com confiança e explicação;"HU06; HU37–HU40; HU45; HU60";"RF12; RF13; RF16";"M01; M06; M10; DS01";Não confirma ocorrência.
+DC01;Validacao;Entity;Validação e Histórico;Decisão humana do gestor;HU22–HU25;RF09;"M06; DE01; DA05";Confirmação final é humana.
+DC01;HistoricoStatus;Entity;Validação e Histórico;Rastreia transições de estado;"HU44; HU45";"RF09; RF16";"M03; M06; M09; DE01";Base de auditoria operacional.
+DC01;SolicitacaoComplemento;Entity;Validação e Histórico;Pedido de dados adicionais;"HU07; HU24";RF09;"M03; M06; DE01";Leva a needs_more_info.
+DC01;ComplementoOcorrencia;Entity;Serviço de Ocorrências;Resposta do cidadão ao pedido do gestor;HU08;RF09;"M03; DE01; DA02";Retorna para under_review.
+DC02;VersaoModelo;Entity;Administração / Serviço IA;Versão e parâmetros reprodutíveis;"HU45; HU54; HU58";"RF14; RF16";"M09; M10; DE05";Suporta reprodutibilidade.
+DC02;LimiarConfianca;Entity;Administração e Auditoria;Faixas configuráveis por categoria;HU43;RF14;"M09; DE05";Evita limiar global rígido.
+DC02;FonteDado;Entity;Analytics/Previsão;Origem de dados ambientais;"HU57; HU58";"RF15; RF16";"M07; DS05; DA06";Integração progressiva/P2.
+DC02;PrevisaoRisco;Entity;Analytics/Previsão / IA;Resultado experimental regional;"HU32–HU34; HU48";"RF11; RF12; RF16";"M07; DS05; DA06";"24–48h prioritário; 7 dias complementar."
+DC02;Proveniencia;Entity;Analytics / Auditoria;Origem de dados/modelo da inferência;HU58;RF16;"M07; M09; M10";RNF05/RNF07.
+DC02;ExportacaoDados;Entity;Analytics/Exportação;Job e arquivo de exportação;HU46;RF17;"M07; DE06; DA06";CSV/JSON.
+DC02;AuditLog;Entity;Administração e Auditoria;Registra ações administrativas e decisões;"HU44; HU45; HU58";"RF16; RF18";"M09; DS06; DA07";Rastreabilidade.
+DC03;ApiRouter;Service/Controller;API Backend;Entrada HTTP e despacho;"HU01–HU25; HU49; HU62";"RF01–RF09; RF18";"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;AuthService;Service/Controller;API Backend;Autenticação, ativação e recuperação;"HU49; HU62";RF18;"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;OccurrenceService;Service/Controller;API Backend;Criação, consulta e pré-análise;"HU01–HU08; HU37–HU40";"RF01–RF03; RF08; RF12; RF13";"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;OfflineSyncService;Service/Controller;API Backend;Sincronização pending_sync;HU13–HU15;RF04;"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;ValidationService;Service/Controller;API Backend;Validação humana e complemento;"HU22–HU25; HU44";RF09;"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;PublicQueryService;Service/Controller;API Backend;Consulta pública confirmed-only;"HU09–HU12; HU47";"RF05; RF18";"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;NotificationService;Service/Controller;API Backend;Mensagens de conta/complemento;"HU24; HU49; HU50";"RF09; RF18";"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;IAClient;Service/Controller;API Backend;Porta única para FastAPI;"HU36–HU40; HU60";"RF12; RF13";"C4 Componentes; DS01–DS04";Design de aplicação, não classe persistente.
+DC03;IUserRepository;Interface;Repositórios Prisma;Contrato de persistência de usuários;"HU44; HU49; HU62";"RF09; RF16; RF18";C4 Componentes;Implementação concreta via Prisma.
+DC03;IOccurrenceRepository;Interface;Repositórios Prisma;Contrato de persistência/consulta de ocorrências;"HU44; HU49; HU62";"RF09; RF16; RF18";C4 Componentes;Implementação concreta via Prisma.
+DC03;IValidationRepository;Interface;Repositórios Prisma;Contrato de validações;"HU44; HU49; HU62";"RF09; RF16; RF18";C4 Componentes;Implementação concreta via Prisma.
+DC03;IAuditRepository;Interface;Repositórios Prisma;Contrato de auditoria;"HU44; HU49; HU62";"RF09; RF16; RF18";C4 Componentes;Implementação concreta via Prisma.
+DC04;AnalyticsService;Service/Gateway;API Backend;Indicadores por tipo/período/região;"HU26–HU31; HU56";"RF07; RF10";"M07; M09; DS05; DS06; DA06; DA07";
+DC04;PredictionService;Service/Gateway;API Backend;Orquestra dados ambientais e previsão;"HU32–HU34; HU57–HU60";"RF11; RF12; RF15; RF16";"M07; M09; DS05; DS06; DA06; DA07";
+DC04;ExportService;Service/Gateway;API Backend;Gera/exporta dados filtrados;HU46;RF17;"M07; M09; DS05; DS06; DA06; DA07";
+DC04;AdminService;Service/Gateway;API Backend;Gestores, categorias e limiares;"HU41–HU43; HU49";"RF14; RF18";"M07; M09; DS05; DS06; DA06; DA07";
+DC04;AuditService;Service/Gateway;API Backend;Logs e consultas de auditoria;"HU44; HU45; HU58";RF16;"M07; M09; DS05; DS06; DA06; DA07";
+DC04;ProvenanceService;Service/Gateway;API Backend;Proveniência de dados/inferências;HU58;RF16;"M07; M09; DS05; DS06; DA06; DA07";
+DC04;EnvironmentalDataClient;Service/Gateway;API Backend;Gateway de fontes ambientais;HU57;RF15;"M07; M09; DS05; DS06; DA06; DA07";
+DC05;OccurrenceFormModel;Frontend class;PWA Cidadão / Mapa Público;Valida e decide envio online/offline;"HU01–HU06; HU13";RF01–RF04;"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC05;OfflineOccurrenceRepository;Frontend class;PWA Cidadão / Mapa Público;Persistência IndexedDB de pending_sync;HU13–HU15;RF04;"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC05;SyncManager;Frontend class;PWA Cidadão / Mapa Público;Sincronização automática/manual;"HU14; HU15";RF04;"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC05;CitizenApiClient;Frontend class;PWA Cidadão / Mapa Público;Acesso HTTPS/JSON ao backend;"HU01–HU15; HU62";"RF01–RF05; RF18";"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC05;PublicMapPage;Frontend class;PWA Cidadão / Mapa Público;Mapa público e filtros;"HU09–HU12; HU47; HU52";"RF05; RF07; RF18";"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC05;HistoryPage;Frontend class;PWA Cidadão / Mapa Público;Histórico e estado de sync;"HU07; HU13–HU15";RF04;"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC05;OccurrenceDetailPage;Frontend class;PWA Cidadão / Mapa Público;Detalhes e complemento;"HU07; HU08";RF09;"M01–M04; DS01–DS03; DA01–DA04";React/Next.js/PWA.
+DC06;OperationalMapPage;Frontend class;Dashboard Gestor/Administração;Mapa operacional e filtros;"HU16; HU18–HU20; HU56";"RF06; RF07";"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;OccurrenceListPage;Frontend class;Dashboard Gestor/Administração;Lista de ocorrências;HU17–HU20;"RF06; RF07";"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;OccurrenceDetailPage;Frontend class;Dashboard Gestor/Administração;Detalhes completos;HU21;RF08;"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;ValidationPanel;Frontend class;Dashboard Gestor/Administração;Confirmar/corrigir/rejeitar/complemento;HU22–HU25;RF09;"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;AnalyticsPage;Frontend class;Dashboard Gestor/Administração;Indicadores analíticos;HU26–HU31;RF10;"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;PredictionPage;Frontend class;Dashboard Gestor/Administração;Consulta previsão experimental;"HU32–HU34; HU48; HU60";"RF11; RF12";"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;ExportPanel;Frontend class;Dashboard Gestor/Administração;Exportação CSV/JSON;HU46;RF17;"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;AdminPage;Frontend class;Dashboard Gestor/Administração;Gestão e configuração;"HU41–HU43; HU49";"RF14; RF18";"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC06;AuditPage;Frontend class;Dashboard Gestor/Administração;Auditoria/proveniência;"HU44; HU45; HU58";RF16;"M05–M09; DS04–DS06; DA05–DA07";React/Next.js.
+DC07;InferenceAPI;AI class/interface;Serviço de IA;Endpoints FastAPI;HU36;"RF12; RF13";"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;InferenceOrchestrator;AI class/interface;Serviço de IA;Coordena modalidades/modelos/resposta;"HU39; HU40";RF13;"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;VisualClassifier;AI class/interface;Serviço de IA;Classificação por imagem;HU37;RF13;"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;TextClassifier;AI class/interface;Serviço de IA;Classificação por texto;HU38;RF13;"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;RiskPredictor;AI class/interface;Serviço de IA;Previsão experimental;HU32–HU35;RF11;"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;GradCAMExplainer;AI class/interface;Serviço de IA;Evidência visual pós-MVP;HU61;RF20;"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;SHAPExplainer;AI class/interface;Serviço de IA;Explicação de fatores;"HU34; HU61";"RF12; RF20";"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;ModelManager;AI class/interface;Serviço de IA;Versões e parâmetros ativos;"HU43; HU45; HU54; HU58";"RF14; RF16";"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."
+DC07;ResponseBuilder;AI class/interface;Serviço de IA;Resposta padronizada com confiança/metadados;"HU06; HU45; HU60";"RF12; RF16";"C4 Componentes; DS01; DS05; M10";"FastAPI/Python; XAI avançada marcada como pós-MVP quando aplicável."

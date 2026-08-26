@@ -1,0 +1,120 @@
+%% Diagrama de Classes — Domínio: Previsão, Proveniência, Configuração e Auditoria
+classDiagram
+direction LR
+class UsuarioRef {
+  <<entity>>
+  -UUID id
+  -PapelUsuario papel
+}
+class CategoriaDesastre {
+  <<entity>>
+  -UUID id
+  -string codigoCobrade
+  -string nome
+  -boolean ativa
+}
+class VersaoModelo {
+  <<entity>>
+  -UUID id
+  -string nomeModelo
+  -string versao
+  -string algoritmo
+  -json parametrosJson
+  -boolean ativo
+  -datetime criadoEm
+  +ativar()
+  +desativar()
+}
+class LimiarConfianca {
+  <<entity>>
+  -UUID id
+  -UUID categoriaId
+  -decimal baixaMax
+  -decimal altaMin
+  -int versao
+  -boolean ativo
+  +classificarFaixa(valor) string
+}
+class FonteDado {
+  <<entity>>
+  -UUID id
+  -string nome
+  -string tipo
+  -string origem
+  -datetime atualizadoEm
+  -boolean ativa
+}
+class PrevisaoRisco {
+  <<entity>>
+  -UUID id
+  -UUID categoriaId
+  -UUID versaoModeloId
+  -string regiao
+  -int horizonteHoras
+  -NivelRisco nivel
+  -decimal probabilidade
+  -string tendencia
+  -boolean experimental
+  -datetime geradaEm
+}
+class NivelRisco {
+  <<enumeration>>
+  BAIXO
+  MEDIO
+  ALTO
+}
+class Proveniencia {
+  <<entity>>
+  -UUID id
+  -string tipoArtefato
+  -UUID artefatoId
+  -UUID versaoModeloId
+  -UUID fonteDadoId
+  -json metadadosJson
+  -datetime registradoEm
+}
+class ExportacaoDados {
+  <<entity>>
+  -UUID id
+  -UUID solicitanteId
+  -FormatoExportacao formato
+  -json filtrosJson
+  -StatusExportacao status
+  -string arquivoRef
+  -datetime criadoEm
+  +concluir(arquivoRef)
+  +falhar()
+}
+class FormatoExportacao {
+  <<enumeration>>
+  CSV
+  JSON
+}
+class StatusExportacao {
+  <<enumeration>>
+  PENDENTE
+  PROCESSANDO
+  CONCLUIDA
+  FALHA
+}
+class AuditLog {
+  <<entity>>
+  -UUID id
+  -UUID usuarioId
+  -string acao
+  -string entidade
+  -UUID entidadeId
+  -json detalhesJson
+  -datetime criadoEm
+}
+CategoriaDesastre "1" *-- "0..*" LimiarConfianca : possui
+CategoriaDesastre "1" --> "0..*" PrevisaoRisco : tipo previsto
+VersaoModelo "1" --> "0..*" PrevisaoRisco : gera
+PrevisaoRisco --> NivelRisco : nível
+VersaoModelo "1" --> "0..*" Proveniencia : referenciada por
+FonteDado "1" --> "0..*" Proveniencia : registrada em
+PrevisaoRisco "1" *-- "1..*" Proveniencia : possui proveniência
+UsuarioRef "1" --> "0..*" ExportacaoDados : solicita
+ExportacaoDados --> FormatoExportacao : formato
+ExportacaoDados --> StatusExportacao : status
+UsuarioRef "1" --> "0..*" AuditLog : origina

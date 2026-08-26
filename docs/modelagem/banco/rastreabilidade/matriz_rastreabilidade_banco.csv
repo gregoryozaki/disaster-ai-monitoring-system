@@ -1,0 +1,20 @@
+﻿Entidade/Tabela;HU relacionadas;RF relacionadas;Justificativa
+users;"HU49; HU62";RF18;Autenticação, controle de acesso e minimização
+manager_invites;"HU41; HU49";RF18;Ativação controlada do gestor
+password_reset_tokens;"HU50; HU62";RF18;Recuperação de acesso
+disaster_categories;"HU18; HU21; HU42";"RF07; RF08; RF14";COBRADE extensível e filtros
+occurrences;"HU01–HU08; HU13–HU25";"RF01; RF03; RF04; RF05; RF06; RF07; RF08; RF09";Registro, ciclo de vida e validação
+occurrence_media;"HU03; HU08";"RF02; RF09";Evidência principal e complemento
+ai_classifications;"HU06; HU20; HU25; HU37–HU40; HU45; HU60";"RF12; RF13; RF16";Pré-análise, confiança, ambiguidade e comparação com decisão humana
+validations;HU22–HU25;RF09;Human-in-the-loop
+status_history;"HU07; HU44";"RF09; RF16";Rastreabilidade de estados
+information_requests;"HU07; HU24";RF09;needs_more_info
+occurrence_complements;HU08;RF09;Resposta ao pedido de complemento
+model_versions;"HU45; HU54; HU58";"RF14; RF16";Reprodutibilidade e proveniência
+confidence_thresholds;"HU20; HU43";RF14;Limiar configurável por tipo
+data_sources;"HU57; HU58";"RF15; RF16";Fontes heterogêneas
+risk_predictions;"HU32–HU34; HU48; HU60";"RF11; RF12; RF16";Previsão experimental por região/tipo/horizonte
+prediction_sources;"HU57; HU58";"RF15; RF16";Proveniência das entradas
+integrity_flags;HU59;RF19;Sinalização de duplicidade/spam
+audit_logs;"HU41–HU45; HU58";"RF14; RF16; RF18";Auditoria administrativa
+export_jobs;"HU46; HU47";"RF17; RF18";Exportação filtrada e anonimizada

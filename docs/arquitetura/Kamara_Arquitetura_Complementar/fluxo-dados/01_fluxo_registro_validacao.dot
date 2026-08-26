@@ -1,0 +1,23 @@
+digraph G {
+ graph [rankdir=LR, splines=ortho, bgcolor="white", pad=0.25, label="Kamara — Fluxo de Dados: Registro, IA e Validação", labelloc=t, fontsize=20, fontname="Arial Bold"];
+ node [shape=box, style="rounded,filled", fillcolor="#35A6D8", color="#268DBB", fontcolor="white", fontname="Arial"];
+ edge [fontname="Arial", fontsize=9];
+ Citizen [label="Cidadão", fillcolor="#134B80"];
+ PWA [label="PWA Cidadão"];
+ API [label="API Backend", fillcolor="#1F67B1"];
+ DB [shape=cylinder, label="PostgreSQL"];
+ AI [label="Serviço IA"];
+ Manager [label="Gestor", fillcolor="#134B80"];
+ Dash [label="Dashboard"];
+ Public [label="Mapa público\nconfirmed apenas"];
+ Citizen -> PWA [label="dados + mídia + GPS"];
+ PWA -> API [label="ocorrência"];
+ API -> DB [label="persiste"];
+ API -> AI [label="imagem + texto/contexto"];
+ AI -> API [label="categoria + confiança + explicação"];
+ API -> PWA [label="pré-análise/status"];
+ Manager -> Dash [label="analisa"];
+ Dash -> API [label="consulta/decisão"];
+ API -> DB [label="validação + histórico"];
+ API -> Public [label="projeção pública se confirmed"];
+}
