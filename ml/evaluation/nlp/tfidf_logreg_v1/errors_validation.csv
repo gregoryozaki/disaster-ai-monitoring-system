@@ -1,0 +1,6 @@
+sample_id,true_label,predicted_label,correct,predicted_probability,linguistic_profile,difficulty,scenario_family,text
+cobrade_1_2_1_0_0_0621,COBRADE_1_2_1_0_0,COBRADE_1_2_2_0_0,0,0.4489205654830488,chat_abbreviated,intermediate,high_water_reaches_roads,corrego encheu e agr tem agua na estrada de terra aq
+cobrade_1_2_3_0_0_0866,COBRADE_1_2_3_0_0,OTHER,0,0.4605690427133472,profanity_emotional,intermediate,underpass_waterlogging,porra o tunel alagou e o transito foi desviado
+insufficient_info_0164,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0,0.41432153870592753,neutral,typical,very_short_vague,tem água aqui.
+insufficient_info_0392,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0,0.314967900053842,informal,typical,very_short_vague,tem agua aqui
+insufficient_info_0867,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0,0.2919672537095378,profanity_emotional,typical,very_short_vague,caralho a agua aumentou

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetVersion": "0.1.0",
+  "datasetName": "kamara_nlp_synthetic_v1",
+  "language": "pt-BR",
+  "randomSeed": 20260830,
+
+  "generation": {
+    "method": "controlled_templates_and_slots",
+    "expectedSyntheticSamples": 10000,
+    "keepGenerationMetadata": true,
+    "allowExactDuplicates": false
+  },
+
+  "scenarioFamilies": {
+    "COBRADE_1_2_1_0_0": [
+      "river_overflow",
+      "stream_overflow",
+      "water_body_rise",
+      "floodplain_inundation",
+      "water_invading_homes"
+    ],
+
+    "COBRADE_1_2_2_0_0": [
+      "rapid_water_flow",
+      "strong_surface_current",
+      "vehicles_dragged_by_water",
+      "debris_carried_by_water",
+      "sudden_torrent"
+    ],
+
+    "COBRADE_1_2_3_0_0": [
+      "urban_drainage_failure",
+      "street_water_accumulation",
+      "blocked_drainage",
+      "intersection_flooding",
+      "rainwater_accumulation"
+    ],
+
+    "COBRADE_1_4_1_3_1": [
+      "protected_forest_fire",
+      "conservation_unit_fire",
+      "environmental_reserve_fire",
+      "protected_vegetation_fire",
+      "park_protected_area_fire"
+    ],
+
+    "COBRADE_1_4_1_3_2": [
+      "unprotected_forest_fire",
+      "rural_vegetation_fire",
+      "pasture_fire",
+      "brush_fire",
+      "non_protected_vegetation_fire"
+    ],
+
+    "COBRADE_2_3_1_1_0": [
+      "factory_fire",
+      "warehouse_fire",
+      "industrial_building_fire",
+      "industrial_complex_fire",
+      "storage_facility_fire"
+    ],
+
+    "COBRADE_2_3_1_2_0": [
+      "house_fire",
+      "residential_building_fire",
+      "multiple_homes_fire",
+      "neighborhood_residential_fire",
+      "apartment_building_fire"
+    ],
+
+    "OTHER": [
+      "landslide",
+      "drought",
+      "hail",
+      "strong_wind",
+      "erosion",
+      "building_collapse",
+      "other_out_of_scope_event"
+    ],
+
+    "INSUFFICIENT_INFO": [
+      "vague_report",
+      "no_event_description",
+      "uncertain_without_evidence",
+      "future_risk_only",
+      "explicit_negation",
+      "generic_request_for_help"
+    ]
+  },
+
+  "variationTypes": [
+    "standard",
+    "informal",
+    "short",
+    "long",
+    "typo",
+    "uncertain",
+    "cause_effect",
+    "location_context"
+  ],
+
+  "hardNegativeTypes": [
+    "negation",
+    "future_risk",
+    "ambiguous_context",
+    "similar_vocabulary_wrong_class"
+  ],
+
+  "split": {
+    "strategy": "grouped_by_template_family",
+    "trainRatio": 0.6,
+    "validationRatio": 0.2,
+    "testRatio": 0.2,
+    "forbidTemplateFamilyOverlap": true,
+    "forbidExactTextOverlap": true,
+    "externalManualEvaluationExcludedFromTraining": true
+  },
+
+  "quality": {
+    "normalizeWhitespace": true,
+    "rejectEmptyText": true,
+    "rejectExactDuplicateText": true,
+    "requireScenarioFamily": true,
+    "requireTemplateFamily": true,
+    "requireVariationType": true,
+    "requireSyntheticFlag": true
+  },
+
+  "outputColumns": [
+    "sample_id",
+    "text",
+    "target_label",
+    "cobrade_code",
+    "scenario_family",
+    "template_family",
+    "variation_type",
+    "synthetic"
+  ]
+}

@@ -1,0 +1,60 @@
+# Node
+**/node_modules/
+**/.next/
+**/build/
+**/dist/
+**/coverage/
+
+# Environment
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/.venv/
+**/venv/
+**/.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# ML datasets
+# Raw datasets are private/large by default.
+ml/data/raw/*
+ml/data/interim/*
+ml/data/processed/*
+
+# NLP synthetic raw datasets are part of the reproducible experiment.
+!ml/data/raw/nlp/
+!ml/data/raw/nlp/**
+
+# Keep ML directories
+!ml/data/raw/.gitkeep
+!ml/data/interim/.gitkeep
+!ml/data/processed/.gitkeep
+
+# ML model artifacts / binary exports
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+*.safetensors
+
+# Hugging Face / training binary artifacts
+ml/artifacts/**/*.bin
+
+# Colab/model export archives
+ml/*.zip
+
+# Docker
+docker-compose.override.yml

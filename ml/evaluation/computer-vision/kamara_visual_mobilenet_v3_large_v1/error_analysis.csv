@@ -1,0 +1,235 @@
+source_dataset,relative_path,true_label,predicted_label,confidence,group_id
+dfire,data/train/images/WEB02389.jpg,OTHER,FLOOD_WATER,0.9999967813491821,phash-group-010548
+flood-kaggle-fallback,Dataset/Flood Images/flood_953.jpg,FLOOD_WATER,OTHER,0.9999924898147583,phash-group-017052
+dfire,data/train/images/WEB05884.jpg,FIRE_SMOKE,OTHER,0.9998407363891602,phash-group-003835
+dfire,data/test/images/WEB10263.jpg,OTHER,FIRE_SMOKE,0.9998165965080261,phash-group-008456
+dfire,data/train/images/WEB03270.jpg,OTHER,FLOOD_WATER,0.9995076656341553,phash-group-011266
+dfire,data/train/images/WEB07818.jpg,FIRE_SMOKE,OTHER,0.9994100332260132,phash-group-005261
+dfire,data/train/images/AoF05103.jpg,FIRE_SMOKE,OTHER,0.999371349811554,phash-group-001647
+dfire,data/train/images/WEB09339.jpg,FIRE_SMOKE,OTHER,0.9979552030563354,phash-group-006439
+dfire,data/train/images/WEB07259.jpg,FIRE_SMOKE,OTHER,0.9972383975982666,phash-group-004817
+dfire,data/train/images/WEB02263.jpg,OTHER,FLOOD_WATER,0.9971278309822083,phash-group-010445
+dfire,data/train/images/WEB04145.jpg,FIRE_SMOKE,OTHER,0.997019350528717,phash-group-002548
+dfire,data/train/images/WEB09387.jpg,FIRE_SMOKE,OTHER,0.9964281916618347,phash-group-006479
+dfire,data/train/images/WEB07395.jpg,FIRE_SMOKE,OTHER,0.9959034323692322,phash-group-004923
+dfire,data/train/images/AoF05102.jpg,FIRE_SMOKE,OTHER,0.9949222207069397,phash-group-001646
+dfire,data/val/images/WEB06224.jpg,FIRE_SMOKE,OTHER,0.9940924048423767,phash-group-007146
+dfire,data/train/images/PublicDataset00448.jpg,FIRE_SMOKE,OTHER,0.9940087795257568,phash-group-001934
+dfire,data/test/images/WEB10371.jpg,OTHER,FLOOD_WATER,0.9939889907836914,phash-group-008560
+dfire,data/train/images/AoF05569.jpg,FIRE_SMOKE,OTHER,0.9932658672332764,phash-group-001671
+dfire,data/train/images/WEB03030.jpg,OTHER,FIRE_SMOKE,0.9924351572990417,phash-group-011079
+dfire,data/val/images/WEB07942.jpg,FIRE_SMOKE,OTHER,0.9915342926979065,phash-group-007441
+flood-kaggle-fallback,Dataset/Flood Images/Flood_1057.jpg,FLOOD_WATER,FIRE_SMOKE,0.9896021485328674,phash-group-012233
+dfire,data/train/images/AoF01456.jpg,OTHER,FIRE_SMOKE,0.9887999296188354,phash-group-007719
+dfire,data/test/images/AoF08113.jpg,FIRE_SMOKE,OTHER,0.9886033535003662,phash-group-001669
+flood-kaggle-fallback,Dataset/Flood Images/flood_3022.jpg,FLOOD_WATER,OTHER,0.9879423975944519,phash-group-014173
+dfire,data/test/images/WEB11727.jpg,FIRE_SMOKE,FLOOD_WATER,0.9876074194908142,phash-group-001432
+dfire,data/train/images/AoF01417.jpg,OTHER,FIRE_SMOKE,0.9875078797340393,phash-group-007719
+flood-kaggle-fallback,Dataset/Flood Images/flood_3197.jpg,FLOOD_WATER,OTHER,0.9867361187934875,phash-group-014345
+dfire,data/train/images/AoF01411.jpg,OTHER,FIRE_SMOKE,0.9866325259208679,phash-group-007719
+dfire,data/train/images/AoF01457.jpg,OTHER,FIRE_SMOKE,0.9858942031860352,phash-group-007719
+dfire,data/val/images/PublicDataset00324.jpg,FIRE_SMOKE,OTHER,0.9858330488204956,phash-group-006602
+dfire,data/test/images/WEB11395.jpg,FIRE_SMOKE,FLOOD_WATER,0.9854466915130615,phash-group-001128
+dfire,data/train/images/AoF03368.jpg,OTHER,FIRE_SMOKE,0.9835965633392334,phash-group-008873
+dfire,data/train/images/WEB02422.jpg,OTHER,FIRE_SMOKE,0.9829161167144775,phash-group-010574
+dfire,data/train/images/AoF05699.jpg,FIRE_SMOKE,OTHER,0.9812361001968384,phash-group-000065
+dfire,data/train/images/AoF05701.jpg,FIRE_SMOKE,OTHER,0.9774214029312134,phash-group-000065
+dfire,data/test/images/AoF07069.jpg,OTHER,FIRE_SMOKE,0.9769279956817627,phash-group-007719
+dfire,data/train/images/WEB08303.jpg,FIRE_SMOKE,OTHER,0.9759642481803894,phash-group-005601
+flood-kaggle-fallback,Dataset/Flood Images/flood_3616.jpg,FLOOD_WATER,OTHER,0.9757254123687744,phash-group-014706
+dfire,data/test/images/AoF07080.jpg,OTHER,FIRE_SMOKE,0.9752711057662964,phash-group-007719
+dfire,data/test/images/WEB11674.jpg,FIRE_SMOKE,OTHER,0.973311722278595,phash-group-001383
+dfire,data/train/images/AoF01408.jpg,OTHER,FIRE_SMOKE,0.9730662703514099,phash-group-007719
+dfire,data/train/images/WEB07383.jpg,FIRE_SMOKE,OTHER,0.9718493223190308,phash-group-004914
+dfire,data/test/images/AoF07047.jpg,OTHER,FIRE_SMOKE,0.9711890816688538,phash-group-007719
+dfire,data/test/images/AoF08133.jpg,FIRE_SMOKE,OTHER,0.9698418378829956,phash-group-000065
+dfire,data/train/images/AoF01324.jpg,OTHER,FIRE_SMOKE,0.9696550369262695,phash-group-007719
+dfire,data/train/images/AoF05700.jpg,FIRE_SMOKE,OTHER,0.968048632144928,phash-group-000065
+dfire,data/train/images/AoF05605.jpg,FIRE_SMOKE,OTHER,0.9679843187332153,phash-group-001669
+dfire,data/test/images/WEB11270.jpg,FIRE_SMOKE,OTHER,0.9671663641929626,phash-group-001008
+dfire,data/train/images/WEB03810.jpg,FIRE_SMOKE,OTHER,0.9647771716117859,phash-group-002275
+dfire,data/train/images/WEB02413.jpg,OTHER,FLOOD_WATER,0.9643875956535339,phash-group-010566
+flood-kaggle-fallback,Dataset/Flood Images/flood_7917.png,FLOOD_WATER,OTHER,0.9630351066589355,phash-group-016856
+dfire,data/val/images/AoF05604.jpg,FIRE_SMOKE,OTHER,0.9629896879196167,phash-group-001669
+flood-kaggle-fallback,Dataset/Flood Images/flood_6386.jpg,FLOOD_WATER,OTHER,0.9535378217697144,phash-group-016585
+dfire,data/train/images/AoF03373.jpg,OTHER,FIRE_SMOKE,0.9529238939285278,phash-group-008873
+dfire,data/train/images/AoF01466.jpg,OTHER,FIRE_SMOKE,0.9516775012016296,phash-group-007719
+dfire,data/train/images/WEB02388.jpg,OTHER,FIRE_SMOKE,0.9513986110687256,phash-group-010547
+dfire,data/train/images/WEB02246.jpg,OTHER,FIRE_SMOKE,0.9483717679977417,phash-group-010431
+flood-kaggle-fallback,Dataset/Flood Images/flood_7919.png,FLOOD_WATER,OTHER,0.9467164278030396,phash-group-016856
+dfire,data/train/images/WEB06241.jpg,FIRE_SMOKE,OTHER,0.9465252161026001,phash-group-004121
+dfire,data/test/images/WEB10131.jpg,OTHER,FLOOD_WATER,0.9417457580566406,phash-group-008327
+dfire,data/val/images/AoF01361.jpg,OTHER,FIRE_SMOKE,0.9392534494400024,phash-group-007719
+dfire,data/train/images/AoF01412.jpg,OTHER,FIRE_SMOKE,0.9367404580116272,phash-group-007719
+dfire,data/train/images/PublicDataset00791.jpg,FIRE_SMOKE,OTHER,0.9365124702453613,phash-group-000219
+dfire,data/test/images/WEB10343.jpg,OTHER,FLOOD_WATER,0.9332355260848999,phash-group-008532
+flood-kaggle-fallback,Dataset/Flood Images/flood_1137.jpg,FLOOD_WATER,OTHER,0.9307718276977539,phash-group-012355
+dfire,data/train/images/WEB06992.jpg,FIRE_SMOKE,OTHER,0.9296661019325256,phash-group-004635
+dfire,data/train/images/AoF05675.jpg,FIRE_SMOKE,OTHER,0.9275118112564087,phash-group-001674
+dfire,data/train/images/AoF01271.jpg,OTHER,FIRE_SMOKE,0.9270427823066711,phash-group-007719
+flood-kaggle-fallback,Dataset/Flood Images/flood_5037.jpg,FLOOD_WATER,OTHER,0.9250527024269104,phash-group-016037
+dfire,data/train/images/AoF01373.jpg,OTHER,FIRE_SMOKE,0.918690025806427,phash-group-008754
+dfire,data/train/images/AoF01443.jpg,OTHER,FIRE_SMOKE,0.9121791124343872,phash-group-007719
+dfire,data/train/images/WEB03564.jpg,OTHER,FIRE_SMOKE,0.9101980328559875,phash-group-011510
+flood-kaggle-fallback,Dataset/Flood Images/Flood_1093.jpg,FLOOD_WATER,OTHER,0.9074190258979797,phash-group-012268
+dfire,data/train/images/WEB09098.jpg,FIRE_SMOKE,OTHER,0.9058789014816284,phash-group-006235
+dfire,data/train/images/AoF01363.jpg,OTHER,FIRE_SMOKE,0.9056640267372131,phash-group-007719
+dfire,data/train/images/AoF01419.jpg,OTHER,FIRE_SMOKE,0.9012857675552368,phash-group-007719
+dfire,data/train/images/WEB08401.jpg,FIRE_SMOKE,OTHER,0.9005290269851685,phash-group-005682
+dfire,data/train/images/AoF05697.jpg,FIRE_SMOKE,OTHER,0.897153913974762,phash-group-000065
+dfire,data/val/images/PublicDataset00355.jpg,FIRE_SMOKE,OTHER,0.8916152715682983,phash-group-006606
+flood-kaggle-fallback,Dataset/Flood Images/flood_4679.jpg,FLOOD_WATER,OTHER,0.8902629613876343,phash-group-015686
+dfire,data/train/images/WEB09171.jpg,FIRE_SMOKE,OTHER,0.8900701999664307,phash-group-006297
+dfire,data/train/images/AoF01372.jpg,OTHER,FIRE_SMOKE,0.8887215256690979,phash-group-008754
+dfire,data/train/images/AoF01270.jpg,OTHER,FIRE_SMOKE,0.8875159025192261,phash-group-007719
+dfire,data/test/images/PublicDataset01229.jpg,FIRE_SMOKE,OTHER,0.8854333758354187,phash-group-000195
+dfire,data/train/images/AoF05565.jpg,FIRE_SMOKE,OTHER,0.8838024139404297,phash-group-001669
+dfire,data/val/images/WEB03444.jpg,OTHER,FLOOD_WATER,0.8822609782218933,phash-group-012159
+dfire,data/train/images/AoF03370.jpg,OTHER,FIRE_SMOKE,0.8791438937187195,phash-group-008873
+dfire,data/train/images/WEB08493.jpg,FIRE_SMOKE,OTHER,0.8757866621017456,phash-group-005758
+dfire,data/train/images/WEB02470.jpg,OTHER,FIRE_SMOKE,0.8742758631706238,phash-group-010617
+dfire,data/train/images/WEB03426.jpg,OTHER,FLOOD_WATER,0.8740973472595215,phash-group-011393
+dfire,data/train/images/WEB00533.jpg,OTHER,FIRE_SMOKE,0.8734301328659058,phash-group-009417
+dfire,data/val/images/AoF01446.jpg,OTHER,FIRE_SMOKE,0.8684057593345642,phash-group-007719
+dfire,data/test/images/WEB11763.jpg,FIRE_SMOKE,OTHER,0.8645204305648804,phash-group-001466
+dfire,data/test/images/AoF07077.jpg,OTHER,FIRE_SMOKE,0.8612248301506042,phash-group-007719
+dfire,data/train/images/PublicDataset00394.jpg,FIRE_SMOKE,OTHER,0.8602160811424255,phash-group-000156
+dfire,data/train/images/WEB06326.jpg,FIRE_SMOKE,OTHER,0.8545870184898376,phash-group-004198
+dfire,data/test/images/WEB11253.jpg,FIRE_SMOKE,OTHER,0.8533037304878235,phash-group-000992
+dfire,data/val/images/WEB02546.jpg,OTHER,FLOOD_WATER,0.8519699573516846,phash-group-012010
+dfire,data/train/images/AoF05698.jpg,FIRE_SMOKE,OTHER,0.8514570593833923,phash-group-000065
+dfire,data/test/images/AoF07869.jpg,FIRE_SMOKE,OTHER,0.8510076403617859,phash-group-000029
+dfire,data/train/images/WEB03528.jpg,OTHER,FLOOD_WATER,0.8477675318717957,phash-group-011478
+flood-kaggle-fallback,Dataset/Flood Images/flood_4233.jpg,FLOOD_WATER,OTHER,0.843322217464447,phash-group-015224
+dfire,data/val/images/AoF05939.jpg,FIRE_SMOKE,OTHER,0.8410436511039734,phash-group-006560
+dfire,data/test/images/AoF07046.jpg,OTHER,FIRE_SMOKE,0.8408814668655396,phash-group-007719
+dfire,data/train/images/WEB07030.jpg,FIRE_SMOKE,OTHER,0.839206874370575,phash-group-004664
+dfire,data/train/images/AoF03660.jpg,OTHER,FIRE_SMOKE,0.8391092419624329,phash-group-008923
+dfire,data/val/images/AoF01467.jpg,OTHER,FIRE_SMOKE,0.8389275670051575,phash-group-007719
+dfire,data/train/images/WEB07698.jpg,FIRE_SMOKE,FLOOD_WATER,0.8299802541732788,phash-group-005166
+dfire,data/test/images/WEB11341.jpg,FIRE_SMOKE,OTHER,0.8267113566398621,phash-group-001075
+dfire,data/train/images/PublicDataset00792.jpg,FIRE_SMOKE,OTHER,0.8236814141273499,phash-group-000219
+flood-kaggle-fallback,Dataset/Flood Images/flood_6429.jpg,FLOOD_WATER,FIRE_SMOKE,0.8213951587677002,phash-group-016629
+dfire,data/train/images/AoF03372.jpg,OTHER,FIRE_SMOKE,0.8158173561096191,phash-group-008873
+dfire,data/train/images/AoF01364.jpg,OTHER,FIRE_SMOKE,0.8138386607170105,phash-group-007719
+dfire,data/train/images/PublicDataset00793.jpg,FIRE_SMOKE,OTHER,0.8095611333847046,phash-group-000219
+dfire,data/train/images/AoF01437.jpg,OTHER,FIRE_SMOKE,0.8085002303123474,phash-group-008754
+dfire,data/train/images/WEB07625.jpg,FIRE_SMOKE,OTHER,0.8080636858940125,phash-group-005108
+dfire,data/train/images/AoF04554.jpg,FIRE_SMOKE,OTHER,0.807150661945343,phash-group-001584
+flood-kaggle-fallback,Dataset/Flood Images/flood_4824.jpg,FLOOD_WATER,FIRE_SMOKE,0.8055453896522522,phash-group-015824
+dfire,data/train/images/PublicDataset00959.jpg,OTHER,FIRE_SMOKE,0.7985007166862488,phash-group-009054
+dfire,data/test/images/PublicDataset01165.jpg,FIRE_SMOKE,OTHER,0.7970389127731323,phash-group-000152
+dfire,data/train/images/WEB02361.jpg,OTHER,FIRE_SMOKE,0.7899848818778992,phash-group-010525
+dfire,data/train/images/WEB02400.jpg,OTHER,FLOOD_WATER,0.7881911993026733,phash-group-010557
+dfire,data/train/images/PublicDataset00390.jpg,FIRE_SMOKE,OTHER,0.7871532440185547,phash-group-000156
+dfire,data/train/images/AoF05676.jpg,FIRE_SMOKE,OTHER,0.783822238445282,phash-group-001674
+dfire,data/train/images/WEB06368.jpg,FIRE_SMOKE,FLOOD_WATER,0.7828734517097473,phash-group-004233
+flood-kaggle-fallback,Dataset/Flood Images/flood_7274.png,FLOOD_WATER,OTHER,0.7794633507728577,phash-group-016851
+dfire,data/train/images/AoF01416.jpg,OTHER,FIRE_SMOKE,0.7784672975540161,phash-group-007719
+dfire,data/train/images/WEB02174.jpg,FIRE_SMOKE,OTHER,0.7783657312393188,phash-group-002179
+dfire,data/train/images/WEB01492.jpg,OTHER,FIRE_SMOKE,0.7759445309638977,phash-group-010027
+dfire,data/train/images/WEB07666.jpg,FIRE_SMOKE,OTHER,0.7759344577789307,phash-group-005139
+flood-kaggle-fallback,Dataset/Non Flood Images/2609.jpg,OTHER,FIRE_SMOKE,0.7745833992958069,phash-group-019609
+dfire,data/train/images/AoF01371.jpg,OTHER,FIRE_SMOKE,0.7680130004882812,phash-group-008754
+dfire,data/train/images/AoF01269.jpg,OTHER,FIRE_SMOKE,0.7678470611572266,phash-group-007719
+dfire,data/train/images/AoF03371.jpg,OTHER,FIRE_SMOKE,0.7676875591278076,phash-group-008873
+flood-kaggle-fallback,Dataset/Flood Images/flood_7273.png,FLOOD_WATER,OTHER,0.7669364213943481,phash-group-016851
+flood-kaggle-fallback,Dataset/Flood Images/flood_3805.jpg,FLOOD_WATER,OTHER,0.7633161544799805,phash-group-014869
+flood-kaggle-fallback,Dataset/Flood Images/flood_2280.jpg,FLOOD_WATER,OTHER,0.75562584400177,phash-group-013537
+dfire,data/val/images/WEB06946.jpg,FIRE_SMOKE,OTHER,0.753040611743927,phash-group-007262
+dfire,data/test/images/AoF07067.jpg,OTHER,FIRE_SMOKE,0.7506024241447449,phash-group-007719
+dfire,data/test/images/AoF07068.jpg,OTHER,FIRE_SMOKE,0.7463877201080322,phash-group-007719
+dfire,data/train/images/AoF04555.jpg,FIRE_SMOKE,OTHER,0.7367041110992432,phash-group-001584
+dfire,data/test/images/PublicDataset01167.jpg,FIRE_SMOKE,OTHER,0.7355604767799377,phash-group-000154
+dfire,data/train/images/WEB06562.jpg,FIRE_SMOKE,OTHER,0.735407292842865,phash-group-004364
+dfire,data/train/images/PublicDataset00546.jpg,FIRE_SMOKE,OTHER,0.7306042909622192,phash-group-002001
+dfire,data/train/images/WEB06318.jpg,FIRE_SMOKE,OTHER,0.7283619046211243,phash-group-004191
+flood-kaggle-fallback,Dataset/Flood Images/flood_4756.jpg,FLOOD_WATER,OTHER,0.7176584005355835,phash-group-015761
+dfire,data/train/images/AoF01360.jpg,OTHER,FIRE_SMOKE,0.7169038653373718,phash-group-007719
+dfire,data/train/images/WEB05659.jpg,FIRE_SMOKE,OTHER,0.7057670950889587,phash-group-003669
+dfire,data/val/images/PublicDataset00316.jpg,FIRE_SMOKE,OTHER,0.7017033100128174,phash-group-006601
+dfire,data/test/images/WEB11076.jpg,FIRE_SMOKE,OTHER,0.7007890939712524,phash-group-000219
+dfire,data/test/images/PublicDataset01267.jpg,FIRE_SMOKE,OTHER,0.6913157105445862,phash-group-000219
+dfire,data/test/images/WEB11436.jpg,FIRE_SMOKE,FLOOD_WATER,0.6899027824401855,phash-group-001168
+dfire,data/test/images/WEB11655.jpg,FIRE_SMOKE,OTHER,0.6888841390609741,phash-group-001364
+dfire,data/train/images/PublicDataset00410.jpg,FIRE_SMOKE,OTHER,0.6876049637794495,phash-group-000156
+dfire,data/test/images/WEB11280.jpg,FIRE_SMOKE,FLOOD_WATER,0.6858532428741455,phash-group-001017
+dfire,data/train/images/AoF04556.jpg,FIRE_SMOKE,OTHER,0.6844592094421387,phash-group-001585
+dfire,data/train/images/PublicDataset00894.jpg,OTHER,FIRE_SMOKE,0.6830680966377258,phash-group-009002
+dfire,data/train/images/PublicDataset00789.jpg,FIRE_SMOKE,OTHER,0.68235182762146,phash-group-000219
+dfire,data/test/images/WEB10262.jpg,OTHER,FIRE_SMOKE,0.6822547912597656,phash-group-008455
+flood-kaggle-fallback,Dataset/Flood Images/flood_5891.jpg,FLOOD_WATER,OTHER,0.6804500222206116,phash-group-016248
+dfire,data/train/images/WEB06509.jpg,FIRE_SMOKE,OTHER,0.6779285669326782,phash-group-000219
+dfire,data/train/images/PublicDataset00794.jpg,FIRE_SMOKE,OTHER,0.6761771440505981,phash-group-000219
+dfire,data/train/images/WEB02993.jpg,OTHER,FIRE_SMOKE,0.6740041375160217,phash-group-011046
+dfire,data/train/images/AoF05706.jpg,FIRE_SMOKE,OTHER,0.6736693978309631,phash-group-000066
+dfire,data/train/images/AoF00006.jpg,OTHER,FIRE_SMOKE,0.6719716787338257,phash-group-008923
+dfire,data/train/images/AoF03387.jpg,OTHER,FLOOD_WATER,0.6707184314727783,phash-group-008875
+dfire,data/train/images/WEB07719.jpg,FIRE_SMOKE,OTHER,0.6687771081924438,phash-group-005182
+dfire,data/val/images/AoF04562.jpg,FIRE_SMOKE,OTHER,0.6675894260406494,phash-group-001584
+dfire,data/train/images/WEB05216.jpg,FIRE_SMOKE,OTHER,0.6671459078788757,phash-group-003366
+dfire,data/test/images/WEB11077.jpg,FIRE_SMOKE,OTHER,0.6580461859703064,phash-group-000219
+dfire,data/train/images/WEB02381.jpg,OTHER,FIRE_SMOKE,0.6555001139640808,phash-group-010542
+dfire,data/val/images/AoF06186.jpg,FIRE_SMOKE,OTHER,0.6553352475166321,phash-group-006565
+dfire,data/train/images/WEB09202.jpg,FIRE_SMOKE,OTHER,0.6552054286003113,phash-group-006323
+dfire,data/train/images/AoF01362.jpg,OTHER,FIRE_SMOKE,0.65351802110672,phash-group-007719
+dfire,data/test/images/WEB11776.jpg,FIRE_SMOKE,OTHER,0.6528756618499756,phash-group-001479
+flood-kaggle-fallback,Dataset/Flood Images/flood_8235.png,FLOOD_WATER,OTHER,0.6522358655929565,phash-group-016939
+dfire,data/test/images/AoF08148.jpg,FIRE_SMOKE,OTHER,0.6500219702720642,phash-group-000068
+dfire,data/train/images/PublicDataset00797.jpg,FIRE_SMOKE,OTHER,0.6399816870689392,phash-group-000219
+dfire,data/train/images/AoF00560.jpg,OTHER,FIRE_SMOKE,0.6329545974731445,phash-group-008691
+dfire,data/test/images/WEB11210.jpg,FIRE_SMOKE,FLOOD_WATER,0.6263793706893921,phash-group-000961
+dfire,data/test/images/PublicDataset01185.jpg,FIRE_SMOKE,OTHER,0.6196495294570923,phash-group-000156
+dfire,data/train/images/PublicDataset00924.jpg,OTHER,FIRE_SMOKE,0.6188223361968994,phash-group-009023
+dfire,data/test/images/WEB11733.jpg,FIRE_SMOKE,FLOOD_WATER,0.614266037940979,phash-group-007633
+dfire,data/test/images/PublicDataset01266.jpg,FIRE_SMOKE,OTHER,0.6140410304069519,phash-group-000219
+dfire,data/val/images/PublicDataset00429.jpg,FIRE_SMOKE,OTHER,0.6109135746955872,phash-group-000156
+dfire,data/train/images/WEB02794.jpg,OTHER,FLOOD_WATER,0.6081796288490295,phash-group-010886
+flood-kaggle-fallback,Dataset/Flood Images/flood_5089.jpg,FLOOD_WATER,OTHER,0.6078470349311829,phash-group-016087
+dfire,data/train/images/PublicDataset00500.jpg,FIRE_SMOKE,OTHER,0.6034611463546753,phash-group-001968
+flood-kaggle-fallback,Dataset/Flood Images/flood_4359.jpg,FLOOD_WATER,OTHER,0.5986518859863281,phash-group-015356
+dfire,data/test/images/WEB11624.jpg,FIRE_SMOKE,OTHER,0.5968906879425049,phash-group-001339
+dfire,data/train/images/AoF03369.jpg,OTHER,FIRE_SMOKE,0.5945478081703186,phash-group-008873
+dfire,data/test/images/WEB11670.jpg,FIRE_SMOKE,OTHER,0.5929141640663147,phash-group-001379
+dfire,data/train/images/WEB08141.jpg,FIRE_SMOKE,OTHER,0.5854677557945251,phash-group-005475
+dfire,data/test/images/PublicDataset01170.jpg,FIRE_SMOKE,OTHER,0.579481840133667,phash-group-000156
+flood-kaggle-fallback,Dataset/Flood Images/flood_4677.jpg,FLOOD_WATER,OTHER,0.5770125985145569,phash-group-015684
+dfire,data/test/images/WEB11366.jpg,FIRE_SMOKE,OTHER,0.5745208859443665,phash-group-001100
+dfire,data/train/images/WEB09391.jpg,FIRE_SMOKE,OTHER,0.5744138956069946,phash-group-006482
+flood-kaggle-fallback,Dataset/Flood Images/flood_8578.png,FLOOD_WATER,OTHER,0.5733476877212524,phash-group-016971
+flood-kaggle-fallback,Dataset/Flood Images/flood_1212.jpg,FLOOD_WATER,OTHER,0.567351222038269,phash-group-012428
+dfire,data/train/images/PublicDataset00790.jpg,FIRE_SMOKE,OTHER,0.5656673312187195,phash-group-000219
+dfire,data/train/images/PublicDataset00795.jpg,FIRE_SMOKE,OTHER,0.5602580904960632,phash-group-000219
+dfire,data/train/images/WEB07858.jpg,FIRE_SMOKE,OTHER,0.5539870858192444,phash-group-005297
+dfire,data/train/images/PublicDataset00407.jpg,FIRE_SMOKE,OTHER,0.5525131821632385,phash-group-000156
+dfire,data/train/images/PublicDataset00385.jpg,FIRE_SMOKE,OTHER,0.5524780750274658,phash-group-000156
+dfire,data/train/images/PublicDataset00800.jpg,FIRE_SMOKE,OTHER,0.5515843033790588,phash-group-000219
+dfire,data/train/images/WEB09196.jpg,FIRE_SMOKE,OTHER,0.5515731573104858,phash-group-006319
+dfire,data/train/images/AoF01444.jpg,OTHER,FIRE_SMOKE,0.5447878837585449,phash-group-007719
+dfire,data/train/images/AoF03161.jpg,OTHER,FIRE_SMOKE,0.5447165966033936,phash-group-007756
+dfire,data/train/images/AoF03935.jpg,OTHER,FIRE_SMOKE,0.5444236993789673,phash-group-008685
+dfire,data/test/images/PublicDataset01182.jpg,FIRE_SMOKE,OTHER,0.5389789938926697,phash-group-000156
+dfire,data/test/images/PublicDataset01184.jpg,FIRE_SMOKE,OTHER,0.538373589515686,phash-group-000156
+dfire,data/train/images/WEB04374.jpg,FIRE_SMOKE,OTHER,0.5350955724716187,phash-group-002730
+dfire,data/train/images/WEB09385.jpg,FIRE_SMOKE,FLOOD_WATER,0.5327486991882324,phash-group-006477
+dfire,data/train/images/WEB07801.jpg,FIRE_SMOKE,FLOOD_WATER,0.5318054556846619,phash-group-005248
+dfire,data/train/images/WEB09269.jpg,FIRE_SMOKE,OTHER,0.5309722423553467,phash-group-006379
+dfire,data/test/images/WEB10354.jpg,OTHER,FIRE_SMOKE,0.5295899510383606,phash-group-008543
+dfire,data/val/images/PublicDataset00406.jpg,FIRE_SMOKE,OTHER,0.5295173525810242,phash-group-000156
+dfire,data/test/images/WEB11172.jpg,FIRE_SMOKE,OTHER,0.5292461514472961,phash-group-000927
+dfire,data/train/images/WEB07011.jpg,FIRE_SMOKE,OTHER,0.525852620601654,phash-group-004651
+dfire,data/train/images/WEB05555.jpg,FIRE_SMOKE,OTHER,0.5253678560256958,phash-group-003610
+dfire,data/train/images/WEB09407.jpg,FIRE_SMOKE,OTHER,0.5250744819641113,phash-group-006498
+dfire,data/train/images/WEB02250.jpg,OTHER,FIRE_SMOKE,0.5238751173019409,phash-group-010434
+dfire,data/train/images/PublicDataset00796.jpg,FIRE_SMOKE,OTHER,0.5163432359695435,phash-group-000219
+dfire,data/test/images/AoF08178.jpg,FIRE_SMOKE,OTHER,0.5097643136978149,phash-group-006560
+dfire,data/train/images/WEB06316.jpg,FIRE_SMOKE,OTHER,0.5096508860588074,phash-group-004189
+dfire,data/val/images/WEB02488.jpg,OTHER,FIRE_SMOKE,0.509274423122406,phash-group-012001
+dfire,data/train/images/PublicDataset00739.jpg,FIRE_SMOKE,OTHER,0.5068355202674866,phash-group-002096
+dfire,data/val/images/AoF05705.jpg,FIRE_SMOKE,OTHER,0.5066436529159546,phash-group-000066
+dfire,data/test/images/PublicDataset01268.jpg,FIRE_SMOKE,OTHER,0.5050026178359985,phash-group-000219
+flood-kaggle-fallback,Dataset/Flood Images/flood_8556.png,FLOOD_WATER,OTHER,0.5039160847663879,phash-group-016963
+dfire,data/test/images/WEB10981.jpg,FIRE_SMOKE,OTHER,0.4857400357723236,phash-group-000761
+dfire,data/train/images/WEB09100.jpg,FIRE_SMOKE,FLOOD_WATER,0.45941638946533203,phash-group-006237
+dfire,data/train/images/WEB08485.jpg,FIRE_SMOKE,OTHER,0.4123552143573761,phash-group-005751
+dfire,data/train/images/WEB02870.jpg,OTHER,FIRE_SMOKE,0.3790338933467865,phash-group-010949

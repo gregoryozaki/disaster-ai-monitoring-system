@@ -1,0 +1,2152 @@
+{
+  "version": 2,
+  "method": "MILP group-aware split with exact class sizes and soft stratification targets",
+  "input_dataset": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/interim/nlp/synthetic_occurrences_v1.jsonl",
+    "sha256": "5fc1fd4a06ea2983f4bdf70b7489a5727df9776ddb11f168d8ea00ebe69f1da4",
+    "records": 9000
+  },
+  "near_duplicate_source": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/evaluation/nlp/near_duplicate_candidates_v1.csv",
+    "sha256": "b2c026ad013d2b8f340a9e9f6074dc34ca052c4331f523750623e94a23c40639",
+    "threshold": 0.9,
+    "edge_count_used": 950
+  },
+  "split_parameters": {
+    "ratios": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "solver_time_limit_per_class_seconds": 60.0,
+    "weights": {
+      "linguistic_profile": 10000.0,
+      "difficulty": 1000.0,
+      "scenario_family": 1.0
+    }
+  },
+  "solver_by_class": {
+    "COBRADE_1_2_1_0_0": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40004.000322
+    },
+    "COBRADE_1_2_2_0_0": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 42006.000292
+    },
+    "COBRADE_1_2_3_0_0": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40000.000324
+    },
+    "COBRADE_1_4_1_3_1": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40004.000292
+    },
+    "COBRADE_1_4_1_3_2": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40010.000289
+    },
+    "COBRADE_2_3_1_1_0": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40006.000279
+    },
+    "COBRADE_2_3_1_2_0": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40006.000289
+    },
+    "OTHER": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40012.000276
+    },
+    "INSUFFICIENT_INFO": {
+      "success": true,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 40004.000281
+    }
+  },
+  "split_sizes": {
+    "train": 6300,
+    "validation": 1350,
+    "test": 1350
+  },
+  "expected_per_class_split": {
+    "train": 700,
+    "validation": 150,
+    "test": 150
+  },
+  "class_split_counts": {
+    "COBRADE_1_2_1_0_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_2_2_0_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_2_3_0_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_4_1_3_1": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_4_1_3_2": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_2_3_1_1_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_2_3_1_2_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "OTHER": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "INSUFFICIENT_INFO": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    }
+  },
+  "similarity_groups": {
+    "total_groups": 8187,
+    "non_singleton_groups": 660,
+    "max_group_size": 8,
+    "cross_split_similarity_edges": 0
+  },
+  "distribution_summary": {
+    "COBRADE_1_2_1_0_0": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 11,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 13,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "gradual_river_overflow": 16,
+            "community_riverside_flooding": 86,
+            "prolonged_rain_river_rise": 81,
+            "igarape_overflow": 49,
+            "high_water_reaches_roads": 92,
+            "floodplain_inundation": 95,
+            "river_overflow_urban_reach": 97,
+            "riverside_homes_reached": 102,
+            "stream_overflow": 83
+          },
+          "validation": {
+            "gradual_river_overflow": 3,
+            "community_riverside_flooding": 19,
+            "prolonged_rain_river_rise": 17,
+            "igarape_overflow": 11,
+            "high_water_reaches_roads": 20,
+            "floodplain_inundation": 20,
+            "river_overflow_urban_reach": 21,
+            "riverside_homes_reached": 22,
+            "stream_overflow": 18
+          },
+          "test": {
+            "gradual_river_overflow": 3,
+            "community_riverside_flooding": 18,
+            "prolonged_rain_river_rise": 17,
+            "igarape_overflow": 10,
+            "high_water_reaches_roads": 19,
+            "floodplain_inundation": 20,
+            "river_overflow_urban_reach": 21,
+            "riverside_homes_reached": 22,
+            "stream_overflow": 18
+          }
+        },
+        "actual": {
+          "train": {
+            "gradual_river_overflow": 16,
+            "prolonged_rain_river_rise": 81,
+            "high_water_reaches_roads": 92,
+            "floodplain_inundation": 95,
+            "river_overflow_urban_reach": 97,
+            "riverside_homes_reached": 102,
+            "stream_overflow": 83,
+            "community_riverside_flooding": 86,
+            "igarape_overflow": 48
+          },
+          "validation": {
+            "stream_overflow": 18,
+            "prolonged_rain_river_rise": 16,
+            "riverside_homes_reached": 22,
+            "gradual_river_overflow": 3,
+            "igarape_overflow": 11,
+            "high_water_reaches_roads": 20,
+            "floodplain_inundation": 20,
+            "river_overflow_urban_reach": 21,
+            "community_riverside_flooding": 19
+          },
+          "test": {
+            "community_riverside_flooding": 18,
+            "igarape_overflow": 11,
+            "high_water_reaches_roads": 19,
+            "riverside_homes_reached": 22,
+            "stream_overflow": 18,
+            "floodplain_inundation": 20,
+            "prolonged_rain_river_rise": 18,
+            "river_overflow_urban_reach": 21,
+            "gradual_river_overflow": 3
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 1,
+          "validation": 1,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      }
+    },
+    "COBRADE_1_2_2_0_0": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 141,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 101,
+            "slang": 58,
+            "typo_no_accents": 72,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 141,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 100,
+            "slang": 58,
+            "typo_no_accents": 72,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 10,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 11,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 1,
+          "validation": 1,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 304,
+            "intermediate": 207,
+            "hard": 189
+          },
+          "validation": {
+            "typical": 65,
+            "intermediate": 45,
+            "hard": 41
+          },
+          "test": {
+            "typical": 65,
+            "intermediate": 44,
+            "hard": 40
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 304,
+            "intermediate": 207,
+            "hard": 189
+          },
+          "validation": {
+            "typical": 65,
+            "intermediate": 44,
+            "hard": 41
+          },
+          "test": {
+            "typical": 65,
+            "intermediate": 45,
+            "hard": 40
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 1,
+          "test": 1
+        },
+        "total_absolute_deviation": 2
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "rapid_street_runoff": 96,
+            "vehicles_dragged": 81,
+            "sudden_stream_surge": 91,
+            "muddy_torrent": 82,
+            "hillside_runoff": 87,
+            "urban_channel_flashflow": 86,
+            "rural_road_torrent": 77,
+            "debris_carried": 16,
+            "sudden_river_flash": 84,
+            "sudden_gully_flow": 1
+          },
+          "validation": {
+            "rapid_street_runoff": 21,
+            "vehicles_dragged": 17,
+            "sudden_stream_surge": 20,
+            "muddy_torrent": 18,
+            "hillside_runoff": 19,
+            "urban_channel_flashflow": 19,
+            "rural_road_torrent": 17,
+            "debris_carried": 3,
+            "sudden_river_flash": 18,
+            "sudden_gully_flow": 0
+          },
+          "test": {
+            "rapid_street_runoff": 20,
+            "vehicles_dragged": 17,
+            "sudden_stream_surge": 19,
+            "muddy_torrent": 18,
+            "hillside_runoff": 18,
+            "urban_channel_flashflow": 18,
+            "rural_road_torrent": 16,
+            "debris_carried": 3,
+            "sudden_river_flash": 18,
+            "sudden_gully_flow": 0
+          }
+        },
+        "actual": {
+          "train": {
+            "rapid_street_runoff": 96,
+            "muddy_torrent": 82,
+            "hillside_runoff": 87,
+            "vehicles_dragged": 80,
+            "urban_channel_flashflow": 86,
+            "rural_road_torrent": 77,
+            "debris_carried": 16,
+            "sudden_river_flash": 84,
+            "sudden_stream_surge": 91,
+            "sudden_gully_flow": 1
+          },
+          "validation": {
+            "vehicles_dragged": 17,
+            "sudden_stream_surge": 20,
+            "hillside_runoff": 19,
+            "rural_road_torrent": 17,
+            "rapid_street_runoff": 21,
+            "sudden_river_flash": 18,
+            "muddy_torrent": 18,
+            "urban_channel_flashflow": 19,
+            "debris_carried": 1
+          },
+          "test": {
+            "debris_carried": 5,
+            "rapid_street_runoff": 20,
+            "urban_channel_flashflow": 18,
+            "sudden_stream_surge": 19,
+            "muddy_torrent": 18,
+            "hillside_runoff": 18,
+            "rural_road_torrent": 16,
+            "sudden_river_flash": 18,
+            "vehicles_dragged": 18
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 1,
+          "validation": 2,
+          "test": 3
+        },
+        "total_absolute_deviation": 6
+      }
+    },
+    "COBRADE_1_2_3_0_0": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 28,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 32,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "urban_drainage_overload": 70,
+            "intersection_waterlogging": 70,
+            "blocked_storm_drain": 70,
+            "low_point_water_accumulation": 70,
+            "commercial_area_waterlogging": 70,
+            "underpass_waterlogging": 70,
+            "parking_lot_waterlogging": 70,
+            "standing_water_after_rain": 70,
+            "storm_drain_backflow": 70,
+            "poor_surface_drainage": 70
+          },
+          "validation": {
+            "urban_drainage_overload": 15,
+            "intersection_waterlogging": 15,
+            "blocked_storm_drain": 15,
+            "low_point_water_accumulation": 15,
+            "commercial_area_waterlogging": 15,
+            "underpass_waterlogging": 15,
+            "parking_lot_waterlogging": 15,
+            "standing_water_after_rain": 15,
+            "storm_drain_backflow": 15,
+            "poor_surface_drainage": 15
+          },
+          "test": {
+            "urban_drainage_overload": 15,
+            "intersection_waterlogging": 15,
+            "blocked_storm_drain": 15,
+            "low_point_water_accumulation": 15,
+            "commercial_area_waterlogging": 15,
+            "underpass_waterlogging": 15,
+            "parking_lot_waterlogging": 15,
+            "standing_water_after_rain": 15,
+            "storm_drain_backflow": 15,
+            "poor_surface_drainage": 15
+          }
+        },
+        "actual": {
+          "train": {
+            "intersection_waterlogging": 70,
+            "blocked_storm_drain": 70,
+            "commercial_area_waterlogging": 70,
+            "parking_lot_waterlogging": 70,
+            "standing_water_after_rain": 70,
+            "poor_surface_drainage": 70,
+            "low_point_water_accumulation": 70,
+            "storm_drain_backflow": 70,
+            "urban_drainage_overload": 70,
+            "underpass_waterlogging": 70
+          },
+          "validation": {
+            "underpass_waterlogging": 15,
+            "storm_drain_backflow": 15,
+            "urban_drainage_overload": 15,
+            "blocked_storm_drain": 15,
+            "poor_surface_drainage": 15,
+            "intersection_waterlogging": 15,
+            "low_point_water_accumulation": 15,
+            "standing_water_after_rain": 15,
+            "parking_lot_waterlogging": 15,
+            "commercial_area_waterlogging": 15
+          },
+          "test": {
+            "urban_drainage_overload": 15,
+            "low_point_water_accumulation": 15,
+            "intersection_waterlogging": 15,
+            "commercial_area_waterlogging": 15,
+            "underpass_waterlogging": 15,
+            "storm_drain_backflow": 15,
+            "blocked_storm_drain": 15,
+            "parking_lot_waterlogging": 15,
+            "poor_surface_drainage": 15,
+            "standing_water_after_rain": 15
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      }
+    },
+    "COBRADE_1_4_1_3_1": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 9,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 12,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "protected_park_fire": 73,
+            "apa_vegetation_fire": 73,
+            "app_vegetation_fire": 73,
+            "conservation_unit_fire": 73,
+            "ecological_reserve_fire": 73,
+            "ecological_station_fire": 72,
+            "biological_reserve_fire": 66,
+            "wildlife_refuge_fire": 65,
+            "national_forest_fire": 65,
+            "extractive_reserve_fire": 65
+          },
+          "validation": {
+            "protected_park_fire": 16,
+            "apa_vegetation_fire": 16,
+            "app_vegetation_fire": 16,
+            "conservation_unit_fire": 16,
+            "ecological_reserve_fire": 16,
+            "ecological_station_fire": 15,
+            "biological_reserve_fire": 14,
+            "wildlife_refuge_fire": 14,
+            "national_forest_fire": 14,
+            "extractive_reserve_fire": 14
+          },
+          "test": {
+            "protected_park_fire": 16,
+            "apa_vegetation_fire": 16,
+            "app_vegetation_fire": 16,
+            "conservation_unit_fire": 16,
+            "ecological_reserve_fire": 16,
+            "ecological_station_fire": 15,
+            "biological_reserve_fire": 14,
+            "wildlife_refuge_fire": 14,
+            "national_forest_fire": 14,
+            "extractive_reserve_fire": 14
+          }
+        },
+        "actual": {
+          "train": {
+            "protected_park_fire": 73,
+            "apa_vegetation_fire": 73,
+            "app_vegetation_fire": 74,
+            "conservation_unit_fire": 73,
+            "ecological_reserve_fire": 74,
+            "ecological_station_fire": 72,
+            "biological_reserve_fire": 66,
+            "wildlife_refuge_fire": 65,
+            "national_forest_fire": 65,
+            "extractive_reserve_fire": 65
+          },
+          "validation": {
+            "protected_park_fire": 16,
+            "apa_vegetation_fire": 16,
+            "app_vegetation_fire": 16,
+            "conservation_unit_fire": 16,
+            "ecological_reserve_fire": 15,
+            "ecological_station_fire": 15,
+            "biological_reserve_fire": 14,
+            "wildlife_refuge_fire": 14,
+            "national_forest_fire": 14,
+            "extractive_reserve_fire": 14
+          },
+          "test": {
+            "protected_park_fire": 16,
+            "apa_vegetation_fire": 16,
+            "app_vegetation_fire": 15,
+            "conservation_unit_fire": 16,
+            "ecological_reserve_fire": 16,
+            "ecological_station_fire": 15,
+            "biological_reserve_fire": 14,
+            "wildlife_refuge_fire": 14,
+            "national_forest_fire": 14,
+            "extractive_reserve_fire": 14
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 2,
+          "validation": 1,
+          "test": 1
+        },
+        "total_absolute_deviation": 4
+      }
+    },
+    "COBRADE_1_4_1_3_2": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 10,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 14,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 350,
+            "hard": 140,
+            "intermediate": 210
+          },
+          "validation": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          },
+          "test": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 350,
+            "hard": 140,
+            "intermediate": 210
+          },
+          "validation": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "rural_lot_vegetation": 53,
+            "farm_secondary_forest": 43,
+            "private_woodlot": 50,
+            "rural_property_woods": 41,
+            "vacant_vegetated_land": 48,
+            "roadside_vegetation": 53,
+            "unprotected_scrubland": 50,
+            "private_rural_forest": 45,
+            "private_field_fire": 54,
+            "private_access_road_fire": 54,
+            "farm_boundary_fire": 53,
+            "nonprotected_hillside": 45,
+            "settlement_outskirts_fire": 55,
+            "pasture_edge_fire": 58
+          },
+          "validation": {
+            "rural_lot_vegetation": 12,
+            "farm_secondary_forest": 9,
+            "private_woodlot": 11,
+            "rural_property_woods": 9,
+            "vacant_vegetated_land": 10,
+            "roadside_vegetation": 11,
+            "unprotected_scrubland": 11,
+            "private_rural_forest": 10,
+            "private_field_fire": 12,
+            "private_access_road_fire": 12,
+            "farm_boundary_fire": 11,
+            "nonprotected_hillside": 10,
+            "settlement_outskirts_fire": 12,
+            "pasture_edge_fire": 13
+          },
+          "test": {
+            "rural_lot_vegetation": 11,
+            "farm_secondary_forest": 9,
+            "private_woodlot": 10,
+            "rural_property_woods": 9,
+            "vacant_vegetated_land": 10,
+            "roadside_vegetation": 11,
+            "unprotected_scrubland": 10,
+            "private_rural_forest": 9,
+            "private_field_fire": 11,
+            "private_access_road_fire": 11,
+            "farm_boundary_fire": 11,
+            "nonprotected_hillside": 9,
+            "settlement_outskirts_fire": 12,
+            "pasture_edge_fire": 12
+          }
+        },
+        "actual": {
+          "train": {
+            "rural_lot_vegetation": 53,
+            "roadside_vegetation": 53,
+            "unprotected_scrubland": 50,
+            "private_rural_forest": 45,
+            "private_field_fire": 53,
+            "private_access_road_fire": 54,
+            "farm_boundary_fire": 53,
+            "private_woodlot": 50,
+            "farm_secondary_forest": 43,
+            "settlement_outskirts_fire": 55,
+            "pasture_edge_fire": 58,
+            "rural_property_woods": 41,
+            "vacant_vegetated_land": 47,
+            "nonprotected_hillside": 45
+          },
+          "validation": {
+            "rural_lot_vegetation": 12,
+            "vacant_vegetated_land": 10,
+            "private_woodlot": 10,
+            "farm_secondary_forest": 9,
+            "private_access_road_fire": 12,
+            "roadside_vegetation": 11,
+            "private_rural_forest": 10,
+            "private_field_fire": 12,
+            "pasture_edge_fire": 13,
+            "nonprotected_hillside": 9,
+            "farm_boundary_fire": 10,
+            "unprotected_scrubland": 11,
+            "settlement_outskirts_fire": 12,
+            "rural_property_woods": 9
+          },
+          "test": {
+            "farm_secondary_forest": 9,
+            "private_woodlot": 11,
+            "rural_property_woods": 9,
+            "roadside_vegetation": 11,
+            "rural_lot_vegetation": 11,
+            "nonprotected_hillside": 10,
+            "vacant_vegetated_land": 11,
+            "unprotected_scrubland": 10,
+            "private_field_fire": 12,
+            "private_rural_forest": 9,
+            "farm_boundary_fire": 12,
+            "settlement_outskirts_fire": 12,
+            "private_access_road_fire": 11,
+            "pasture_edge_fire": 12
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 2,
+          "validation": 3,
+          "test": 5
+        },
+        "total_absolute_deviation": 10
+      }
+    },
+    "COBRADE_2_3_1_1_0": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 28,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 32,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "intermediate": 210,
+            "typical": 350,
+            "hard": 140
+          },
+          "validation": {
+            "intermediate": 45,
+            "typical": 75,
+            "hard": 30
+          },
+          "test": {
+            "intermediate": 45,
+            "typical": 75,
+            "hard": 30
+          }
+        },
+        "actual": {
+          "train": {
+            "intermediate": 210,
+            "typical": 350,
+            "hard": 140
+          },
+          "validation": {
+            "hard": 30,
+            "typical": 75,
+            "intermediate": 45
+          },
+          "test": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "food_processing": 57,
+            "industrial_district": 55,
+            "recycling_plant": 62,
+            "plastics_factory": 62,
+            "factory_production": 53,
+            "textile_factory": 48,
+            "mechanical_factory": 53,
+            "industrial_park": 58,
+            "industrial_warehouse": 52,
+            "logistics_depot": 43,
+            "industrial_plant": 44,
+            "materials_depot": 62,
+            "sawmill_industrial": 53
+          },
+          "validation": {
+            "food_processing": 12,
+            "industrial_district": 12,
+            "recycling_plant": 13,
+            "plastics_factory": 14,
+            "factory_production": 12,
+            "textile_factory": 10,
+            "mechanical_factory": 11,
+            "industrial_park": 13,
+            "industrial_warehouse": 11,
+            "logistics_depot": 9,
+            "industrial_plant": 9,
+            "materials_depot": 14,
+            "sawmill_industrial": 11
+          },
+          "test": {
+            "food_processing": 12,
+            "industrial_district": 12,
+            "recycling_plant": 13,
+            "plastics_factory": 13,
+            "factory_production": 11,
+            "textile_factory": 10,
+            "mechanical_factory": 11,
+            "industrial_park": 12,
+            "industrial_warehouse": 11,
+            "logistics_depot": 9,
+            "industrial_plant": 9,
+            "materials_depot": 13,
+            "sawmill_industrial": 11
+          }
+        },
+        "actual": {
+          "train": {
+            "food_processing": 57,
+            "industrial_district": 54,
+            "plastics_factory": 61,
+            "factory_production": 53,
+            "industrial_park": 58,
+            "logistics_depot": 43,
+            "recycling_plant": 62,
+            "textile_factory": 48,
+            "industrial_warehouse": 52,
+            "materials_depot": 62,
+            "industrial_plant": 44,
+            "sawmill_industrial": 53,
+            "mechanical_factory": 53
+          },
+          "validation": {
+            "recycling_plant": 13,
+            "textile_factory": 10,
+            "industrial_warehouse": 11,
+            "industrial_plant": 9,
+            "mechanical_factory": 11,
+            "sawmill_industrial": 11,
+            "food_processing": 12,
+            "factory_production": 12,
+            "materials_depot": 14,
+            "logistics_depot": 9,
+            "plastics_factory": 14,
+            "industrial_park": 12,
+            "industrial_district": 12
+          },
+          "test": {
+            "mechanical_factory": 11,
+            "food_processing": 12,
+            "industrial_warehouse": 11,
+            "industrial_district": 13,
+            "industrial_plant": 9,
+            "recycling_plant": 13,
+            "materials_depot": 13,
+            "plastics_factory": 14,
+            "industrial_park": 13,
+            "textile_factory": 10,
+            "sawmill_industrial": 11,
+            "factory_production": 11,
+            "logistics_depot": 9
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 2,
+          "validation": 1,
+          "test": 3
+        },
+        "total_absolute_deviation": 6
+      }
+    },
+    "COBRADE_2_3_1_2_0": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 6,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 9,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 350,
+            "hard": 140,
+            "intermediate": 210
+          },
+          "validation": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          },
+          "test": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          }
+        },
+        "actual": {
+          "train": {
+            "hard": 140,
+            "typical": 350,
+            "intermediate": 210
+          },
+          "validation": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          },
+          "test": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "wooden_house_cluster": 53,
+            "dense_house_cluster": 50,
+            "row_houses": 45,
+            "street_house_cluster": 50,
+            "residential_village": 50,
+            "neighborhood_cluster": 54,
+            "riverside_house_cluster": 50,
+            "adjacent_homes_spread": 54,
+            "alley_houses": 43,
+            "residential_block": 45,
+            "housing_complex": 39,
+            "residential_courtyard": 54,
+            "shared_lot_houses": 58,
+            "small_residential_settlement": 53
+          },
+          "validation": {
+            "wooden_house_cluster": 11,
+            "dense_house_cluster": 11,
+            "row_houses": 10,
+            "street_house_cluster": 11,
+            "residential_village": 11,
+            "neighborhood_cluster": 12,
+            "riverside_house_cluster": 11,
+            "adjacent_homes_spread": 12,
+            "alley_houses": 9,
+            "residential_block": 10,
+            "housing_complex": 9,
+            "residential_courtyard": 12,
+            "shared_lot_houses": 12,
+            "small_residential_settlement": 12
+          },
+          "test": {
+            "wooden_house_cluster": 11,
+            "dense_house_cluster": 10,
+            "row_houses": 10,
+            "street_house_cluster": 11,
+            "residential_village": 10,
+            "neighborhood_cluster": 12,
+            "riverside_house_cluster": 11,
+            "adjacent_homes_spread": 12,
+            "alley_houses": 9,
+            "residential_block": 10,
+            "housing_complex": 8,
+            "residential_courtyard": 12,
+            "shared_lot_houses": 12,
+            "small_residential_settlement": 11
+          }
+        },
+        "actual": {
+          "train": {
+            "dense_house_cluster": 50,
+            "residential_village": 50,
+            "neighborhood_cluster": 54,
+            "riverside_house_cluster": 50,
+            "adjacent_homes_spread": 54,
+            "alley_houses": 44,
+            "wooden_house_cluster": 53,
+            "residential_courtyard": 54,
+            "row_houses": 45,
+            "street_house_cluster": 50,
+            "shared_lot_houses": 58,
+            "housing_complex": 39,
+            "residential_block": 45,
+            "small_residential_settlement": 54
+          },
+          "validation": {
+            "wooden_house_cluster": 11,
+            "street_house_cluster": 11,
+            "residential_block": 10,
+            "housing_complex": 9,
+            "row_houses": 10,
+            "residential_courtyard": 12,
+            "riverside_house_cluster": 11,
+            "neighborhood_cluster": 11,
+            "shared_lot_houses": 12,
+            "alley_houses": 8,
+            "residential_village": 11,
+            "dense_house_cluster": 11,
+            "small_residential_settlement": 11,
+            "adjacent_homes_spread": 12
+          },
+          "test": {
+            "row_houses": 10,
+            "residential_village": 10,
+            "residential_courtyard": 12,
+            "riverside_house_cluster": 11,
+            "wooden_house_cluster": 11,
+            "shared_lot_houses": 12,
+            "small_residential_settlement": 11,
+            "adjacent_homes_spread": 12,
+            "alley_houses": 9,
+            "neighborhood_cluster": 13,
+            "street_house_cluster": 11,
+            "housing_complex": 8,
+            "residential_block": 10,
+            "dense_house_cluster": 10
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 2,
+          "validation": 3,
+          "test": 1
+        },
+        "total_absolute_deviation": 6
+      }
+    },
+    "OTHER": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 11,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 13,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "hard": 140,
+            "typical": 350,
+            "intermediate": 210
+          },
+          "validation": {
+            "hard": 30,
+            "typical": 75,
+            "intermediate": 45
+          },
+          "test": {
+            "hard": 30,
+            "typical": 75,
+            "intermediate": 45
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 350,
+            "intermediate": 210,
+            "hard": 140
+          },
+          "validation": {
+            "hard": 30,
+            "typical": 75,
+            "intermediate": 45
+          },
+          "test": {
+            "intermediate": 45,
+            "typical": 75,
+            "hard": 30
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "erosion": 39,
+            "chemical_spill": 40,
+            "coastal_erosion": 34,
+            "heat_wave": 30,
+            "earthquake": 31,
+            "dam_failure": 36,
+            "oil_spill": 31,
+            "bridge_collapse": 43,
+            "lightning_storm": 36,
+            "frost": 23,
+            "water_contamination": 45,
+            "windstorm": 40,
+            "landslide": 32,
+            "gas_leak": 40,
+            "road_collapse": 34,
+            "sinkhole": 40,
+            "cold_wave": 29,
+            "hailstorm": 31,
+            "drought": 26,
+            "building_collapse": 39
+          },
+          "validation": {
+            "erosion": 8,
+            "chemical_spill": 9,
+            "coastal_erosion": 8,
+            "heat_wave": 7,
+            "earthquake": 7,
+            "dam_failure": 8,
+            "oil_spill": 7,
+            "bridge_collapse": 9,
+            "lightning_storm": 8,
+            "frost": 5,
+            "water_contamination": 10,
+            "windstorm": 9,
+            "landslide": 7,
+            "gas_leak": 9,
+            "road_collapse": 8,
+            "sinkhole": 9,
+            "cold_wave": 6,
+            "hailstorm": 7,
+            "drought": 6,
+            "building_collapse": 9
+          },
+          "test": {
+            "erosion": 8,
+            "chemical_spill": 9,
+            "coastal_erosion": 7,
+            "heat_wave": 6,
+            "earthquake": 6,
+            "dam_failure": 8,
+            "oil_spill": 7,
+            "bridge_collapse": 9,
+            "lightning_storm": 8,
+            "frost": 5,
+            "water_contamination": 9,
+            "windstorm": 8,
+            "landslide": 7,
+            "gas_leak": 8,
+            "road_collapse": 7,
+            "sinkhole": 8,
+            "cold_wave": 6,
+            "hailstorm": 6,
+            "drought": 5,
+            "building_collapse": 8
+          }
+        },
+        "actual": {
+          "train": {
+            "erosion": 39,
+            "chemical_spill": 40,
+            "coastal_erosion": 34,
+            "heat_wave": 30,
+            "earthquake": 31,
+            "dam_failure": 36,
+            "oil_spill": 31,
+            "lightning_storm": 36,
+            "windstorm": 40,
+            "landslide": 32,
+            "gas_leak": 40,
+            "road_collapse": 34,
+            "frost": 23,
+            "sinkhole": 40,
+            "cold_wave": 29,
+            "hailstorm": 31,
+            "drought": 27,
+            "bridge_collapse": 43,
+            "building_collapse": 39,
+            "water_contamination": 45
+          },
+          "validation": {
+            "erosion": 8,
+            "chemical_spill": 6,
+            "bridge_collapse": 9,
+            "frost": 5,
+            "water_contamination": 10,
+            "lightning_storm": 8,
+            "hailstorm": 7,
+            "dam_failure": 8,
+            "road_collapse": 8,
+            "landslide": 7,
+            "earthquake": 7,
+            "cold_wave": 6,
+            "gas_leak": 9,
+            "coastal_erosion": 8,
+            "building_collapse": 9,
+            "sinkhole": 8,
+            "oil_spill": 6,
+            "windstorm": 9,
+            "drought": 5,
+            "heat_wave": 7
+          },
+          "test": {
+            "frost": 5,
+            "oil_spill": 8,
+            "gas_leak": 8,
+            "road_collapse": 7,
+            "cold_wave": 6,
+            "coastal_erosion": 7,
+            "landslide": 7,
+            "windstorm": 8,
+            "dam_failure": 8,
+            "sinkhole": 9,
+            "water_contamination": 9,
+            "lightning_storm": 8,
+            "chemical_spill": 12,
+            "bridge_collapse": 9,
+            "building_collapse": 8,
+            "earthquake": 6,
+            "heat_wave": 6,
+            "erosion": 8,
+            "hailstorm": 6,
+            "drought": 5
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 1,
+          "validation": 6,
+          "test": 5
+        },
+        "total_absolute_deviation": 12
+      }
+    },
+    "INSUFFICIENT_INFO": {
+      "linguistic_profile": {
+        "targets": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 30,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 15,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "actual": {
+          "train": {
+            "neutral": 140,
+            "formal": 70,
+            "informal": 140,
+            "chat_abbreviated": 105,
+            "slang": 56,
+            "typo_no_accents": 70,
+            "profanity_emotional": 35,
+            "indirect": 49,
+            "mixed_noisy": 35
+          },
+          "validation": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 29,
+            "chat_abbreviated": 23,
+            "slang": 12,
+            "typo_no_accents": 14,
+            "profanity_emotional": 8,
+            "indirect": 11,
+            "mixed_noisy": 8
+          },
+          "test": {
+            "neutral": 30,
+            "formal": 15,
+            "informal": 31,
+            "chat_abbreviated": 22,
+            "slang": 12,
+            "typo_no_accents": 16,
+            "profanity_emotional": 7,
+            "indirect": 10,
+            "mixed_noisy": 7
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      },
+      "difficulty": {
+        "targets": {
+          "train": {
+            "typical": 350,
+            "hard": 140,
+            "intermediate": 210
+          },
+          "validation": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          },
+          "test": {
+            "typical": 75,
+            "hard": 30,
+            "intermediate": 45
+          }
+        },
+        "actual": {
+          "train": {
+            "typical": 350,
+            "hard": 140,
+            "intermediate": 210
+          },
+          "validation": {
+            "typical": 75,
+            "intermediate": 45,
+            "hard": 30
+          },
+          "test": {
+            "hard": 30,
+            "intermediate": 45,
+            "typical": 75
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 0,
+          "test": 0
+        },
+        "total_absolute_deviation": 0
+      },
+      "scenario_family": {
+        "targets": {
+          "train": {
+            "rain_risk_future": 59,
+            "river_high_no_overflow": 67,
+            "vague_smoke": 57,
+            "vague_vegetation_fire": 64,
+            "vague_water": 67,
+            "fire_risk_future": 66,
+            "very_short_vague": 49,
+            "possible_industrial_fire": 53,
+            "single_house_fire": 53,
+            "ambiguous_water_movement": 59,
+            "hearsay_uncertain": 52,
+            "negated_event": 54
+          },
+          "validation": {
+            "rain_risk_future": 13,
+            "river_high_no_overflow": 14,
+            "vague_smoke": 12,
+            "vague_vegetation_fire": 14,
+            "vague_water": 15,
+            "fire_risk_future": 14,
+            "very_short_vague": 11,
+            "possible_industrial_fire": 11,
+            "single_house_fire": 12,
+            "ambiguous_water_movement": 13,
+            "hearsay_uncertain": 11,
+            "negated_event": 12
+          },
+          "test": {
+            "rain_risk_future": 13,
+            "river_high_no_overflow": 14,
+            "vague_smoke": 12,
+            "vague_vegetation_fire": 14,
+            "vague_water": 14,
+            "fire_risk_future": 14,
+            "very_short_vague": 10,
+            "possible_industrial_fire": 11,
+            "single_house_fire": 11,
+            "ambiguous_water_movement": 12,
+            "hearsay_uncertain": 11,
+            "negated_event": 12
+          }
+        },
+        "actual": {
+          "train": {
+            "rain_risk_future": 59,
+            "river_high_no_overflow": 67,
+            "vague_smoke": 57,
+            "vague_water": 67,
+            "fire_risk_future": 66,
+            "very_short_vague": 49,
+            "possible_industrial_fire": 53,
+            "single_house_fire": 53,
+            "ambiguous_water_movement": 59,
+            "hearsay_uncertain": 52,
+            "vague_vegetation_fire": 64,
+            "negated_event": 54
+          },
+          "validation": {
+            "vague_vegetation_fire": 14,
+            "vague_smoke": 12,
+            "rain_risk_future": 13,
+            "hearsay_uncertain": 11,
+            "vague_water": 13,
+            "single_house_fire": 12,
+            "ambiguous_water_movement": 13,
+            "fire_risk_future": 14,
+            "river_high_no_overflow": 14,
+            "very_short_vague": 11,
+            "negated_event": 12,
+            "possible_industrial_fire": 11
+          },
+          "test": {
+            "vague_water": 16,
+            "possible_industrial_fire": 11,
+            "fire_risk_future": 14,
+            "hearsay_uncertain": 11,
+            "negated_event": 12,
+            "very_short_vague": 10,
+            "rain_risk_future": 13,
+            "river_high_no_overflow": 14,
+            "vague_vegetation_fire": 14,
+            "ambiguous_water_movement": 12,
+            "single_house_fire": 11,
+            "vague_smoke": 12
+          }
+        },
+        "absolute_deviation_by_split": {
+          "train": 0,
+          "validation": 2,
+          "test": 2
+        },
+        "total_absolute_deviation": 4
+      }
+    }
+  },
+  "files": {
+    "train": {
+      "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/train.jsonl",
+      "sha256": "bb4254d6e6f739c1a2188099aa00e84cd2d8692d2e1dc449d7e972217c056398"
+    },
+    "validation": {
+      "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/validation.jsonl",
+      "sha256": "6c48f802a9dfebc53463f565e5c619b8bcc155e0015361acb5e8cf7ad4143c7d"
+    },
+    "test": {
+      "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/test.jsonl",
+      "sha256": "64b54af7d0ad5932d9c5b318d332752e7e654f156d76c930145024fb17b494a2"
+    }
+  },
+  "manifest": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/evaluation/nlp/split_manifest_v2.csv",
+    "sha256": "59a07a15d4b6a276206f3db7dbcf2abfd584f3d0fd81f17f2f72d8b415cc6e87"
+  },
+  "note": "test.jsonl é um teste sintético interno. Não substitui avaliação manual/externa independente."
+}

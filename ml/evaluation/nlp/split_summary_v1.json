@@ -1,0 +1,546 @@
+{
+  "input_dataset": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/interim/nlp/synthetic_occurrences_v1.jsonl",
+    "sha256": "5fc1fd4a06ea2983f4bdf70b7489a5727df9776ddb11f168d8ea00ebe69f1da4",
+    "records": 9000
+  },
+  "near_duplicate_source": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/evaluation/nlp/near_duplicate_candidates_v1.csv",
+    "sha256": "b2c026ad013d2b8f340a9e9f6074dc34ca052c4331f523750623e94a23c40639",
+    "threshold": 0.9,
+    "edge_count_used": 950
+  },
+  "split_parameters": {
+    "ratios": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "seed": 20260830
+  },
+  "split_sizes": {
+    "train": 6300,
+    "validation": 1350,
+    "test": 1350
+  },
+  "expected_per_class_split": {
+    "train": 700,
+    "validation": 150,
+    "test": 150
+  },
+  "class_split_counts": {
+    "COBRADE_1_2_1_0_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_2_2_0_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_2_3_0_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_4_1_3_1": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_1_4_1_3_2": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_2_3_1_1_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "COBRADE_2_3_1_2_0": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "OTHER": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    },
+    "INSUFFICIENT_INFO": {
+      "train": 700,
+      "validation": 150,
+      "test": 150
+    }
+  },
+  "linguistic_profile_counts": {
+    "train": {
+      "COBRADE_1_2_1_0_0": {
+        "neutral": 140,
+        "formal": 69,
+        "informal": 141,
+        "chat_abbreviated": 101,
+        "slang": 58,
+        "typo_no_accents": 69,
+        "profanity_emotional": 36,
+        "indirect": 52,
+        "mixed_noisy": 34
+      },
+      "COBRADE_1_2_2_0_0": {
+        "neutral": 143,
+        "formal": 77,
+        "informal": 139,
+        "chat_abbreviated": 92,
+        "slang": 57,
+        "typo_no_accents": 67,
+        "profanity_emotional": 37,
+        "indirect": 53,
+        "mixed_noisy": 35
+      },
+      "COBRADE_1_2_3_0_0": {
+        "neutral": 141,
+        "formal": 79,
+        "informal": 135,
+        "chat_abbreviated": 96,
+        "slang": 53,
+        "typo_no_accents": 70,
+        "profanity_emotional": 36,
+        "indirect": 57,
+        "mixed_noisy": 33
+      },
+      "COBRADE_1_4_1_3_1": {
+        "neutral": 144,
+        "formal": 78,
+        "informal": 142,
+        "chat_abbreviated": 90,
+        "slang": 53,
+        "typo_no_accents": 68,
+        "profanity_emotional": 30,
+        "indirect": 60,
+        "mixed_noisy": 35
+      },
+      "COBRADE_1_4_1_3_2": {
+        "neutral": 165,
+        "formal": 82,
+        "informal": 118,
+        "chat_abbreviated": 87,
+        "slang": 48,
+        "typo_no_accents": 78,
+        "profanity_emotional": 28,
+        "indirect": 62,
+        "mixed_noisy": 32
+      },
+      "COBRADE_2_3_1_1_0": {
+        "neutral": 169,
+        "formal": 89,
+        "informal": 116,
+        "chat_abbreviated": 85,
+        "slang": 43,
+        "typo_no_accents": 77,
+        "profanity_emotional": 28,
+        "indirect": 67,
+        "mixed_noisy": 26
+      },
+      "COBRADE_2_3_1_2_0": {
+        "neutral": 179,
+        "formal": 86,
+        "informal": 117,
+        "chat_abbreviated": 77,
+        "slang": 48,
+        "typo_no_accents": 72,
+        "profanity_emotional": 33,
+        "indirect": 60,
+        "mixed_noisy": 28
+      },
+      "OTHER": {
+        "neutral": 159,
+        "formal": 81,
+        "informal": 114,
+        "chat_abbreviated": 95,
+        "slang": 57,
+        "typo_no_accents": 72,
+        "profanity_emotional": 30,
+        "indirect": 65,
+        "mixed_noisy": 27
+      },
+      "INSUFFICIENT_INFO": {
+        "neutral": 171,
+        "formal": 85,
+        "informal": 135,
+        "chat_abbreviated": 94,
+        "slang": 44,
+        "typo_no_accents": 69,
+        "profanity_emotional": 20,
+        "indirect": 63,
+        "mixed_noisy": 19
+      }
+    },
+    "validation": {
+      "COBRADE_1_2_1_0_0": {
+        "neutral": 34,
+        "formal": 16,
+        "informal": 31,
+        "chat_abbreviated": 21,
+        "slang": 8,
+        "typo_no_accents": 15,
+        "profanity_emotional": 9,
+        "indirect": 9,
+        "mixed_noisy": 7
+      },
+      "COBRADE_1_2_2_0_0": {
+        "neutral": 38,
+        "formal": 19,
+        "informal": 28,
+        "chat_abbreviated": 11,
+        "slang": 9,
+        "typo_no_accents": 14,
+        "profanity_emotional": 6,
+        "indirect": 16,
+        "mixed_noisy": 9
+      },
+      "COBRADE_1_2_3_0_0": {
+        "neutral": 34,
+        "formal": 11,
+        "informal": 33,
+        "chat_abbreviated": 24,
+        "slang": 11,
+        "typo_no_accents": 16,
+        "profanity_emotional": 6,
+        "indirect": 8,
+        "mixed_noisy": 7
+      },
+      "COBRADE_1_4_1_3_1": {
+        "neutral": 43,
+        "formal": 14,
+        "informal": 25,
+        "chat_abbreviated": 18,
+        "slang": 12,
+        "typo_no_accents": 15,
+        "profanity_emotional": 4,
+        "indirect": 9,
+        "mixed_noisy": 10
+      },
+      "COBRADE_1_4_1_3_2": {
+        "neutral": 10,
+        "formal": 4,
+        "informal": 49,
+        "chat_abbreviated": 39,
+        "slang": 15,
+        "typo_no_accents": 8,
+        "profanity_emotional": 12,
+        "mixed_noisy": 13
+      },
+      "COBRADE_2_3_1_1_0": {
+        "neutral": 1,
+        "formal": 3,
+        "informal": 49,
+        "chat_abbreviated": 41,
+        "slang": 23,
+        "typo_no_accents": 9,
+        "profanity_emotional": 8,
+        "indirect": 2,
+        "mixed_noisy": 14
+      },
+      "COBRADE_2_3_1_2_0": {
+        "informal": 57,
+        "chat_abbreviated": 44,
+        "slang": 18,
+        "typo_no_accents": 11,
+        "profanity_emotional": 10,
+        "mixed_noisy": 10
+      },
+      "OTHER": {
+        "neutral": 9,
+        "formal": 4,
+        "informal": 50,
+        "chat_abbreviated": 32,
+        "slang": 13,
+        "typo_no_accents": 15,
+        "profanity_emotional": 12,
+        "mixed_noisy": 15
+      },
+      "INSUFFICIENT_INFO": {
+        "neutral": 23,
+        "formal": 12,
+        "informal": 32,
+        "chat_abbreviated": 23,
+        "slang": 12,
+        "typo_no_accents": 15,
+        "profanity_emotional": 13,
+        "indirect": 6,
+        "mixed_noisy": 14
+      }
+    },
+    "test": {
+      "COBRADE_1_2_1_0_0": {
+        "neutral": 26,
+        "formal": 15,
+        "informal": 28,
+        "chat_abbreviated": 28,
+        "slang": 14,
+        "typo_no_accents": 16,
+        "profanity_emotional": 5,
+        "indirect": 9,
+        "mixed_noisy": 9
+      },
+      "COBRADE_1_2_2_0_0": {
+        "neutral": 20,
+        "formal": 4,
+        "informal": 33,
+        "chat_abbreviated": 42,
+        "slang": 16,
+        "typo_no_accents": 21,
+        "profanity_emotional": 7,
+        "indirect": 1,
+        "mixed_noisy": 6
+      },
+      "COBRADE_1_2_3_0_0": {
+        "neutral": 25,
+        "formal": 10,
+        "informal": 32,
+        "chat_abbreviated": 30,
+        "slang": 16,
+        "typo_no_accents": 14,
+        "profanity_emotional": 8,
+        "indirect": 5,
+        "mixed_noisy": 10
+      },
+      "COBRADE_1_4_1_3_1": {
+        "neutral": 13,
+        "formal": 8,
+        "informal": 33,
+        "chat_abbreviated": 42,
+        "slang": 15,
+        "typo_no_accents": 17,
+        "profanity_emotional": 16,
+        "indirect": 1,
+        "mixed_noisy": 5
+      },
+      "COBRADE_1_4_1_3_2": {
+        "neutral": 25,
+        "formal": 14,
+        "informal": 33,
+        "chat_abbreviated": 24,
+        "slang": 17,
+        "typo_no_accents": 14,
+        "profanity_emotional": 10,
+        "indirect": 8,
+        "mixed_noisy": 5
+      },
+      "COBRADE_2_3_1_1_0": {
+        "neutral": 30,
+        "formal": 8,
+        "informal": 35,
+        "chat_abbreviated": 24,
+        "slang": 14,
+        "typo_no_accents": 14,
+        "profanity_emotional": 14,
+        "indirect": 1,
+        "mixed_noisy": 10
+      },
+      "COBRADE_2_3_1_2_0": {
+        "neutral": 21,
+        "formal": 14,
+        "informal": 26,
+        "chat_abbreviated": 29,
+        "slang": 14,
+        "typo_no_accents": 17,
+        "profanity_emotional": 7,
+        "indirect": 10,
+        "mixed_noisy": 12
+      },
+      "OTHER": {
+        "neutral": 32,
+        "formal": 15,
+        "informal": 36,
+        "chat_abbreviated": 23,
+        "slang": 10,
+        "typo_no_accents": 13,
+        "profanity_emotional": 8,
+        "indirect": 5,
+        "mixed_noisy": 8
+      },
+      "INSUFFICIENT_INFO": {
+        "neutral": 6,
+        "formal": 3,
+        "informal": 33,
+        "chat_abbreviated": 33,
+        "slang": 24,
+        "typo_no_accents": 16,
+        "profanity_emotional": 17,
+        "indirect": 1,
+        "mixed_noisy": 17
+      }
+    }
+  },
+  "difficulty_counts": {
+    "train": {
+      "COBRADE_1_2_1_0_0": {
+        "typical": 352,
+        "intermediate": 214,
+        "hard": 134
+      },
+      "COBRADE_1_2_2_0_0": {
+        "typical": 300,
+        "intermediate": 211,
+        "hard": 189
+      },
+      "COBRADE_1_2_3_0_0": {
+        "typical": 350,
+        "intermediate": 211,
+        "hard": 139
+      },
+      "COBRADE_1_4_1_3_1": {
+        "typical": 346,
+        "intermediate": 220,
+        "hard": 134
+      },
+      "COBRADE_1_4_1_3_2": {
+        "typical": 358,
+        "hard": 144,
+        "intermediate": 198
+      },
+      "COBRADE_2_3_1_1_0": {
+        "intermediate": 213,
+        "typical": 346,
+        "hard": 141
+      },
+      "COBRADE_2_3_1_2_0": {
+        "typical": 346,
+        "hard": 149,
+        "intermediate": 205
+      },
+      "OTHER": {
+        "typical": 351,
+        "intermediate": 209,
+        "hard": 140
+      },
+      "INSUFFICIENT_INFO": {
+        "typical": 355,
+        "hard": 143,
+        "intermediate": 202
+      }
+    },
+    "validation": {
+      "COBRADE_1_2_1_0_0": {
+        "typical": 74,
+        "intermediate": 44,
+        "hard": 32
+      },
+      "COBRADE_1_2_2_0_0": {
+        "typical": 66,
+        "intermediate": 48,
+        "hard": 36
+      },
+      "COBRADE_1_2_3_0_0": {
+        "typical": 81,
+        "intermediate": 45,
+        "hard": 24
+      },
+      "COBRADE_1_4_1_3_1": {
+        "typical": 73,
+        "intermediate": 49,
+        "hard": 28
+      },
+      "COBRADE_1_4_1_3_2": {
+        "hard": 26,
+        "intermediate": 58,
+        "typical": 66
+      },
+      "COBRADE_2_3_1_1_0": {
+        "hard": 26,
+        "typical": 79,
+        "intermediate": 45
+      },
+      "COBRADE_2_3_1_2_0": {
+        "typical": 77,
+        "intermediate": 44,
+        "hard": 29
+      },
+      "OTHER": {
+        "intermediate": 46,
+        "hard": 29,
+        "typical": 75
+      },
+      "INSUFFICIENT_INFO": {
+        "hard": 28,
+        "intermediate": 49,
+        "typical": 73
+      }
+    },
+    "test": {
+      "COBRADE_1_2_1_0_0": {
+        "typical": 74,
+        "intermediate": 42,
+        "hard": 34
+      },
+      "COBRADE_1_2_2_0_0": {
+        "typical": 68,
+        "intermediate": 37,
+        "hard": 45
+      },
+      "COBRADE_1_2_3_0_0": {
+        "typical": 69,
+        "intermediate": 44,
+        "hard": 37
+      },
+      "COBRADE_1_4_1_3_1": {
+        "typical": 81,
+        "intermediate": 31,
+        "hard": 38
+      },
+      "COBRADE_1_4_1_3_2": {
+        "intermediate": 44,
+        "typical": 76,
+        "hard": 30
+      },
+      "COBRADE_2_3_1_1_0": {
+        "typical": 75,
+        "intermediate": 42,
+        "hard": 33
+      },
+      "COBRADE_2_3_1_2_0": {
+        "typical": 77,
+        "intermediate": 51,
+        "hard": 22
+      },
+      "OTHER": {
+        "hard": 31,
+        "typical": 74,
+        "intermediate": 45
+      },
+      "INSUFFICIENT_INFO": {
+        "typical": 72,
+        "intermediate": 49,
+        "hard": 29
+      }
+    }
+  },
+  "similarity_groups": {
+    "total_groups": 8187,
+    "non_singleton_groups": 660,
+    "max_group_size": 8,
+    "cross_split_similarity_edges": 0
+  },
+  "files": {
+    "train": {
+      "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/train.jsonl",
+      "sha256": "cc7d5fd44fa4aa0075cad5e4a42e3266ac5722e1e6d4c3054e17a85a6ab2d693"
+    },
+    "validation": {
+      "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/validation.jsonl",
+      "sha256": "6068a758252e03a0888c2c23330a925268d2412a6d1b95952213cc09126cd941"
+    },
+    "test": {
+      "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/test.jsonl",
+      "sha256": "927f3d543d879304091a3cdcbf8ac6661571b2fca28a50658fdc0911d03d3ab1"
+    }
+  },
+  "manifest": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/evaluation/nlp/split_manifest_v1.csv",
+    "sha256": "16f735bc90868f24c3cf7fde5f4da058f1b184f3c34dbbf96abb9c244d0e3848"
+  },
+  "note": "O conjunto test é sintético e não substitui avaliação manual/externa independente."
+}

@@ -1,0 +1,37 @@
+{
+  "modelType": "VISUAL",
+  "modelName": "mobilenet_v3_large",
+  "modelVersion": "1.0.0",
+  "indexToLabel": {
+    "0": "FLOOD_WATER",
+    "1": "FIRE_SMOKE",
+    "2": "OTHER"
+  },
+  "labelToIndex": {
+    "FLOOD_WATER": 0,
+    "FIRE_SMOKE": 1,
+    "OTHER": 2
+  },
+  "uncertain": {
+    "label": "UNCERTAIN",
+    "threshold": 0.5,
+    "selectionReason": "target_accuracy_and_coverage"
+  },
+  "input": {
+    "size": [
+      224,
+      224
+    ],
+    "colorMode": "RGB",
+    "normalizationMean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "normalizationStd": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  }
+}

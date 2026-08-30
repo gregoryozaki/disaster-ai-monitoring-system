@@ -1,0 +1,19 @@
+name: kamara-ml
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - pillow
+  - matplotlib
+  - scikit-learn
+  - jupyterlab
+  - ipykernel
+  - pytest
+
+variables:
+  PYTHONNOUSERSITE: "1"

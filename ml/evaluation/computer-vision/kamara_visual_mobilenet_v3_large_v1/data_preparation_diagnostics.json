@@ -1,0 +1,19 @@
+{
+  "seed": 42,
+  "dfire_root": "/kaggle/input/smoke-fire-detection-yolo",
+  "flood_root": "/kaggle/input/flood-classification-dataset",
+  "flood_source_dataset": "flood-kaggle-fallback",
+  "total_images_inventory": 34571,
+  "total_images_labeled": 34571,
+  "class_counts": {
+    "OTHER": 13586,
+    "FIRE_SMOKE": 11689,
+    "FLOOD_WATER": 9296
+  },
+  "hashes_with_label_conflict": 0,
+  "files_in_exact_duplicate_groups": 3845,
+  "files_in_label_conflicts": 0,
+  "dfire_missing_labels": 0,
+  "dfire_empty_labels": 9838,
+  "dfire_non_empty_labels": 11689
+}

@@ -1,0 +1,156 @@
+{
+  "run_name": "kamara_bertimbau_v1",
+  "task": "multiclass_text_classification",
+  "model_base": "neuralmind/bert-base-portuguese-cased",
+  "created_at_utc": "2026-08-30T14:09:46.917931+00:00",
+  "training_started_at_utc": "2026-08-30T14:06:47.407986+00:00",
+  "training_finished_at_utc": "2026-08-30T14:08:47.720143+00:00",
+  "wall_time_seconds": 120.31200885772705,
+  "environment": {
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:23) [GCC 11.4.0]",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.16.1",
+    "datasets": "4.8.5",
+    "accelerate": "1.14.0",
+    "scikit_learn": "1.9.0",
+    "pandas": "3.0.5",
+    "matplotlib": "3.10.0",
+    "gpu": {
+      "name": "Tesla T4",
+      "total_memory_gb": 14.5632,
+      "compute_capability": [
+        7,
+        5
+      ]
+    }
+  },
+  "data": {
+    "train": {
+      "filename": "train.jsonl",
+      "records": 6300,
+      "sha256": "bb4254d6e6f739c1a2188099aa00e84cd2d8692d2e1dc449d7e972217c056398"
+    },
+    "validation": {
+      "filename": "validation.jsonl",
+      "records": 1350,
+      "sha256": "6c48f802a9dfebc53463f565e5c619b8bcc155e0015361acb5e8cf7ad4143c7d"
+    },
+    "test": {
+      "used": false,
+      "note": "test.jsonl was intentionally not uploaded or evaluated."
+    }
+  },
+  "model_input": [
+    "text"
+  ],
+  "target": "target_label",
+  "excluded_from_model_input": [
+    "sample_id",
+    "cobrade_code",
+    "scenario_family",
+    "linguistic_profile",
+    "noise_features",
+    "difficulty",
+    "generation_batch",
+    "prompt_version",
+    "generator_model",
+    "synthetic",
+    "review_status",
+    "review_notes",
+    "split",
+    "similarity_group_id"
+  ],
+  "label2id": {
+    "COBRADE_1_2_1_0_0": 0,
+    "COBRADE_1_2_2_0_0": 1,
+    "COBRADE_1_2_3_0_0": 2,
+    "COBRADE_1_4_1_3_1": 3,
+    "COBRADE_1_4_1_3_2": 4,
+    "COBRADE_2_3_1_1_0": 5,
+    "COBRADE_2_3_1_2_0": 6,
+    "OTHER": 7,
+    "INSUFFICIENT_INFO": 8
+  },
+  "id2label": {
+    "0": "COBRADE_1_2_1_0_0",
+    "1": "COBRADE_1_2_2_0_0",
+    "2": "COBRADE_1_2_3_0_0",
+    "3": "COBRADE_1_4_1_3_1",
+    "4": "COBRADE_1_4_1_3_2",
+    "5": "COBRADE_2_3_1_1_0",
+    "6": "COBRADE_2_3_1_2_0",
+    "7": "OTHER",
+    "8": "INSUFFICIENT_INFO"
+  },
+  "hyperparameters": {
+    "max_length": 128,
+    "learning_rate": 2e-05,
+    "num_train_epochs": 3,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "per_device_train_batch_size": 16,
+    "gradient_accumulation_steps": 2,
+    "effective_train_batch_size": 32,
+    "per_device_eval_batch_size": 32,
+    "fp16": true,
+    "seed": 20260830,
+    "early_stopping_patience": 2,
+    "metric_for_best_model": "macro_f1"
+  },
+  "token_length_diagnostics": {
+    "min": 6,
+    "p50": 23.0,
+    "p90": 36.0,
+    "p95": 40.0,
+    "p99": 50.0,
+    "max": 89,
+    "share_above_max_length": 0.0
+  },
+  "trainer": {
+    "best_model_checkpoint": "/content/kamara_bertimbau_work/checkpoints/checkpoint-591",
+    "best_metric": 0.9985185020574302,
+    "global_step": 591,
+    "train_result_metrics": {
+      "train_runtime": 119.5652,
+      "train_samples_per_second": 158.073,
+      "train_steps_per_second": 4.943,
+      "total_flos": 451954530099072.0,
+      "train_loss": 0.6672433739537516,
+      "epoch": 3.0
+    }
+  },
+  "validation_metrics": {
+    "split": "validation",
+    "records": 1350,
+    "accuracy": 0.9985185185185185,
+    "macro_precision": 0.9985283296541575,
+    "macro_recall": 0.9985185185185185,
+    "macro_f1": 0.9985185020574302,
+    "weighted_f1": 0.9985185020574302,
+    "errors": 2,
+    "labels": [
+      "COBRADE_1_2_1_0_0",
+      "COBRADE_1_2_2_0_0",
+      "COBRADE_1_2_3_0_0",
+      "COBRADE_1_4_1_3_1",
+      "COBRADE_1_4_1_3_2",
+      "COBRADE_2_3_1_1_0",
+      "COBRADE_2_3_1_2_0",
+      "OTHER",
+      "INSUFFICIENT_INFO"
+    ]
+  },
+  "baseline_reference": {
+    "model": "TF-IDF + Logistic Regression",
+    "validation_accuracy": 0.9963,
+    "validation_macro_f1": 0.9963,
+    "shortcut_stress_test_macro_f1": 0.9948
+  },
+  "notes": [
+    "Only text was used as model input.",
+    "The synthetic test split was not used during training or validation.",
+    "Near-duplicate groups had previously been kept within a single split.",
+    "Synthetic validation performance must not be interpreted as real-world generalization.",
+    "Independent manual/external evaluation remains required."
+  ]
+}

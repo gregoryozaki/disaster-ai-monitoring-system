@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0.0",
+  "taskName": "kamara_textual_cobrade_v1",
+  "language": "pt-BR",
+  "description": "Classificação textual de ocorrências para um subconjunto inicial de categorias COBRADE, com classes de controle para eventos fora do escopo e textos sem informação suficiente.",
+  "classes": [
+    {
+      "id": "COBRADE_1_2_1_0_0",
+      "kind": "COBRADE",
+      "cobradeCode": "1.2.1.0.0",
+      "displayName": "Inundações",
+      "visualFamily": "FLOOD_WATER",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "COBRADE_1_2_2_0_0",
+      "kind": "COBRADE",
+      "cobradeCode": "1.2.2.0.0",
+      "displayName": "Enxurradas",
+      "visualFamily": "FLOOD_WATER",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "COBRADE_1_2_3_0_0",
+      "kind": "COBRADE",
+      "cobradeCode": "1.2.3.0.0",
+      "displayName": "Alagamentos",
+      "visualFamily": "FLOOD_WATER",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "COBRADE_1_4_1_3_1",
+      "kind": "COBRADE",
+      "cobradeCode": "1.4.1.3.1",
+      "displayName": "Incêndio florestal - Incêndios em parques, áreas de proteção ambiental e áreas de preservação permanente",
+      "visualFamily": "FIRE_SMOKE",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "COBRADE_1_4_1_3_2",
+      "kind": "COBRADE",
+      "cobradeCode": "1.4.1.3.2",
+      "displayName": "Incêndio florestal - Incêndios em áreas não protegidas, com reflexos na qualidade do ar",
+      "visualFamily": "FIRE_SMOKE",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "COBRADE_2_3_1_1_0",
+      "kind": "COBRADE",
+      "cobradeCode": "2.3.1.1.0",
+      "displayName": "Incêndios em plantas e distritos industriais, parques e depósitos",
+      "visualFamily": "FIRE_SMOKE",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "COBRADE_2_3_1_2_0",
+      "kind": "COBRADE",
+      "cobradeCode": "2.3.1.2.0",
+      "displayName": "Incêndios em aglomerados residenciais",
+      "visualFamily": "FIRE_SMOKE",
+      "targetSyntheticSamples": 1000
+    },
+    {
+      "id": "OTHER",
+      "kind": "CONTROL",
+      "cobradeCode": null,
+      "displayName": "Outro evento fora do escopo do classificador textual v1",
+      "visualFamily": null,
+      "targetSyntheticSamples": 1500
+    },
+    {
+      "id": "INSUFFICIENT_INFO",
+      "kind": "CONTROL",
+      "cobradeCode": null,
+      "displayName": "Informação insuficiente para classificação",
+      "visualFamily": null,
+      "targetSyntheticSamples": 1500
+    }
+  ],
+  "rules": {
+    "exactCobradeOnlyForCobradeClasses": true,
+    "otherAndInsufficientInfoAreNotCobradeCodes": true,
+    "humanValidationRequired": true
+  }
+}

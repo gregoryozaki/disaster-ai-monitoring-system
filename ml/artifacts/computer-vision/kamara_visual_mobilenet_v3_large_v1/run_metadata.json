@@ -1,0 +1,52 @@
+{
+  "createdAt": "2026-08-28T22:05:47.297535+00:00",
+  "seed": 42,
+  "python": "3.13.15",
+  "torch": "2.11.0+cu128",
+  "torchvision": "0.26.0+cu128",
+  "gpu": "Tesla T4",
+  "model": {
+    "name": "mobilenet_v3_large",
+    "version": "1.0.0",
+    "pretrainedWeights": "MobileNet_V3_Large_Weights.IMAGENET1K_V2",
+    "inputSize": 224
+  },
+  "training": {
+    "phase1EpochLimit": 3,
+    "phase1LearningRate": 0.001,
+    "phase2EpochLimit": 8,
+    "phase2LearningRate": 0.0001,
+    "batchSize": 64,
+    "weightDecay": 0.0001,
+    "amp": true
+  },
+  "data": {
+    "dfireHandle": "sayedgamal99/smoke-fire-detection-yolo",
+    "floodHandle": "dhawalsrivastava2583/flood-classification-dataset",
+    "floodSourceDataset": "flood-kaggle-fallback",
+    "pHashMaximumDistance": 4,
+    "exactDuplicatesRemoved": 2287,
+    "nearDuplicateConflictGroupsRemoved": 43,
+    "splitRatios": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "splitCounts": {
+      "train": 20081,
+      "val": 4305,
+      "test": 4305
+    },
+    "classCounts": {
+      "OTHER": 11663,
+      "FIRE_SMOKE": 10018,
+      "FLOOD_WATER": 7010
+    }
+  },
+  "onnx": {
+    "filename": "kamara_visual_mobilenet_v3_large_v1.onnx",
+    "sha256": "eea852b1f742f38aa4c08d49329435ac2594544eff6c9e362f74146341992676",
+    "maxAbsoluteDifference": 9.1552734375e-05,
+    "predictionParity": true
+  }
+}

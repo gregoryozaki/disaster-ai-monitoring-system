@@ -1,0 +1,26 @@
+{
+  "trainingLabels": {
+    "FLOOD_WATER": {
+      "description": "Presença visual de água associada a cenário de inundação, enxurrada ou alagamento.",
+      "candidateCobradeCodes": ["1.2.1.0.0", "1.2.2.0.0", "1.2.3.0.0"]
+    },
+    "FIRE_SMOKE": {
+      "description": "Presença visual de fogo e/ou fumaça potencialmente associada a ocorrência de incêndio.",
+      "candidateCobradeCodes": [
+        "1.4.1.3.1",
+        "1.4.1.3.2",
+        "2.3.1.1.0",
+        "2.3.1.2.0"
+      ]
+    },
+    "OTHER": {
+      "description": "Imagem que não apresenta evidência visual suficiente de FLOOD_WATER nem FIRE_SMOKE.",
+      "candidateCobradeCodes": []
+    }
+  },
+  "runtimeOnlyLabels": {
+    "UNCERTAIN": {
+      "description": "Saída de rejeição usada quando a confiança do modelo não é suficiente para aceitar uma das classes treinadas."
+    }
+  }
+}

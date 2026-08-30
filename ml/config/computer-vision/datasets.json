@@ -1,0 +1,33 @@
+{
+  "datasets": {
+    "dfire": {
+      "name": "D-Fire",
+      "purpose": [
+        "FIRE_SMOKE",
+        "OTHER"
+      ],
+      "license": "CC0-1.0",
+      "homepage": "https://github.com/gaia-solutions-on-demand/DFireDataset",
+      "splitPolicy": "Do not trust source split automatically; inspect duplicates and grouping before defining final experiment split."
+    },
+    "flood10k": {
+      "name": "Flood10K",
+      "purpose": [
+        "FLOOD_WATER",
+        "OTHER"
+      ],
+      "license": "CC-BY-NC-4.0",
+      "doi": "10.17632/4sgcd7zdsp.1",
+      "homepage": "https://data.mendeley.com/datasets/4sgcd7zdsp/1",
+      "splitPolicy": "Build project split after duplicate and provenance analysis."
+    },
+    "aider": {
+      "name": "AIDER",
+      "purpose": [
+        "EXTERNAL_EVALUATION"
+      ],
+      "usage": "Reserve initially for out-of-domain/generalization evaluation.",
+      "homepage": "https://github.com/ckyrkou/AIDER"
+    }
+  }
+}
