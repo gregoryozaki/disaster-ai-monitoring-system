@@ -1,0 +1,83 @@
+{
+  "run_name": "tfidf_logreg_v2",
+  "model_name": "tfidf_logreg",
+  "model_version": "1.0.0",
+  "created_at_utc": "2026-08-30T19:11:37.041490+00:00",
+  "python_version": "3.10.12",
+  "scikit_learn_version": "1.7.2",
+  "train": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/train.jsonl",
+    "sha256": "b4bfb1e7a9b28512186cb8683f36b2f49dd4207a022b4649e77ade98bce3fa85",
+    "records": 6300
+  },
+  "validation": {
+    "path": "/home/gregoryozaki/Documentos/PIBIC/GitHub/disaster-ai-monitoring-system/ml/data/processed/nlp/validation.jsonl",
+    "sha256": "0204a8e8e8486d9185d649d9943ffd75ba3ed5954f8be115563bd06ad94b89fb",
+    "records": 1350
+  },
+  "feature_input": [
+    "text"
+  ],
+  "target": "target_label",
+  "vectorizer": {
+    "type": "TfidfVectorizer",
+    "lowercase": true,
+    "strip_accents": null,
+    "analyzer": "word",
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 2,
+    "max_df": 1.0,
+    "max_features": 50000,
+    "sublinear_tf": true,
+    "vocabulary_size": 8976
+  },
+  "classifier": {
+    "type": "LogisticRegression",
+    "C": 1.0,
+    "max_iter": 3000,
+    "solver": "lbfgs",
+    "class_weight": null,
+    "random_state": 20260830,
+    "classes": [
+      "COBRADE_1_2_1_0_0",
+      "COBRADE_1_2_2_0_0",
+      "COBRADE_1_2_3_0_0",
+      "COBRADE_1_4_1_3_1",
+      "COBRADE_1_4_1_3_2",
+      "COBRADE_2_3_1_1_0",
+      "COBRADE_2_3_1_2_0",
+      "INSUFFICIENT_INFO",
+      "OTHER"
+    ]
+  },
+  "validation_metrics": {
+    "split": "validation",
+    "records": 1350,
+    "accuracy": 0.98963,
+    "macro_precision": 0.989646,
+    "macro_recall": 0.98963,
+    "macro_f1": 0.989604,
+    "weighted_f1": 0.989604,
+    "labels": [
+      "COBRADE_1_2_1_0_0",
+      "COBRADE_1_2_2_0_0",
+      "COBRADE_1_2_3_0_0",
+      "COBRADE_1_4_1_3_1",
+      "COBRADE_1_4_1_3_2",
+      "COBRADE_2_3_1_1_0",
+      "COBRADE_2_3_1_2_0",
+      "OTHER",
+      "INSUFFICIENT_INFO"
+    ]
+  },
+  "test_evaluated": false,
+  "notes": [
+    "Somente o campo text foi usado como feature.",
+    "Metadados de geração e split foram excluídos da entrada do modelo.",
+    "O conjunto test.jsonl não foi lido nesta execução.",
+    "O teste sintético não substitui avaliação manual/externa independente."
+  ]
+}

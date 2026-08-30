@@ -1,0 +1,9 @@
+sample_id,true_label,linguistic_profile,difficulty,scenario_family,text,predicted_label,correct,predicted_probability
+cobrade_1_2_3_0_0_0238,COBRADE_1_2_3_0_0,formal,typical,standing_water_after_rain,A lâmina d'água permanece estável sobre o asfalto e reduz apenas lentamente.,OTHER,0,0.5966585278511047
+cobrade_1_2_3_0_0_0938,COBRADE_1_2_3_0_0,indirect,hard,standing_water_after_rain,"A água está espalhada pela largura da rua, mas sem a força típica de uma correnteza.",COBRADE_1_2_2_0_0,0,0.9749400019645691
+insufficient_info_0716,INSUFFICIENT_INFO,slang,typical,very_short_vague,cara o rio subiu,COBRADE_1_2_1_0_0,0,0.955208420753479
+other_v2_0210,OTHER,neutral,hard,landslide,"O solo saturado escorregou pelo morro, carregando arbustos junto com a massa de terra.",COBRADE_1_2_2_0_0,0,0.6568065285682678
+other_v2_0220,OTHER,informal,typical,landslide,o talude soltou e veio tudo pra baixo com mato e pedra junto,COBRADE_1_2_2_0_0,0,0.6978766322135925
+other_v2_0224,OTHER,informal,hard,landslide,o chão do morro escorregou vários metros e levou uns arbustos,COBRADE_1_2_2_0_0,0,0.7017645835876465
+other_v2_0262,OTHER,formal,typical,road_collapse,A rodovia apresenta colapso parcial do leito viário e perda de suporte na margem.,COBRADE_1_2_3_0_0,0,0.829508364200592
+other_v2_0453,OTHER,neutral,typical,drought,A estiagem reduziu bastante a água disponível para consumo e para os animais da comunidade.,COBRADE_1_2_1_0_0,0,0.6335200667381287

@@ -23,7 +23,7 @@ Uso:
     python ml/evaluation/nlp/diagnose_tfidf_shortcuts.py
 
 Saídas:
-    ml/evaluation/nlp/tfidf_logreg_v1/
+    ml/evaluation/nlp/tfidf_logreg_v2/
         shortcut_stress_test_validation.json
         shortcut_stress_predictions_validation.csv
         shortcut_stress_flips_validation.csv
@@ -207,7 +207,7 @@ def metrics(y_true: list[str], y_pred: list[str]) -> dict[str, Any]:
 
 def write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -229,7 +229,7 @@ def main() -> int:
         / "ml"
         / "artifacts"
         / "nlp"
-        / "tfidf_logreg_v1"
+        / "tfidf_logreg_v2"
     )
 
     evaluation_dir = (
@@ -237,7 +237,7 @@ def main() -> int:
         / "ml"
         / "evaluation"
         / "nlp"
-        / "tfidf_logreg_v1"
+        / "tfidf_logreg_v2"
     )
 
     vectorizer_path = artifact_dir / "vectorizer.joblib"
@@ -409,7 +409,7 @@ def main() -> int:
         }
 
     report = {
-        "diagnostic": "synthetic_shortcut_masking_validation_v1",
+        "diagnostic": "synthetic_shortcut_masking_validation_v2",
         "validation_records": len(rows),
         "test_used": False,
         "original_metrics": original_metrics,

@@ -1,0 +1,21 @@
+{
+  "split": "validation",
+  "records": 1350,
+  "accuracy": 0.997778,
+  "macro_precision": 0.997802,
+  "macro_recall": 0.997778,
+  "macro_f1": 0.997773,
+  "weighted_f1": 0.997773,
+  "errors": 3,
+  "labels": [
+    "COBRADE_1_2_1_0_0",
+    "COBRADE_1_2_2_0_0",
+    "COBRADE_1_2_3_0_0",
+    "COBRADE_1_4_1_3_1",
+    "COBRADE_1_4_1_3_2",
+    "COBRADE_2_3_1_1_0",
+    "COBRADE_2_3_1_2_0",
+    "OTHER",
+    "INSUFFICIENT_INFO"
+  ]
+}

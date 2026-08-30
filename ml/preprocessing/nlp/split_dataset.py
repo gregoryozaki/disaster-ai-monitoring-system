@@ -25,8 +25,8 @@ distribuição REAL de cada classe. Portanto, esta etapa não altera nem "corrig
 metadados de geração; apenas evita que o split introduza um novo desbalanceamento.
 
 Entrada:
-    ml/data/interim/nlp/synthetic_occurrences_v1.jsonl
-    ml/evaluation/nlp/near_duplicate_candidates_v1.csv
+    ml/data/interim/nlp/synthetic_occurrences_v2.jsonl
+    ml/evaluation/nlp/near_duplicate_candidates_v2.csv
 
 Saídas:
     ml/data/processed/nlp/train.jsonl
@@ -838,7 +838,7 @@ def main() -> int:
         / "data"
         / "interim"
         / "nlp"
-        / "synthetic_occurrences_v1.jsonl"
+        / "synthetic_occurrences_v2.jsonl"
     )
 
     similarity_path = (
@@ -846,7 +846,7 @@ def main() -> int:
         / "ml"
         / "evaluation"
         / "nlp"
-        / "near_duplicate_candidates_v1.csv"
+        / "near_duplicate_candidates_v2.csv"
     )
 
     processed_dir = (
@@ -1262,6 +1262,7 @@ def main() -> int:
     ) as file:
         writer = csv.DictWriter(
             file,
+            lineterminator="\n",
             fieldnames=[
                 "sample_id",
                 "target_label",

@@ -6,7 +6,7 @@ Entrada:
     ml/data/raw/nlp/*.jsonl
 
 Saída:
-    ml/data/interim/nlp/synthetic_occurrences_v1.jsonl
+    ml/data/interim/nlp/synthetic_occurrences_v2.jsonl
 
 O script NÃO faz split de treino/validação/teste.
 Antes de escrever a saída, valida:
@@ -319,7 +319,7 @@ def main() -> int:
 
     raw_dir = repo_root / "ml" / "data" / "raw" / "nlp"
     output_dir = repo_root / "ml" / "data" / "interim" / "nlp"
-    output_path = output_dir / "synthetic_occurrences_v1.jsonl"
+    output_path = output_dir / "synthetic_occurrences_v2.jsonl"
 
     if not raw_dir.is_dir():
         raise FileNotFoundError(

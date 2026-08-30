@@ -1,0 +1,7 @@
+sample_id,true_label,linguistic_profile,difficulty,scenario_family,text,predicted_label,correct,predicted_probability
+cobrade_1_2_2_0_0_0214,COBRADE_1_2_2_0_0,formal,typical,rapid_street_runoff,A enxurrada atravessou a área urbana e deslocou recipientes e pequenas estruturas.,OTHER,0,0.32162400380297007
+cobrade_1_2_3_0_0_0938,COBRADE_1_2_3_0_0,indirect,hard,standing_water_after_rain,"A água está espalhada pela largura da rua, mas sem a força típica de uma correnteza.",COBRADE_1_2_2_0_0,0,0.5868646567167527
+insufficient_info_0716,INSUFFICIENT_INFO,slang,typical,very_short_vague,cara o rio subiu,COBRADE_1_2_1_0_0,0,0.44223516133738977
+other_v2_0020,OTHER,informal,typical,windstorm,a ventania virou lixeira derrubou galho e deixou fio baixo na rua,COBRADE_1_2_2_0_0,0,0.3541542384798878
+other_v2_0220,OTHER,informal,typical,landslide,o talude soltou e veio tudo pra baixo com mato e pedra junto,COBRADE_1_2_2_0_0,0,0.376653836559169
+other_v2_0453,OTHER,neutral,typical,drought,A estiagem reduziu bastante a água disponível para consumo e para os animais da comunidade.,COBRADE_1_2_1_0_0,0,0.28763553692014854

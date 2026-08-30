@@ -1,0 +1,149 @@
+{
+  "diagnostic": "bertimbau_synthetic_shortcut_masking_validation_v2",
+  "model": "kamara_bertimbau_v2",
+  "validation_records": 1350,
+  "validation_sha256": "0204a8e8e8486d9185d649d9943ffd75ba3ed5954f8be115563bd06ad94b89fb",
+  "test_used": false,
+  "max_length": 128,
+  "affected_records": 68,
+  "affected_share": 0.05037037037037037,
+  "prediction_flips": 1,
+  "correct_to_wrong": 1,
+  "wrong_to_correct": 0,
+  "mean_confidence_delta_on_affected": -0.005327996962210711,
+  "cue_group_record_counts": {
+    "other_generator_style": 9,
+    "insufficient_generator_style": 59
+  },
+  "cue_group_match_counts": {
+    "other_generator_style": 9,
+    "insufficient_generator_style": 64
+  },
+  "original_metrics": {
+    "accuracy": 0.9977777777777778,
+    "macro_precision": 0.9978021765229852,
+    "macro_recall": 0.9977777777777779,
+    "macro_f1": 0.9977726904673874
+  },
+  "masked_metrics": {
+    "accuracy": 0.997037037037037,
+    "macro_precision": 0.9970614357822445,
+    "macro_recall": 0.9970370370370372,
+    "macro_f1": 0.9970319497266468
+  },
+  "metric_delta": {
+    "accuracy": -0.0007407407407407085,
+    "macro_precision": -0.0007407407407407085,
+    "macro_recall": -0.0007407407407407085,
+    "macro_f1": -0.0007407407407405975
+  },
+  "per_class": {
+    "COBRADE_1_2_1_0_0": {
+      "target_label": "COBRADE_1_2_1_0_0",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 1.0,
+      "original_f1": 1.0,
+      "masked_precision": 0.9933774834437086,
+      "masked_recall": 1.0,
+      "masked_f1": 0.9966777408637874,
+      "f1_delta": -0.0033222591362126463
+    },
+    "COBRADE_1_2_2_0_0": {
+      "target_label": "COBRADE_1_2_2_0_0",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 1.0,
+      "original_f1": 1.0,
+      "masked_precision": 1.0,
+      "masked_recall": 1.0,
+      "masked_f1": 1.0,
+      "f1_delta": 0.0
+    },
+    "COBRADE_1_2_3_0_0": {
+      "target_label": "COBRADE_1_2_3_0_0",
+      "support": 150,
+      "original_precision": 0.9868421052631579,
+      "original_recall": 1.0,
+      "original_f1": 0.9933774834437086,
+      "masked_precision": 0.9868421052631579,
+      "masked_recall": 1.0,
+      "masked_f1": 0.9933774834437086,
+      "f1_delta": 0.0
+    },
+    "COBRADE_1_4_1_3_1": {
+      "target_label": "COBRADE_1_4_1_3_1",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 1.0,
+      "original_f1": 1.0,
+      "masked_precision": 1.0,
+      "masked_recall": 1.0,
+      "masked_f1": 1.0,
+      "f1_delta": 0.0
+    },
+    "COBRADE_1_4_1_3_2": {
+      "target_label": "COBRADE_1_4_1_3_2",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 1.0,
+      "original_f1": 1.0,
+      "masked_precision": 1.0,
+      "masked_recall": 1.0,
+      "masked_f1": 1.0,
+      "f1_delta": 0.0
+    },
+    "COBRADE_2_3_1_1_0": {
+      "target_label": "COBRADE_2_3_1_1_0",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 1.0,
+      "original_f1": 1.0,
+      "masked_precision": 1.0,
+      "masked_recall": 1.0,
+      "masked_f1": 1.0,
+      "f1_delta": 0.0
+    },
+    "COBRADE_2_3_1_2_0": {
+      "target_label": "COBRADE_2_3_1_2_0",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 1.0,
+      "original_f1": 1.0,
+      "masked_precision": 1.0,
+      "masked_recall": 1.0,
+      "masked_f1": 1.0,
+      "f1_delta": 0.0
+    },
+    "OTHER": {
+      "target_label": "OTHER",
+      "support": 150,
+      "original_precision": 1.0,
+      "original_recall": 0.98,
+      "original_f1": 0.98989898989899,
+      "masked_precision": 1.0,
+      "masked_recall": 0.98,
+      "masked_f1": 0.98989898989899,
+      "f1_delta": 0.0
+    },
+    "INSUFFICIENT_INFO": {
+      "target_label": "INSUFFICIENT_INFO",
+      "support": 150,
+      "original_precision": 0.9933774834437086,
+      "original_recall": 1.0,
+      "original_f1": 0.9966777408637874,
+      "masked_precision": 0.9933333333333333,
+      "masked_recall": 0.9933333333333333,
+      "masked_f1": 0.9933333333333333,
+      "f1_delta": -0.0033444075304540632
+    }
+  },
+  "v1_reference": {
+    "original_macro_f1": 0.9985,
+    "masked_macro_f1": 0.9794,
+    "macro_f1_delta": -0.0192,
+    "prediction_flips": 25,
+    "correct_to_wrong": 25
+  },
+  "interpretation_note": "A queda observada mede dependência das expressões mascaradas. Queda pequena não prova ausência de todo viés sintético. O conjunto de teste não foi utilizado."
+}

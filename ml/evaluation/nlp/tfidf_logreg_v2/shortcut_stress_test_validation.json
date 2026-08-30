@@ -1,0 +1,166 @@
+{
+  "diagnostic": "synthetic_shortcut_masking_validation_v2",
+  "validation_records": 1350,
+  "test_used": false,
+  "original_metrics": {
+    "accuracy": 0.9896296296296296,
+    "macro_precision": 0.9896461922964688,
+    "macro_recall": 0.9896296296296296,
+    "macro_f1": 0.9896042798096973
+  },
+  "masked_metrics": {
+    "accuracy": 0.9888888888888889,
+    "macro_precision": 0.9889148029948858,
+    "macro_recall": 0.9888888888888889,
+    "macro_f1": 0.9888609380469074
+  },
+  "metric_delta": {
+    "accuracy": -0.0007407407407407085,
+    "macro_precision": -0.0007313893015830075,
+    "macro_recall": -0.0007407407407407085,
+    "macro_f1": -0.0007433417627898953
+  },
+  "affected_records": 68,
+  "affected_share": 0.05037037037037037,
+  "prediction_flips": 1,
+  "correct_to_wrong": 1,
+  "wrong_to_correct": 0,
+  "mean_confidence_delta_on_affected": -0.16493916332471475,
+  "cue_group_record_counts": {
+    "other_generator_style": 9,
+    "insufficient_generator_style": 59
+  },
+  "cue_group_match_counts": {
+    "other_generator_style": 9,
+    "insufficient_generator_style": 64
+  },
+  "per_class": {
+    "COBRADE_1_2_1_0_0": {
+      "support": 150,
+      "original": {
+        "precision": 0.9867549668874173,
+        "recall": 0.9933333333333333,
+        "f1": 0.9900332225913622
+      },
+      "masked": {
+        "precision": 0.9802631578947368,
+        "recall": 0.9933333333333333,
+        "f1": 0.9867549668874173
+      },
+      "f1_delta": -0.00327825570394491
+    },
+    "COBRADE_1_2_2_0_0": {
+      "support": 150,
+      "original": {
+        "precision": 0.9798657718120806,
+        "recall": 0.9733333333333334,
+        "f1": 0.9765886287625418
+      },
+      "masked": {
+        "precision": 0.9798657718120806,
+        "recall": 0.9733333333333334,
+        "f1": 0.9765886287625418
+      },
+      "f1_delta": 0.0
+    },
+    "COBRADE_1_2_3_0_0": {
+      "support": 150,
+      "original": {
+        "precision": 0.974025974025974,
+        "recall": 1.0,
+        "f1": 0.9868421052631579
+      },
+      "masked": {
+        "precision": 0.974025974025974,
+        "recall": 1.0,
+        "f1": 0.9868421052631579
+      },
+      "f1_delta": 0.0
+    },
+    "COBRADE_1_4_1_3_1": {
+      "support": 150,
+      "original": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "masked": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "f1_delta": 0.0
+    },
+    "COBRADE_1_4_1_3_2": {
+      "support": 150,
+      "original": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "masked": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "f1_delta": 0.0
+    },
+    "COBRADE_2_3_1_1_0": {
+      "support": 150,
+      "original": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "masked": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "f1_delta": 0.0
+    },
+    "COBRADE_2_3_1_2_0": {
+      "support": 150,
+      "original": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "masked": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "f1_delta": 0.0
+    },
+    "OTHER": {
+      "support": 150,
+      "original": {
+        "precision": 0.9795918367346939,
+        "recall": 0.96,
+        "f1": 0.9696969696969697
+      },
+      "masked": {
+        "precision": 0.9795918367346939,
+        "recall": 0.96,
+        "f1": 0.9696969696969697
+      },
+      "f1_delta": 0.0
+    },
+    "INSUFFICIENT_INFO": {
+      "support": 150,
+      "original": {
+        "precision": 0.9865771812080537,
+        "recall": 0.98,
+        "f1": 0.9832775919732442
+      },
+      "masked": {
+        "precision": 0.9864864864864865,
+        "recall": 0.9733333333333334,
+        "f1": 0.9798657718120806
+      },
+      "f1_delta": -0.0034118201611635923
+    }
+  },
+  "interpretation_note": "Queda grande após mascarar frases administrativas/discursivas sugere dependência de assinatura sintética. Queda pequena sugere que o modelo mantém a decisão usando conteúdo semântico restante."
+}

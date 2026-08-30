@@ -1,0 +1,4 @@
+sample_id,true_label,predicted_label,correct,predicted_probability,linguistic_profile,difficulty,scenario_family,text
+other_v2_0664,OTHER,COBRADE_1_2_3_0_0,0,0.7166843,formal,intermediate,water_contamination,A água de abastecimento apresenta características incompatíveis com o padrão habitual de consumo.
+other_v2_0665,OTHER,INSUFFICIENT_INFO,0,0.90003,formal,hard,water_contamination,"Foram relatados indícios de contaminação no poço comunitário, sem relação com inundação ou transbordamento."
+other_v2_0896,OTHER,COBRADE_1_2_3_0_0,0,0.9412609,indirect,hard,dam_failure,BARRAGEM CEDEU AQ 😰 abriu um vao e a agua ta saindo

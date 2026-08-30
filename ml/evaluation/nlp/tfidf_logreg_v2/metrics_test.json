@@ -1,0 +1,24 @@
+{
+  "split": "test",
+  "records": 1350,
+  "test_sha256": "0b7ce417fa9fd9e619b3f04cbfc176d3478342ea5eb2eed1507b50393798477d",
+  "model": "tfidf_logreg_v2",
+  "accuracy": 0.9955555555555555,
+  "macro_precision": 0.9955942784890153,
+  "macro_recall": 0.9955555555555556,
+  "macro_f1": 0.9955578520364975,
+  "weighted_f1": 0.9955578520364974,
+  "errors": 6,
+  "labels": [
+    "COBRADE_1_2_1_0_0",
+    "COBRADE_1_2_2_0_0",
+    "COBRADE_1_2_3_0_0",
+    "COBRADE_1_4_1_3_1",
+    "COBRADE_1_4_1_3_2",
+    "COBRADE_2_3_1_1_0",
+    "COBRADE_2_3_1_2_0",
+    "OTHER",
+    "INSUFFICIENT_INFO"
+  ],
+  "final_test_evaluation": true
+}

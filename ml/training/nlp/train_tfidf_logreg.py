@@ -17,12 +17,12 @@ ml/data/processed/nlp/validation.jsonl
 
 Saídas
 ------
-ml/artifacts/nlp/tfidf_logreg_v1/
+ml/artifacts/nlp/tfidf_logreg_v2/
     vectorizer.joblib
     classifier.joblib
     run_metadata.json
 
-ml/evaluation/nlp/tfidf_logreg_v1/
+ml/evaluation/nlp/tfidf_logreg_v2/
     metrics_validation.json
     per_class_metrics_validation.csv
     confusion_matrix_validation.csv
@@ -71,7 +71,7 @@ from sklearn.metrics import (
 
 MODEL_NAME = "tfidf_logreg"
 MODEL_VERSION = "1.0.0"
-RUN_NAME = "tfidf_logreg_v1"
+RUN_NAME = "tfidf_logreg_v2"
 
 EXPECTED_LABELS = [
     "COBRADE_1_2_1_0_0",
@@ -190,7 +190,7 @@ def write_csv(
         encoding="utf-8",
         newline="",
     ) as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, lineterminator="\n")
         writer.writerow(header)
         writer.writerows(rows)
 

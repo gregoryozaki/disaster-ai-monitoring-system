@@ -1,0 +1,15 @@
+sample_id,true_label,predicted_label,correct,predicted_probability,linguistic_profile,difficulty,scenario_family,text
+cobrade_1_2_1_0_0_0621,COBRADE_1_2_1_0_0,COBRADE_1_2_2_0_0,0,0.44158833590452695,chat_abbreviated,intermediate,high_water_reaches_roads,corrego encheu e agr tem agua na estrada de terra aq
+cobrade_1_2_2_0_0_0201,COBRADE_1_2_2_0_0,OTHER,0,0.266218871544463,formal,typical,sudden_stream_surge,"A precipitação intensa provocou elevação súbita do córrego, gerando escoamento de alta energia sobre a via."
+cobrade_1_2_2_0_0_0624,COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0,0.302238328851406,chat_abbreviated,intermediate,sudden_stream_surge,o corrego encheu rapidim dps da chuva
+cobrade_1_2_2_0_0_0903,COBRADE_1_2_2_0_0,OTHER,0,0.294796390406103,indirect,intermediate,vehicles_dragged,O carro estacionado mudou de posição depois que a água atravessou o trecho.
+cobrade_1_2_2_0_0_0914,COBRADE_1_2_2_0_0,COBRADE_1_2_3_0_0,0,0.4748245075117468,indirect,intermediate,rapid_street_runoff,A rua não ficou simplesmente cheia; a água atravessava o trecho carregando objetos.
+insufficient_info_0164,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0,0.4107506148851229,neutral,typical,very_short_vague,tem água aqui.
+insufficient_info_0392,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0,0.36670633042019307,informal,typical,very_short_vague,tem agua aqui
+insufficient_info_0511,INSUFFICIENT_INFO,OTHER,0,0.2392365212380682,chat_abbreviated,hard,very_short_vague,aq tem fogo ali
+other_v2_0010,OTHER,COBRADE_1_2_2_0_0,0,0.4302915441578832,neutral,hard,windstorm,O vento soprou com força suficiente para deslocar uma caixa-d’água vazia do telhado.
+other_v2_0234,OTHER,COBRADE_1_2_2_0_0,0,0.3704617852477849,slang,typical,landslide,mano o barranco despencou e encheu a estrada de terra
+other_v2_0364,OTHER,INSUFFICIENT_INFO,0,0.2544300719423996,formal,intermediate,building_collapse,"O evento consiste em desabamento de componentes construtivos, sem evidência de fogo associado."
+other_v2_0477,OTHER,COBRADE_1_2_1_0_0,0,0.34658233243770414,chat_abbreviated,typical,drought,os poco aq baixaram demais e ja falta agua
+other_v2_0491,OTHER,COBRADE_1_2_3_0_0,0,0.38753423820213617,typo_no_accents,intermediate,drought,a seca ta prejudicano as plantaçao e falta agua
+other_v2_0665,OTHER,INSUFFICIENT_INFO,0,0.34361336098020295,formal,hard,water_contamination,"Foram relatados indícios de contaminação no poço comunitário, sem relação com inundação ou transbordamento."

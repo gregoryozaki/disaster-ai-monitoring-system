@@ -3,11 +3,11 @@
 Auditoria global do dataset sintético de NLP do KAMARA.
 
 Entrada padrão:
-    ml/data/interim/nlp/synthetic_occurrences_v1.jsonl
+    ml/data/interim/nlp/synthetic_occurrences_v2.jsonl
 
 Saídas:
-    ml/data/interim/nlp/audit_report_v1.json
-    ml/evaluation/nlp/near_duplicate_candidates_v1.csv
+    ml/data/interim/nlp/audit_report_v2.json
+    ml/evaluation/nlp/near_duplicate_candidates_v2.csv
 
 Objetivo:
 - validar integridade estrutural dos 9.000 registros;
@@ -823,6 +823,7 @@ def near_duplicate_audit(
     with output_csv.open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(
             file,
+            lineterminator="\n",
             fieldnames=[
                 "similarity",
                 "same_class",
@@ -961,7 +962,7 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help=(
             "Arquivo JSONL consolidado. O padrão é "
-            "ml/data/interim/nlp/synthetic_occurrences_v1.jsonl"
+            "ml/data/interim/nlp/synthetic_occurrences_v2.jsonl"
         ),
     )
     parser.add_argument(
@@ -1002,7 +1003,7 @@ def main() -> int:
             / "data"
             / "interim"
             / "nlp"
-            / "synthetic_occurrences_v1.jsonl"
+            / "synthetic_occurrences_v2.jsonl"
         )
     )
 
@@ -1012,7 +1013,7 @@ def main() -> int:
         / "data"
         / "interim"
         / "nlp"
-        / "audit_report_v1.json"
+        / "audit_report_v2.json"
     )
 
     near_csv = (
@@ -1020,7 +1021,7 @@ def main() -> int:
         / "ml"
         / "evaluation"
         / "nlp"
-        / "near_duplicate_candidates_v1.csv"
+        / "near_duplicate_candidates_v2.csv"
     )
 
     if not input_path.is_file():
