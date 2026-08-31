@@ -27,38 +27,115 @@ const modelInfoSchema = z.object({
 
 const nullableConfidenceSchema = z.number().min(0).max(1).nullable()
 
-const classifyResponseSchema = z.object({
-  resultStatus: z.enum(["AVAILABLE", "UNAVAILABLE", "ERROR"]),
+const classifyResponseSchema = z
+  .object({
+    resultStatus: z.enum(["AVAILABLE", "UNAVAILABLE", "ERROR"]),
 
-  predictedCobradeCode: z.string().min(1).nullable(),
+    predictedCobradeCode: z.string().min(1).nullable(),
 
-  confidence: nullableConfidenceSchema,
+    confidence: nullableConfidenceSchema,
 
-  /*
-   * Compatibilidade temporária:
-   *
-   * enquanto todos os produtores e mocks não
-   * tiverem migrado para o novo contrato, a
-   * ausência desses campos é interpretada como
-   * null/false.
-   *
-   * O objeto retornado por safeParse já terá os
-   * campos materializados.
-   */
-  visualConfidence: nullableConfidenceSchema.default(null),
+    visualConfidence: nullableConfidenceSchema,
 
-  textConfidence: nullableConfidenceSchema.default(null),
+    textConfidence: nullableConfidenceSchema,
 
-  ambiguous: z.boolean().default(false),
+    ambiguous: z.boolean(),
 
-  ambiguityReason: z.string().min(1).nullable().default(null),
+    ambiguityReason: z.string().min(1).nullable(),
 
-  explanationSimple: z.string(),
+    explanationSimple: z.string(),
 
-  model: modelInfoSchema,
+    model: modelInfoSchema,
 
-  signals: z.record(z.unknown())
-})
+    signals: z.record(z.unknown())
+  })
+  .superRefine((value, ctx) => {
+    if (value.ambiguous && value.ambiguityReason === null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+
+        path: ["ambiguityReason"],
+
+        message: "Uma classificação ambígua deve informar ambiguityReason."
+      })
+    }
+
+    if (!value.ambiguous && value.ambiguityReason !== null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+
+        path: ["ambiguityReason"],
+
+        message:
+          "Uma classificação não ambígua deve possuir ambiguityReason nulo."
+      })
+    }
+
+    if (value.model.modelType === "MULTIMODAL") {
+      if (value.confidence !== null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+
+          path: ["confidence"],
+
+          message:
+            "Classificação MULTIMODAL não possui confidence global nesta versão."
+        })
+      }
+
+      if (value.visualConfidence === null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+
+          path: ["visualConfidence"],
+
+          message: "Classificação MULTIMODAL deve preservar visualConfidence."
+        })
+      }
+
+      if (value.textConfidence === null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+
+          path: ["textConfidence"],
+
+          message: "Classificação MULTIMODAL deve preservar textConfidence."
+        })
+      }
+    }
+
+    if (
+      value.model.modelType === "VISUAL" &&
+      value.resultStatus === "AVAILABLE"
+    ) {
+      if (value.visualConfidence === null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+
+          path: ["visualConfidence"],
+
+          message:
+            "Classificação VISUAL disponível deve preservar visualConfidence."
+        })
+      }
+    }
+
+    if (
+      value.model.modelType === "TEXTUAL" &&
+      value.resultStatus === "AVAILABLE"
+    ) {
+      if (value.textConfidence === null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+
+          path: ["textConfidence"],
+
+          message:
+            "Classificação TEXTUAL disponível deve preservar textConfidence."
+        })
+      }
+    }
+  })
 
 export class AIServiceUnavailableError extends Error {
   constructor(message: string) {

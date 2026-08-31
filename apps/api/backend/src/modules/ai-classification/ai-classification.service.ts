@@ -45,64 +45,6 @@ interface PersistClassificationInput {
   }
 }
 
-/**
- * Ponte de compatibilidade durante a migração
- * do contrato.
- *
- * O novo contrato possui visualConfidence e
- * textConfidence explicitamente. Entretanto,
- * respostas antigas e mocks ainda podem chegar
- * com ambos nulos.
- *
- * Enquanto a orquestração multimodal ainda não
- * estiver implementada, preservamos o
- * comportamento anterior para respostas
- * exclusivamente VISUAL ou TEXTUAL.
- *
- * Esta função poderá ser simplificada/removida
- * quando todos os produtores enviarem os scores
- * de modalidade explicitamente.
- */
-function resolveModalityConfidences(input: {
-  modelType: AIModelType
-  confidence: number | null
-  visualConfidence: number | null
-  textConfidence: number | null
-}): {
-  visualConfidence: number | null
-  textConfidence: number | null
-} {
-  if (input.visualConfidence !== null || input.textConfidence !== null) {
-    return {
-      visualConfidence: input.visualConfidence,
-
-      textConfidence: input.textConfidence
-    }
-  }
-
-  if (input.modelType === "VISUAL") {
-    return {
-      visualConfidence: input.confidence,
-
-      textConfidence: null
-    }
-  }
-
-  if (input.modelType === "TEXTUAL") {
-    return {
-      visualConfidence: null,
-
-      textConfidence: input.confidence
-    }
-  }
-
-  return {
-    visualConfidence: null,
-
-    textConfidence: null
-  }
-}
-
 async function persistClassification(input: PersistClassificationInput) {
   const modelVersion = await prisma.modelVersion.upsert({
     where: {
@@ -154,16 +96,6 @@ async function persistClassification(input: PersistClassificationInput) {
     }
   }
 
-  const { visualConfidence, textConfidence } = resolveModalityConfidences({
-    modelType: input.model.modelType,
-
-    confidence: input.confidence,
-
-    visualConfidence: input.visualConfidence,
-
-    textConfidence: input.textConfidence
-  })
-
   const signals = {
     ...input.signals,
 
@@ -182,9 +114,9 @@ async function persistClassification(input: PersistClassificationInput) {
 
       confidence: input.confidence,
 
-      visualConfidence,
+      visualConfidence: input.visualConfidence,
 
-      textConfidence,
+      textConfidence: input.textConfidence,
 
       ambiguous: input.ambiguous,
 

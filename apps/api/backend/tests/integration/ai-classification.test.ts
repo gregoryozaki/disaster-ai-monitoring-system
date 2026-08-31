@@ -48,7 +48,9 @@ async function ensureFloodCategory() {
   })
 }
 
-function mockAvailableTextClassification(cobradeCode = "1.2.3.0.0") {
+function mockAvailableTextClassification(
+  cobradeCode: string | null = "1.2.3.0.0"
+) {
   const fetchMock = vi.fn().mockResolvedValue(
     new Response(
       JSON.stringify({
@@ -58,19 +60,31 @@ function mockAvailableTextClassification(cobradeCode = "1.2.3.0.0") {
 
         confidence: 0.84,
 
+        visualConfidence: null,
+
+        textConfidence: 0.84,
+
+        ambiguous: false,
+
+        ambiguityReason: null,
+
         explanationSimple: "Classificação textual mockada para teste.",
 
         model: {
           modelType: "TEXTUAL",
-          name: "mock-keyword-text",
-          version: "0.1.0",
+          name: "mock-bertimbau-text",
+          version: "test-v2",
           syntheticData: true
         },
 
         signals: {
           textUsed: true,
           imageReceived: true,
-          imageUsed: false
+          imageUsed: false,
+
+          textLabel: "COBRADE_1_2_3_0_0",
+
+          visualResultStatus: "UNAVAILABLE"
         }
       }),
 
@@ -102,6 +116,14 @@ function mockAvailableVisualClassification() {
         predictedCobradeCode: null,
 
         confidence: 0.93,
+
+        visualConfidence: 0.93,
+
+        textConfidence: null,
+
+        ambiguous: false,
+
+        ambiguityReason: null,
 
         explanationSimple:
           "O modelo visual identificou evidências compatíveis com fogo ou fumaça.",
@@ -144,6 +166,204 @@ function mockAvailableVisualClassification() {
   return fetchMock
 }
 
+function mockMultimodalAgreementClassification() {
+  const fetchMock = vi.fn().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        resultStatus: "AVAILABLE",
+
+        predictedCobradeCode: "1.2.3.0.0",
+
+        confidence: null,
+
+        visualConfidence: 0.95,
+
+        textConfidence: 0.88,
+
+        ambiguous: false,
+
+        ambiguityReason: null,
+
+        explanationSimple:
+          "As evidências visual e textual são semanticamente compatíveis.",
+
+        model: {
+          modelType: "MULTIMODAL",
+          name: "kamara_semantic_late_fusion",
+          version: "v1",
+          syntheticData: true
+        },
+
+        signals: {
+          textUsed: true,
+          imageReceived: true,
+          imageUsed: true,
+
+          visualResultStatus: "AVAILABLE",
+          textResultStatus: "AVAILABLE",
+
+          visualLabel: "FLOOD_WATER",
+          textLabel: "COBRADE_1_2_3_0_0",
+
+          fusionCompatibility: "AGREEMENT",
+
+          candidateCobradeCodes: ["1.2.1.0.0", "1.2.2.0.0", "1.2.3.0.0"],
+
+          visualModel: {
+            name: "mobilenet_v3_large",
+            version: "1.0.0",
+            syntheticData: false
+          },
+
+          textModel: {
+            name: "kamara_bertimbau_v2",
+            version: "v2",
+            syntheticData: true
+          }
+        }
+      }),
+
+      {
+        status: 200,
+
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+  )
+
+  vi.stubGlobal("fetch", fetchMock)
+
+  return fetchMock
+}
+
+function mockMultimodalConflictClassification() {
+  const ambiguityReason =
+    "As evidências visual e textual apontam para famílias de evento semanticamente incompatíveis."
+
+  const fetchMock = vi.fn().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        resultStatus: "AVAILABLE",
+
+        predictedCobradeCode: null,
+
+        confidence: null,
+
+        visualConfidence: 0.97,
+
+        textConfidence: 0.92,
+
+        ambiguous: true,
+
+        ambiguityReason,
+
+        explanationSimple: `${ambiguityReason} Nenhuma categoria COBRADE específica foi escolhida automaticamente.`,
+
+        model: {
+          modelType: "MULTIMODAL",
+          name: "kamara_semantic_late_fusion",
+          version: "v1",
+          syntheticData: true
+        },
+
+        signals: {
+          textUsed: true,
+          imageReceived: true,
+          imageUsed: true,
+
+          visualResultStatus: "AVAILABLE",
+          textResultStatus: "AVAILABLE",
+
+          visualLabel: "FIRE_SMOKE",
+          textLabel: "COBRADE_1_2_3_0_0",
+
+          fusionCompatibility: "CONFLICT",
+
+          candidateCobradeCodes: [
+            "1.4.1.3.1",
+            "1.4.1.3.2",
+            "2.3.1.1.0",
+            "2.3.1.2.0"
+          ],
+
+          visualModel: {
+            name: "mobilenet_v3_large",
+            version: "1.0.0",
+            syntheticData: false
+          },
+
+          textModel: {
+            name: "kamara_bertimbau_v2",
+            version: "v2",
+            syntheticData: true
+          }
+        }
+      }),
+
+      {
+        status: 200,
+
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+  )
+
+  vi.stubGlobal("fetch", fetchMock)
+
+  return fetchMock
+}
+
+function mockLegacyClassificationWithoutMultimodalFields() {
+  const fetchMock = vi.fn().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        resultStatus: "AVAILABLE",
+
+        predictedCobradeCode: "1.2.3.0.0",
+
+        confidence: 0.84,
+
+        /*
+         * Contrato legado propositalmente sem:
+         *
+         * visualConfidence
+         * textConfidence
+         * ambiguous
+         * ambiguityReason
+         */
+        explanationSimple: "Resposta legada propositalmente inválida.",
+
+        model: {
+          modelType: "TEXTUAL",
+          name: "legacy-text-model",
+          version: "0.1.0",
+          syntheticData: true
+        },
+
+        signals: {
+          textUsed: true
+        }
+      }),
+
+      {
+        status: 200,
+
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+    )
+  )
+
+  vi.stubGlobal("fetch", fetchMock)
+
+  return fetchMock
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
@@ -151,11 +371,6 @@ afterEach(() => {
 
 describe("Pré-análise de IA", () => {
   it("deve enviar texto e imagem ao serviço de IA e persistir a classificação textual", async () => {
-    /*
-     * O banco de testes é limpo antes de cada teste.
-     * Portanto a categoria necessária precisa ser
-     * criada dentro do próprio caso de teste.
-     */
     await ensureFloodCategory()
 
     const { occurrenceId } = await createOccurrenceWithPhoto(
@@ -215,10 +430,6 @@ describe("Pré-análise de IA", () => {
 
     expect(Number(persisted.confidence)).toBeCloseTo(0.84)
 
-    /*
-     * Uma classificação TEXTUAL deve preencher
-     * apenas a confiança textual.
-     */
     expect(persisted.visualConfidence).toBeNull()
 
     expect(Number(persisted.textConfidence)).toBeCloseTo(0.84)
@@ -233,9 +444,9 @@ describe("Pré-análise de IA", () => {
 
     expect(persisted.modelVersion.modelType).toBe("TEXTUAL")
 
-    expect(persisted.modelVersion.name).toBe("mock-keyword-text")
+    expect(persisted.modelVersion.name).toBe("mock-bertimbau-text")
 
-    expect(persisted.modelVersion.version).toBe("0.1.0")
+    expect(persisted.modelVersion.version).toBe("test-v2")
 
     expect(persisted.modelVersion.syntheticData).toBe(true)
   })
@@ -272,10 +483,6 @@ describe("Pré-análise de IA", () => {
 
     expect(Number(persisted.confidence)).toBeCloseTo(0.93)
 
-    /*
-     * Uma classificação VISUAL deve preencher
-     * apenas a confiança visual.
-     */
     expect(Number(persisted.visualConfidence)).toBeCloseTo(0.93)
 
     expect(persisted.textConfidence).toBeNull()
@@ -284,10 +491,6 @@ describe("Pré-análise de IA", () => {
 
     expect(persisted.ambiguityReason).toBeNull()
 
-    /*
-     * A visão fornece evidência ampla.
-     * Não atribuímos COBRADE exata nesta etapa.
-     */
     expect(persisted.predictedCategoryId).toBeNull()
 
     expect(persisted.predictedCategory).toBeNull()
@@ -317,6 +520,157 @@ describe("Pré-análise de IA", () => {
     })
   })
 
+  it("deve persistir concordância multimodal preservando os scores das duas modalidades", async () => {
+    await ensureFloodCategory()
+
+    const { occurrenceId } = await createOccurrenceWithPhoto(
+      "A rua ficou completamente alagada depois da chuva."
+    )
+
+    const fetchMock = mockMultimodalAgreementClassification()
+
+    const classification = await preAnalyzeOccurrence({
+      occurrenceId
+    })
+
+    expect(classification).not.toBeNull()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    const persisted = await prisma.aIClassification.findUniqueOrThrow({
+      where: {
+        id: classification!.id
+      },
+
+      include: {
+        predictedCategory: true,
+        modelVersion: true
+      }
+    })
+
+    expect(persisted.resultStatus).toBe("AVAILABLE")
+
+    /*
+     * Não existe score multimodal calibrado
+     * nesta versão.
+     */
+    expect(persisted.confidence).toBeNull()
+
+    expect(Number(persisted.visualConfidence)).toBeCloseTo(0.95)
+
+    expect(Number(persisted.textConfidence)).toBeCloseTo(0.88)
+
+    expect(persisted.ambiguous).toBe(false)
+
+    expect(persisted.ambiguityReason).toBeNull()
+
+    expect(persisted.predictedCategory?.cobradeCode).toBe("1.2.3.0.0")
+
+    expect(persisted.predictedCategory?.name).toBe("Alagamentos")
+
+    expect(persisted.modelVersion.modelType).toBe("MULTIMODAL")
+
+    expect(persisted.modelVersion.name).toBe("kamara_semantic_late_fusion")
+
+    expect(persisted.modelVersion.version).toBe("v1")
+
+    expect(persisted.modelVersion.syntheticData).toBe(true)
+
+    expect(persisted.signals).toMatchObject({
+      textUsed: true,
+      imageReceived: true,
+      imageUsed: true,
+
+      visualResultStatus: "AVAILABLE",
+      textResultStatus: "AVAILABLE",
+
+      visualLabel: "FLOOD_WATER",
+      textLabel: "COBRADE_1_2_3_0_0",
+
+      fusionCompatibility: "AGREEMENT",
+
+      candidateCobradeCodes: ["1.2.1.0.0", "1.2.2.0.0", "1.2.3.0.0"],
+
+      visualModel: {
+        name: "mobilenet_v3_large",
+        version: "1.0.0",
+        syntheticData: false
+      },
+
+      textModel: {
+        name: "kamara_bertimbau_v2",
+        version: "v2",
+        syntheticData: true
+      },
+
+      predictedCobradeCode: "1.2.3.0.0"
+    })
+  })
+
+  it("deve persistir conflito multimodal sem escolher uma categoria automaticamente", async () => {
+    const { occurrenceId } = await createOccurrenceWithPhoto(
+      "A avenida está completamente alagada depois da chuva."
+    )
+
+    const fetchMock = mockMultimodalConflictClassification()
+
+    const classification = await preAnalyzeOccurrence({
+      occurrenceId
+    })
+
+    expect(classification).not.toBeNull()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    const persisted = await prisma.aIClassification.findUniqueOrThrow({
+      where: {
+        id: classification!.id
+      },
+
+      include: {
+        predictedCategory: true,
+        modelVersion: true
+      }
+    })
+
+    expect(persisted.resultStatus).toBe("AVAILABLE")
+
+    expect(persisted.confidence).toBeNull()
+
+    expect(Number(persisted.visualConfidence)).toBeCloseTo(0.97)
+
+    expect(Number(persisted.textConfidence)).toBeCloseTo(0.92)
+
+    expect(persisted.ambiguous).toBe(true)
+
+    expect(persisted.ambiguityReason).toBe(
+      "As evidências visual e textual apontam para famílias de evento semanticamente incompatíveis."
+    )
+
+    /*
+     * Em conflito semântico não existe
+     * escolha automática da COBRADE.
+     */
+    expect(persisted.predictedCategoryId).toBeNull()
+
+    expect(persisted.predictedCategory).toBeNull()
+
+    expect(persisted.modelVersion.modelType).toBe("MULTIMODAL")
+
+    expect(persisted.modelVersion.name).toBe("kamara_semantic_late_fusion")
+
+    expect(persisted.modelVersion.version).toBe("v1")
+
+    expect(persisted.signals).toMatchObject({
+      visualLabel: "FIRE_SMOKE",
+      textLabel: "COBRADE_1_2_3_0_0",
+
+      fusionCompatibility: "CONFLICT",
+
+      predictedCobradeCode: null
+    })
+  })
+
   it("deve preservar COBRADE desconhecido sem inventar uma categoria", async () => {
     const { occurrenceId } = await createOccurrenceWithPhoto(
       "Ocorrência usada para testar categoria desconhecida."
@@ -338,21 +692,51 @@ describe("Pré-análise de IA", () => {
 
     expect(persisted.predictedCategoryId).toBeNull()
 
-    /*
-     * Mesmo quando a COBRADE não existe localmente,
-     * preservamos o valor bruto retornado pela IA
-     * para rastreabilidade.
-     */
     expect(persisted.signals).toMatchObject({
       predictedCobradeCode: "9.9.9.9.9"
     })
 
-    /*
-     * Continua sendo uma classificação textual.
-     */
     expect(persisted.visualConfidence).toBeNull()
 
     expect(Number(persisted.textConfidence)).toBeCloseTo(0.84)
+  })
+
+  it("deve rejeitar contrato legado sem os campos multimodais obrigatórios", async () => {
+    const { occurrenceId } = await createOccurrenceWithPhoto(
+      "Ocorrência usada para testar contrato legado."
+    )
+
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {
+        // Erro esperado neste cenário.
+      })
+
+    const fetchMock = mockLegacyClassificationWithoutMultimodalFields()
+
+    const result = await preAnalyzeOccurrence({
+      occurrenceId
+    })
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    /*
+     * O HttpAIService converte violação do
+     * contrato em AIServiceUnavailableError,
+     * portanto a pré-análise degrada sem
+     * bloquear a ocorrência.
+     */
+    expect(result).toBeNull()
+
+    expect(consoleErrorSpy).toHaveBeenCalled()
+
+    const classificationCount = await prisma.aIClassification.count({
+      where: {
+        occurrenceId
+      }
+    })
+
+    expect(classificationCount).toBe(0)
   })
 
   it("não deve impedir o fluxo quando o serviço de IA estiver indisponível", async () => {
@@ -393,11 +777,6 @@ describe("Pré-análise de IA", () => {
       }
     })
 
-    /*
-     * Falha do serviço de IA é degradável.
-     * A ocorrência continua normalmente aguardando
-     * revisão humana.
-     */
     expect(occurrence.status).toBe("UNDER_REVIEW")
   })
 })
