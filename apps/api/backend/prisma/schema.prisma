@@ -1,0 +1,519 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  CITIZEN
+  MANAGER
+  ADMIN
+  RESEARCHER
+}
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  INACTIVE
+}
+
+enum OccurrenceStatus {
+  DRAFT
+  PENDING_SYNC
+  SYNCED
+  UNDER_REVIEW
+  NEEDS_MORE_INFO
+  CONFIRMED
+  REJECTED
+}
+
+enum LocationSource {
+  AUTO
+  MANUAL
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+}
+
+enum MediaOrigin {
+  INITIAL
+  COMPLEMENT
+}
+
+enum AIModelType {
+  VISUAL
+  TEXTUAL
+  MULTIMODAL
+  RISK_PREDICTION
+}
+
+enum AIResultStatus {
+  AVAILABLE
+  UNAVAILABLE
+  ERROR
+}
+
+enum ValidationDecision {
+  CONFIRM
+  REJECT
+  CORRECT
+  REQUEST_MORE_INFO
+}
+
+enum ComplementRequestStatus {
+  OPEN
+  ANSWERED
+  CANCELLED
+}
+
+enum ActorType {
+  USER
+  SYSTEM
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RiskTrend {
+  DECREASING
+  STABLE
+  INCREASING
+  UNKNOWN
+}
+
+enum DataSourceType {
+  SYNTHETIC
+  INPE
+  RAINFALL
+  RIVER_LEVEL
+  WEATHER_STATION
+  SATELLITE
+  HISTORICAL
+  OTHER
+}
+
+enum IntegrityFlagType {
+  DUPLICATE
+  SPAM
+  OTHER
+}
+
+enum ExportFormat {
+  CSV
+  JSON
+}
+
+enum ExportStatus {
+  QUEUED
+  PROCESSING
+  READY
+  FAILED
+}
+
+model User {
+  id            String     @id @default(uuid()) @db.Uuid
+  name          String?
+  email         String     @unique
+  passwordHash  String
+  role          UserRole   @default(CITIZEN)
+  status        UserStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  deactivatedAt DateTime?
+
+  occurrences          Occurrence[]           @relation("OccurrenceReporter")
+  validations          Validation[]           @relation("ValidationManager")
+  statusChanges        StatusHistory[]        @relation("StatusChangedBy")
+  complementRequests   InformationRequest[]   @relation("RequestManager")
+  complements          OccurrenceComplement[] @relation("ComplementCitizen")
+  invitesCreated       ManagerInvite[]        @relation("InviteCreator")
+  invitesAccepted      ManagerInvite[]        @relation("InviteAcceptedBy")
+  passwordResetTokens  PasswordResetToken[]
+  thresholdsCreated    ConfidenceThreshold[]  @relation("ThresholdCreator")
+  auditLogs            AuditLog[]             @relation("AuditActor")
+  exportJobs           ExportJob[]            @relation("ExportRequester")
+  integrityResolutions IntegrityFlag[]        @relation("IntegrityResolvedBy")
+
+  @@index([role, status])
+  @@map("users")
+}
+
+model ManagerInvite {
+  id               String    @id @default(uuid()) @db.Uuid
+  email            String
+  tokenHash        String    @unique
+  createdByAdminId String    @db.Uuid
+  acceptedByUserId String?   @db.Uuid
+  expiresAt        DateTime
+  usedAt           DateTime?
+  createdAt        DateTime  @default(now())
+
+  createdByAdmin User  @relation("InviteCreator", fields: [createdByAdminId], references: [id])
+  acceptedByUser User? @relation("InviteAcceptedBy", fields: [acceptedByUserId], references: [id])
+
+  @@index([email])
+  @@index([expiresAt])
+  @@map("manager_invites")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model DisasterCategory {
+  id          String   @id @default(uuid()) @db.Uuid
+  cobradeCode String   @unique
+  name        String
+  groupName   String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  confirmedOccurrences Occurrence[]          @relation("ConfirmedCategory")
+  aiClassifications    AIClassification[]    @relation("PredictedCategory")
+  validations          Validation[]          @relation("ValidationFinalCategory")
+  thresholds           ConfidenceThreshold[]
+  predictions          RiskPrediction[]
+
+  @@index([active])
+  @@map("disaster_categories")
+}
+
+model Occurrence {
+  id                  String           @id @default(uuid()) @db.Uuid
+  clientLocalId       String?          @unique
+  idempotencyKey      String?          @unique
+  reporterId          String           @db.Uuid
+  confirmedCategoryId String?          @db.Uuid
+  description         String?
+  urgency             UrgencyLevel     @default(MEDIUM)
+  humanRisk           Boolean          @default(false)
+  reportedAt          DateTime         @default(now())
+  latitude            Decimal          @db.Decimal(9, 6)
+  longitude           Decimal          @db.Decimal(9, 6)
+  locationSource      LocationSource
+  locationAccuracyM   Decimal?         @db.Decimal(8, 2)
+  status              OccurrenceStatus @default(UNDER_REVIEW)
+  syncedAt            DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  deletedAt           DateTime?
+
+  reporter              User                   @relation("OccurrenceReporter", fields: [reporterId], references: [id])
+  confirmedCategory     DisasterCategory?      @relation("ConfirmedCategory", fields: [confirmedCategoryId], references: [id])
+  media                 OccurrenceMedia[]
+  aiClassifications     AIClassification[]
+  validations           Validation[]
+  statusHistory         StatusHistory[]
+  informationRequests   InformationRequest[]
+  complements           OccurrenceComplement[]
+  integrityFlags        IntegrityFlag[]        @relation("FlaggedOccurrence")
+  relatedIntegrityFlags IntegrityFlag[]        @relation("RelatedOccurrence")
+
+  @@index([status, reportedAt])
+  @@index([latitude, longitude])
+  @@index([reporterId, reportedAt])
+  @@index([confirmedCategoryId, status])
+  @@map("occurrences")
+}
+
+model OccurrenceMedia {
+  id           String      @id @default(uuid()) @db.Uuid
+  occurrenceId String      @db.Uuid
+  complementId String?     @db.Uuid
+  type         MediaType
+  origin       MediaOrigin @default(INITIAL)
+  mimeType     String
+  storageRef   String
+  sizeBytes    BigInt?
+  durationSec  Int?
+  sha256       String?
+  isPrimary    Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+
+  occurrence Occurrence            @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  complement OccurrenceComplement? @relation(fields: [complementId], references: [id], onDelete: SetNull)
+
+  @@index([occurrenceId, type])
+  @@index([complementId])
+  @@index([sha256])
+  @@map("occurrence_media")
+}
+
+model ModelVersion {
+  id            String      @id @default(uuid()) @db.Uuid
+  modelType     AIModelType
+  name          String
+  version       String
+  algorithm     String?
+  framework     String?
+  metrics       Json?
+  parameters    Json?
+  active        Boolean     @default(false)
+  syntheticData Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+
+  classifications AIClassification[]
+  predictions     RiskPrediction[]
+
+  @@unique([modelType, name, version])
+  @@index([modelType, active])
+  @@map("model_versions")
+}
+
+model AIClassification {
+  id                  String         @id @default(uuid()) @db.Uuid
+  occurrenceId        String         @db.Uuid
+  modelVersionId      String         @db.Uuid
+  predictedCategoryId String?        @db.Uuid
+  resultStatus        AIResultStatus @default(AVAILABLE)
+  confidence          Decimal?       @db.Decimal(5, 4)
+  visualConfidence    Decimal?       @db.Decimal(5, 4)
+  textConfidence      Decimal?       @db.Decimal(5, 4)
+  ambiguous           Boolean        @default(false)
+  ambiguityReason     String?
+  explanationSimple   String?
+  signals             Json?
+  createdAt           DateTime       @default(now())
+
+  occurrence        Occurrence        @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  modelVersion      ModelVersion      @relation(fields: [modelVersionId], references: [id])
+  predictedCategory DisasterCategory? @relation("PredictedCategory", fields: [predictedCategoryId], references: [id])
+
+  @@index([occurrenceId, createdAt])
+  @@index([predictedCategoryId, confidence])
+  @@index([modelVersionId])
+  @@map("ai_classifications")
+}
+
+model Validation {
+  id              String             @id @default(uuid()) @db.Uuid
+  occurrenceId    String             @db.Uuid
+  managerId       String             @db.Uuid
+  decision        ValidationDecision
+  finalCategoryId String?            @db.Uuid
+  rejectionReason String?
+  note            String?
+  createdAt       DateTime           @default(now())
+
+  occurrence    Occurrence        @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  manager       User              @relation("ValidationManager", fields: [managerId], references: [id])
+  finalCategory DisasterCategory? @relation("ValidationFinalCategory", fields: [finalCategoryId], references: [id])
+
+  @@index([occurrenceId, createdAt])
+  @@index([managerId, createdAt])
+  @@map("validations")
+}
+
+model StatusHistory {
+  id              String            @id @default(uuid()) @db.Uuid
+  occurrenceId    String            @db.Uuid
+  fromStatus      OccurrenceStatus?
+  toStatus        OccurrenceStatus
+  changedByUserId String?           @db.Uuid
+  actorType       ActorType
+  reason          String?
+  createdAt       DateTime          @default(now())
+
+  occurrence    Occurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  changedByUser User?      @relation("StatusChangedBy", fields: [changedByUserId], references: [id])
+
+  @@index([occurrenceId, createdAt])
+  @@index([toStatus, createdAt])
+  @@map("status_history")
+}
+
+model InformationRequest {
+  id           String                  @id @default(uuid()) @db.Uuid
+  occurrenceId String                  @db.Uuid
+  managerId    String                  @db.Uuid
+  message      String
+  status       ComplementRequestStatus @default(OPEN)
+  createdAt    DateTime                @default(now())
+  answeredAt   DateTime?
+
+  occurrence  Occurrence             @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  manager     User                   @relation("RequestManager", fields: [managerId], references: [id])
+  complements OccurrenceComplement[]
+
+  @@index([occurrenceId, status])
+  @@map("information_requests")
+}
+
+model OccurrenceComplement {
+  id           String   @id @default(uuid()) @db.Uuid
+  occurrenceId String   @db.Uuid
+  requestId    String   @unique @db.Uuid
+  citizenId    String   @db.Uuid
+  text         String?
+  createdAt    DateTime @default(now())
+
+  occurrence Occurrence         @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+  request    InformationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  citizen    User               @relation("ComplementCitizen", fields: [citizenId], references: [id])
+  media      OccurrenceMedia[]
+
+  @@index([occurrenceId, createdAt])
+  @@map("occurrence_complements")
+}
+
+model ConfidenceThreshold {
+  id               String      @id @default(uuid()) @db.Uuid
+  categoryId       String?     @db.Uuid
+  createdById      String      @db.Uuid
+  modelType        AIModelType
+  lowUpperBound    Decimal     @db.Decimal(5, 4)
+  mediumUpperBound Decimal     @db.Decimal(5, 4)
+  version          Int
+  active           Boolean     @default(true)
+  createdAt        DateTime    @default(now())
+
+  category  DisasterCategory? @relation(fields: [categoryId], references: [id])
+  createdBy User              @relation("ThresholdCreator", fields: [createdById], references: [id])
+
+  @@unique([categoryId, modelType, version])
+  @@index([modelType, active])
+  @@map("confidence_thresholds")
+}
+
+model DataSource {
+  id          String         @id @default(uuid()) @db.Uuid
+  name        String
+  type        DataSourceType
+  externalRef String?
+  description String?
+  active      Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+
+  predictionSources PredictionSource[]
+
+  @@unique([name, type])
+  @@index([type, active])
+  @@map("data_sources")
+}
+
+model RiskPrediction {
+  id                String    @id @default(uuid()) @db.Uuid
+  categoryId        String    @db.Uuid
+  modelVersionId    String    @db.Uuid
+  regionKey         String
+  regionName        String
+  centerLatitude    Decimal?  @db.Decimal(9, 6)
+  centerLongitude   Decimal?  @db.Decimal(9, 6)
+  horizonHours      Int
+  riskLevel         RiskLevel
+  probability       Decimal?  @db.Decimal(5, 4)
+  trend             RiskTrend @default(UNKNOWN)
+  factors           Json?
+  explanationSimple String?
+  synthetic         Boolean   @default(true)
+  validFrom         DateTime
+  validUntil        DateTime?
+  createdAt         DateTime  @default(now())
+
+  category     DisasterCategory   @relation(fields: [categoryId], references: [id])
+  modelVersion ModelVersion       @relation(fields: [modelVersionId], references: [id])
+  sources      PredictionSource[]
+
+  @@index([regionKey, categoryId, horizonHours, createdAt])
+  @@index([riskLevel, validFrom])
+  @@map("risk_predictions")
+}
+
+model PredictionSource {
+  id             String   @id @default(uuid()) @db.Uuid
+  predictionId   String   @db.Uuid
+  sourceId       String   @db.Uuid
+  datasetVersion String?
+  retrievedAt    DateTime @default(now())
+  metadata       Json?
+
+  prediction RiskPrediction @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+  source     DataSource     @relation(fields: [sourceId], references: [id])
+
+  @@index([predictionId])
+  @@index([sourceId, retrievedAt])
+  @@map("prediction_sources")
+}
+
+model IntegrityFlag {
+  id                  String            @id @default(uuid()) @db.Uuid
+  occurrenceId        String            @db.Uuid
+  relatedOccurrenceId String?           @db.Uuid
+  resolvedByUserId    String?           @db.Uuid
+  type                IntegrityFlagType
+  score               Decimal?          @db.Decimal(5, 4)
+  reason              String?
+  createdAt           DateTime          @default(now())
+  resolvedAt          DateTime?
+
+  occurrence        Occurrence  @relation("FlaggedOccurrence", fields: [occurrenceId], references: [id], onDelete: Cascade)
+  relatedOccurrence Occurrence? @relation("RelatedOccurrence", fields: [relatedOccurrenceId], references: [id], onDelete: SetNull)
+  resolvedByUser    User?       @relation("IntegrityResolvedBy", fields: [resolvedByUserId], references: [id])
+
+  @@index([occurrenceId, type, resolvedAt])
+  @@map("integrity_flags")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  actorUserId String?  @db.Uuid
+  action      String
+  entityType  String
+  entityId    String
+  beforeData  Json?
+  afterData   Json?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  actorUser User? @relation("AuditActor", fields: [actorUserId], references: [id])
+
+  @@index([entityType, entityId, createdAt])
+  @@index([actorUserId, createdAt])
+  @@map("audit_logs")
+}
+
+model ExportJob {
+  id            String       @id @default(uuid()) @db.Uuid
+  requestedById String       @db.Uuid
+  format        ExportFormat
+  status        ExportStatus @default(QUEUED)
+  filters       Json?
+  anonymized    Boolean      @default(true)
+  fileRef       String?
+  errorMessage  String?
+  createdAt     DateTime     @default(now())
+  completedAt   DateTime?
+
+  requestedBy User @relation("ExportRequester", fields: [requestedById], references: [id])
+
+  @@index([requestedById, createdAt])
+  @@index([status, createdAt])
+  @@map("export_jobs")
+}

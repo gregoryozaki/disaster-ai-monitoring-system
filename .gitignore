@@ -5,6 +5,9 @@
 **/dist/
 **/coverage/
 
+# Prisma generated client
+apps/api/backend/src/generated/prisma/
+
 # Environment
 **/.env
 **/.env.*
