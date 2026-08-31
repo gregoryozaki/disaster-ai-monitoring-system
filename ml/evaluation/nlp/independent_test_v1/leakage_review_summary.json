@@ -1,0 +1,44 @@
+{
+  "comparison": "independent_test_v1_candidate_vs_synthetic_occurrences_v2",
+  "review_status": "PASS",
+  "decision": "no_records_removed",
+  "manual_review_required_threshold": 0.5,
+  "near_duplicate_threshold": 0.9,
+  "pairs_ge_0_50": 5,
+  "pairs_ge_0_80": 0,
+  "pairs_ge_0_90": 0,
+  "max_similarity": 0.6075853305215401,
+  "reviewed_pairs": [
+    {
+      "independent_id": "independent_v1_incendio_florestal_protegido_009",
+      "similarity": 0.6075853305215401,
+      "decision": "keep",
+      "reason": "Similaridade temática intraclasse; não constitui near-duplicate."
+    },
+    {
+      "independent_id": "independent_v1_enxurrada_022",
+      "similarity": 0.5704138359982402,
+      "decision": "keep",
+      "reason": "Sobreposição lexical em 'cratera', mas eventos e classes distintos."
+    },
+    {
+      "independent_id": "independent_v1_inundacao_025",
+      "similarity": 0.5647903013148549,
+      "decision": "keep",
+      "reason": "Contraste semântico real entre Inundação e Enxurrada; sem evidência de cópia."
+    },
+    {
+      "independent_id": "independent_v1_incendio_florestal_protegido_008",
+      "similarity": 0.5571735096478427,
+      "decision": "keep",
+      "reason": "Mesmo domínio COBRADE, mas formulações e entidades independentes."
+    },
+    {
+      "independent_id": "independent_v1_incendio_florestal_protegido_002",
+      "similarity": 0.5141349687351555,
+      "decision": "keep",
+      "reason": "Similaridade temática esperada para incêndio em área protegida."
+    }
+  ],
+  "conclusion": "Nenhum caso apresentou evidência de vazamento por duplicação ou quase-duplicação entre o conjunto independente e o conjunto sintético de treinamento."
+}

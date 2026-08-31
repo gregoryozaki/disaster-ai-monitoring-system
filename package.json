@@ -1,0 +1,28 @@
+{
+  "name": "disaster-ai-monitoring-system",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/mobile/frontend",
+    "apps/dashboard/frontend",
+    "apps/api/backend",
+    "packages/shared-types"
+  ],
+  "scripts": {
+    "dev:mobile": "npm --workspace @kamara/mobile-frontend run dev",
+    "dev:dashboard": "npm --workspace @kamara/dashboard-frontend run dev",
+    "dev:api": "npm --workspace @kamara/api run dev",
+    "build": "npm --workspaces --if-present run build",
+    "lint:api": "npm --workspace @kamara/api run lint",
+    "typecheck:api": "npm --workspace @kamara/api run typecheck",
+    "build:api": "npm --workspace @kamara/api run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:api": "prettier --write \"apps/api/backend/**/*.{ts,js,json}\"",
+    "format:check:api": "prettier --check \"apps/api/backend/**/*.{ts,js,json}\"",
+    "check:api": "npm run typecheck:api && npm run lint:api && npm run format:check:api"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
+  }
+}

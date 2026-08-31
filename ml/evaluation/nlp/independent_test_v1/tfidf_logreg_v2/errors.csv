@@ -1,0 +1,114 @@
+sample_id,text,true_label,predicted_label,confidence
+independent_v1_inundacao_006,"Córrego transbordou e inundou as casas com perda de móveis, eletrodomésticos e alimentos.",COBRADE_1_2_1_0_0,OTHER,0.26006128399508416
+independent_v1_inundacao_010,"um córrego paralelo à Rua Mâncio Lima transbordou, causando transtornos e danos materiais à cerca de trinta famílias",COBRADE_1_2_1_0_0,COBRADE_1_2_2_0_0,0.28733745101189884
+independent_v1_inundacao_011,"No Cinturão Azul, o Arroio Fiúza transbordou e deixou dezenas de famílias ilhadas.",COBRADE_1_2_1_0_0,OTHER,0.391681106220363
+independent_v1_inundacao_015,O córrego do local transbordou após as intensas chuvas registradas no município durante o final de semana e provocou alagamento na via,COBRADE_1_2_1_0_0,COBRADE_1_2_3_0_0,0.27727403656071337
+independent_v1_inundacao_017,"o Igarapé Branco transbordou. Sem capacidade para escoar o grande volume de água, o igarapé invadiu propriedades",COBRADE_1_2_1_0_0,COBRADE_1_2_3_0_0,0.2842455759180429
+independent_v1_enxurrada_004,levantamento preliminar feito por equipe da Secretaria de Desenvolvimento Rural aponta duas pontes arrastadas pelas águas,COBRADE_1_2_2_0_0,COBRADE_1_2_3_0_0,0.2824744279280311
+independent_v1_enxurrada_007,"chuva intensa a montante, que formou uma onda repentina capaz de arrastar veículos e pessoas.",COBRADE_1_2_2_0_0,OTHER,0.27222368152059906
+independent_v1_enxurrada_009,"a água passasse sobre a ponte, arrastando muito material, o que ocasionou trincas e deslocamento da mesma",COBRADE_1_2_2_0_0,OTHER,0.37547448462174704
+independent_v1_enxurrada_010,Boa parte do guarda corpo e das pranchas foram arrastada pela enxurrada,COBRADE_1_2_2_0_0,OTHER,0.3187475744983853
+independent_v1_enxurrada_011,"A enxurrada destruiu parte do sistema viário, danificando pontes e estradas na área rural",COBRADE_1_2_2_0_0,OTHER,0.2128901744266652
+independent_v1_enxurrada_013,"Uma enxurrada destruiu completamente parte da pista, impossibilitando o acesso de pessoas ou veículos",COBRADE_1_2_2_0_0,OTHER,0.2823051774348848
+independent_v1_enxurrada_014,"PONTE NA LOCALIDADE DE ALTO PEDRA BRANCA, A QUAL FOI ARRANCADA COM A ENXURRADA DE JUNHO DE 2023.",COBRADE_1_2_2_0_0,OTHER,0.32667906833332294
+independent_v1_enxurrada_015,"Durante as fortes enxurradas ocorridas nos dias 21 e 22 de julho, na estrada geral da localidade de Morrinhos, uma ponte-galeria foi seriamente avariada",COBRADE_1_2_2_0_0,OTHER,0.4291811831306899
+independent_v1_enxurrada_018,uma enxurrada derrubou a ponte sobre o Arroio Sampaio.,COBRADE_1_2_2_0_0,OTHER,0.37034293413625324
+independent_v1_enxurrada_019,"Casas foram invadidas e destruídas, pontes derrubadas, máquinas agrícolas e até caminhões arrastados.",COBRADE_1_2_2_0_0,OTHER,0.23823726926966593
+independent_v1_enxurrada_021,A casa de uma idosa foi totalmente danificada pela água de uma enxurrada que rompeu uma das paredes,COBRADE_1_2_2_0_0,OTHER,0.3623318529717366
+independent_v1_enxurrada_022,a força da enxurrada abriu uma cratera no meio da via,COBRADE_1_2_2_0_0,OTHER,0.6316323605301787
+independent_v1_enxurrada_025,"a enxurrada destruiu a ala da ponte, além de descalçar a via, comprometendo a estrutura da mesma",COBRADE_1_2_2_0_0,OTHER,0.47512034189217583
+independent_v1_enxurrada_026,"No Rio Pequeno, a enxurrada fez com que o muro da EMEF Paulo VI e um barraco desmoronassem.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0.2555292081939329
+independent_v1_alagamento_004,"Como consequência, o local registrava constantes pontos de alagamento e o avanço do processo erosivo.",COBRADE_1_2_3_0_0,OTHER,0.3007426050649674
+independent_v1_alagamento_005,"termina na tubulação, entupindo a rede e provocando alagamentos em dias de chuva.",COBRADE_1_2_3_0_0,OTHER,0.32564823860418346
+independent_v1_alagamento_007,"um temporal isolado atingisse essa região causando chuva forte, com acumulado de chuva de 50 milímetros em menos de uma hora. Várias ruas ficaram alagadas.",COBRADE_1_2_3_0_0,OTHER,0.2953136661340642
+independent_v1_alagamento_011,Alagamentos da Rua Cel. Camisão próximo da Unidade Mista – Bairro jardim ouro verde,COBRADE_1_2_3_0_0,COBRADE_1_4_1_3_1,0.254392098286925
+independent_v1_alagamento_012,Após o registro de alagamentos provocados pelas chuvas que atingiram Cuiabá,COBRADE_1_2_3_0_0,OTHER,0.24867922445652346
+independent_v1_alagamento_013,A intervenção ocorre após registros de alagamentos em um trecho de aproximadamente 100 metros.,COBRADE_1_2_3_0_0,OTHER,0.311646473233624
+independent_v1_alagamento_019,sanar os problemas de alagamento durante o período chuvoso em diversos bairros daquela região.,COBRADE_1_2_3_0_0,OTHER,0.3708031096824062
+independent_v1_alagamento_020,a forte chuva deixou alguns trechos da via temporariamente alagados.,COBRADE_1_2_3_0_0,OTHER,0.39289307907971227
+independent_v1_alagamento_021,"Em fevereiro de 2021, João Pessoa chegou a registrar uma chuva de 180 mm, o que contabilizou 110 pontos de alagamentos.",COBRADE_1_2_3_0_0,OTHER,0.20801394696295664
+independent_v1_alagamento_022,problemas de alagamento que acontecem no bairro em dias de fortes chuva.,COBRADE_1_2_3_0_0,OTHER,0.294909554675722
+independent_v1_alagamento_030,os alagamentos que vêm afetando a comunidade local durante o período chuvoso.,COBRADE_1_2_3_0_0,OTHER,0.3668810155487151
+independent_v1_incendio_florestal_protegido_004,"o parque foi o mais atingido, com 3.855,32 hectares de área queimada, no incêndio iniciado no dia 5 de setembro",COBRADE_1_4_1_3_1,OTHER,0.306546673115381
+independent_v1_incendio_florestal_protegido_005,O Parque Nacional foi atingido por diversos incêndios florestais a partir do começo do mês de setembro.,COBRADE_1_4_1_3_1,OTHER,0.2559801787191492
+independent_v1_incendio_florestal_protegido_012,"Foram decretados extintos os incêndios no Parque Estadual Cristalino II, em Novo Mundo",COBRADE_1_4_1_3_1,OTHER,0.28359181499693276
+independent_v1_incendio_florestal_protegido_014,o incêndio que começou na semana passada na área protegida.,COBRADE_1_4_1_3_1,OTHER,0.2367014240759343
+independent_v1_incendio_florestal_protegido_023,no dia 4 de novembro registramos um incêndio no Parque Estadual Serra do Rola Moça,COBRADE_1_4_1_3_1,OTHER,0.3483125874579063
+independent_v1_incendio_florestal_nao_protegido_001,fogo na vegetação herbácea da zona lindeira da rodovia [...] A fumaça provocada pela a ação prejudicou a visibilidade dos motoristas,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.5908982334035776
+independent_v1_incendio_florestal_nao_protegido_002,três homens ateando fogo na vegetação às margens da rodovia [...] a fumaça já causava redução da visibilidade dos motoristas,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.3167010295881915
+independent_v1_incendio_florestal_nao_protegido_005,"uma queimada de pasto no Jardim das Rosas [...] A fumaça provocada pelo fogo chegou a invadir residências próximas, causando transtornos à população",COBRADE_1_4_1_3_2,OTHER,0.21692674665026518
+independent_v1_incendio_florestal_nao_protegido_007,queimada que atingiu cerca de 8.100 m² de área de vegetação [...] evitando também que a fumaça provocasse acidentes de trânsito,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.26769624449877166
+independent_v1_incendio_florestal_nao_protegido_009,queimada de grandes proporções [...] extensa área de vegetação no bairro Jardim Baronesa. A fumaça intensa pôde ser vista da base operacional,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.29597762286806395
+independent_v1_incendio_florestal_nao_protegido_010,o fogo começou em lixo descartado de forma irregular em meio à vegetação. A situação gerou bastante fumaça,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.18644974066806652
+independent_v1_incendio_florestal_nao_protegido_012,"incêndio de grandes proporções teve início no Morro de Bofete [...] fumaça intensa atingindo áreas próximas, exigindo atenção à saúde quanto à qualidade do ar",COBRADE_1_4_1_3_2,OTHER,0.34558254438595565
+independent_v1_incendio_florestal_nao_protegido_013,Um incêndio atingiu uma área verde de aproximadamente 40 mil metros quadrados [...] O fogo espalhou uma densa cortina de fumaça,COBRADE_1_4_1_3_2,COBRADE_2_3_1_1_0,0.27762934185292854
+independent_v1_incendio_florestal_nao_protegido_014,"O fogo [...] atingiu uma extensa área de vegetação [...] grande parte da cidade está tomada pela fumaça resultante deste incêndio, gerando intensa poluição",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.6000197308909143
+independent_v1_incendio_florestal_nao_protegido_015,o incêndio atingiu aproximadamente 5.000 metros quadrados de vegetação [...] evitar que a fumaça comprometesse a visibilidade na via,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.2478054162805596
+independent_v1_incendio_florestal_nao_protegido_016,"o fogo [...] prejudicou a vegetação em volta [...] problemas respiratórios, agravados com a fumaça das queimadas",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.2003349065682054
+independent_v1_incendio_florestal_nao_protegido_018,um incêndio em vegetação no bairro Recanto do Sol [...] O fogo e a fumaça geram prejuízos [...] à saúde pública,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.22865011189280599
+independent_v1_incendio_florestal_nao_protegido_019,incêndio que resultou em poluição atmosférica e do solo [...] crime de incêndio em vegetação,COBRADE_1_4_1_3_2,OTHER,0.3280481883107429
+independent_v1_incendio_florestal_nao_protegido_020,uma semana inteira de fogos na área de mata que contorna o bairro [...] A fumaça provocada pelo incêndio na mata assustou os moradores,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.3626290883260775
+independent_v1_incendio_florestal_nao_protegido_021,"um incêndio em vegetação atingia a Av. Rogaciano Leite, no bairro Salinas [...] apesar da fumaça intensa, o incêndio foi rapidamente controlado",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.2857015227330097
+independent_v1_incendio_florestal_nao_protegido_022,INCENDIO EM LOTE BALDIO [...] TIPO DE INCÊNDIO: VEGETACAO [...] estava ocasionando fumaça para as residencias circo vizinhas,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,0.24506541320457
+independent_v1_incendio_florestal_nao_protegido_023,"intensa fumaça sobre a rodovia, situação que reduzia significativamente a visibilidade [...] focos de incêndio em vegetação adjacente à faixa de domínio da BR",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.3233878731767727
+independent_v1_incendio_florestal_nao_protegido_025,"incêndio em área de vegetação com presença de lixo às margens da Linha Azul. O fogo gerou intensa fumaça, comprometendo a visibilidade dos motoristas",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.48415248120476195
+independent_v1_incendio_florestal_nao_protegido_026,incêndio em vegetação no Bairro Dias Macedo [...] conter as chamas e fumaça que avançava sobre as residências dessa localização,COBRADE_1_4_1_3_2,OTHER,0.18461139575411706
+independent_v1_incendio_florestal_nao_protegido_028,Rua Francisco Lopes [...] terreno baldio [...] existência de foco de queimada em toda sua extensão [...] incômodo da população [...] emissão de poluentes,COBRADE_1_4_1_3_2,COBRADE_1_2_3_0_0,0.24415501960851516
+independent_v1_incendio_florestal_nao_protegido_030,"foco de incêndio em vegetação no município [...] grandes queimadas, trazendo prejuízos à fauna, flora, qualidade do ar e à saúde da população",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.2787867279887293
+independent_v1_incendio_industrial_015,"ocorrência de incêndio numa fábrica de móveis, localizada no bairro Mato Preto",COBRADE_2_3_1_1_0,OTHER,0.25165205917898475
+independent_v1_incendio_industrial_022,"a fábrica estava vazia, mas por conter muito material de plástico, o fogo se espalhou de forma rápida e consumiu quase toda a estrutura",COBRADE_2_3_1_1_0,OTHER,0.3771398496495328
+independent_v1_incendio_aglomerado_residencial_002,"cerca de 30 residências foram atingidas pelas chamas, afetando 58 famílias, totalizando aproximadamente 199 pessoas.",COBRADE_2_3_1_2_0,OTHER,0.20902959744302185
+independent_v1_incendio_aglomerado_residencial_003,um incêndio de grandes proporções atingiu cinco residências localizadas na Passagem Jambu [...] diversas famílias da comunidade,COBRADE_2_3_1_2_0,COBRADE_1_2_1_0_0,0.23981952411307872
+independent_v1_incendio_aglomerado_residencial_006,incêndio que afetava três residências no mesmo terreno.,COBRADE_2_3_1_2_0,OTHER,0.2969602238386527
+independent_v1_incendio_aglomerado_residencial_007,incêndio na favela Jardim Edite [...] 80 famílias atingidas,COBRADE_2_3_1_2_0,OTHER,0.24363959718373776
+independent_v1_incendio_aglomerado_residencial_009,"Incêndio de pequena proporção atingiu comunidade [...] Cinco moradias foram destruídas, total e parcialmente.",COBRADE_2_3_1_2_0,COBRADE_1_2_1_0_0,0.23338074298627712
+independent_v1_incendio_aglomerado_residencial_010,"incêndios que atingiu três casas de madeira no beco Amazonas, no bairro Cidade de Deus",COBRADE_2_3_1_2_0,OTHER,0.2649480845712721
+independent_v1_incendio_aglomerado_residencial_013,"causou um incêndio na madrugada de ontem, que provocou sua própria morte, a destruição de outras seis moradias",COBRADE_2_3_1_2_0,OTHER,0.3484149158812799
+independent_v1_incendio_aglomerado_residencial_014,"Seis barracos foram totalmente destruídos por incêndio [...] No total, o fogo atingiu dez habitações, deixando quatro parcialmente danificadas.",COBRADE_2_3_1_2_0,OTHER,0.21412159439860876
+independent_v1_incendio_aglomerado_residencial_015,"incêndio que atingiu cerca de 200 barracos, na madrugada desta terça-feira (19), na Vila Alemoa.",COBRADE_2_3_1_2_0,OTHER,0.29085783028443496
+independent_v1_incendio_aglomerado_residencial_016,O incêndio no Caminho São Sebastião teve duração de quatro horas e a estimativa é que 70 barracos em madeira tenham sido atingidos.,COBRADE_2_3_1_2_0,OTHER,0.33890659679855534
+independent_v1_incendio_aglomerado_residencial_017,Cerca de 150 barracos foram queimados ou então derrubados para evitar o alastramento do incêndio.,COBRADE_2_3_1_2_0,INSUFFICIENT_INFO,0.31219048732802257
+independent_v1_incendio_aglomerado_residencial_018,"incêndio que atingiu cerca de 60 barracos no Caminho da Divisa, entre os becos 22 e 40",COBRADE_2_3_1_2_0,OTHER,0.26738065200939165
+independent_v1_incendio_aglomerado_residencial_019,"incêndio que destruiu cerca de 100 moradias sobre palafitas no Caminho São Sebastião, na Zona Noroeste",COBRADE_2_3_1_2_0,OTHER,0.29806151692021443
+independent_v1_incendio_aglomerado_residencial_020,o incêndio ocorreu na noite de 27 de janeiro de 2026 e afetou diretamente 22 moradias.,COBRADE_2_3_1_2_0,OTHER,0.25294230517808886
+independent_v1_incendio_aglomerado_residencial_021,"Cinco casas ficaram completamente destruídas. Outras três tiveram perda parcial. No total, 12 famílias ficaram desabrigadas",COBRADE_2_3_1_2_0,OTHER,0.5332289928203541
+independent_v1_incendio_aglomerado_residencial_022,o incêndio ocorreu em 28 de agosto de 2025 e atingiu uma extensa área de palafitas.,COBRADE_2_3_1_2_0,COBRADE_1_4_1_3_2,0.22554078787570278
+independent_v1_incendio_aglomerado_residencial_024,O incêndio ocorreu nesta segunda (16) e atingiu 150 moradias,COBRADE_2_3_1_2_0,OTHER,0.18981659624583444
+independent_v1_incendio_aglomerado_residencial_026,O fogo consumiu 175 barracos e desabrigou cerca de 280 famílias.,COBRADE_2_3_1_2_0,OTHER,0.2342983809037878
+independent_v1_incendio_aglomerado_residencial_027,"O fogo atingiu cerca de 80 moradias da comunidade, até ser controlado pelo Corpo de Bombeiros.",COBRADE_2_3_1_2_0,COBRADE_1_2_1_0_0,0.33640089291439834
+independent_v1_incendio_aglomerado_residencial_029,O incêndio que consumiu aproximadamente 20 barracos na favela da Comunidade Wilson,COBRADE_2_3_1_2_0,COBRADE_1_2_1_0_0,0.4408240189137105
+independent_v1_other_005,"vendaval que atingiu residências do setor na noite de quinta-feira, 8",OTHER,COBRADE_1_2_1_0_0,0.29355293568695123
+independent_v1_other_006,"três casas do bairro Cidade Verde, destelhadas por um vendaval ocorrido em 24 de janeiro",OTHER,COBRADE_2_3_1_2_0,0.4968484872387798
+independent_v1_other_014,A falta de chuvas resultou em [...] Falta de acesso à água potável para consumo humano.,OTHER,COBRADE_1_2_3_0_0,0.24218004813847263
+independent_v1_other_018,áreas do Município afetadas por Estiagem – 1.4.1.1.0 [...] diminuição ou exaurimento das reservas hídricas abastecedoras do município,OTHER,COBRADE_1_2_1_0_0,0.34177766398018444
+independent_v1_other_019,"um tornado se formou sobre a área rural do município, resultando em queda e quebra de árvores e postes",OTHER,COBRADE_1_4_1_3_2,0.30996282837548794
+independent_v1_other_022,passagem de um tornado que trouxe grandes estragos para a localidade.,OTHER,COBRADE_1_2_2_0_0,0.26774953774650073
+independent_v1_other_023,"Xanxerê, em Santa Catarina, obtiveram o reconhecimento federal de situação de emergência por causa de [...] tornado",OTHER,COBRADE_1_4_1_3_2,0.49269864167174027
+independent_v1_insufficient_info_001,uma ocorrência de incêndio em vegetação no bairro Jardim das Acácias.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_2,0.21890837196762275
+independent_v1_insufficient_info_002,"um incêndio em uma área de vegetação na Avenida Menino Marcelo, em frente a um shopping center",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.36964393677604757
+independent_v1_insufficient_info_003,"A Defesa Civil de Tupã atuou, na tarde desta sexta-feira (14), no combate a um incêndio em vegetação.",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.28755002890505804
+independent_v1_insufficient_info_004,Um incêndio em vegetação mobilizou equipes do Corpo de Bombeiros Militar de Santa Catarina na região central de Balneário Camboriú,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.23323416884850834
+independent_v1_insufficient_info_005,"ao chegar ao local, constatou fogo em campo aberto.",INSUFFICIENT_INFO,OTHER,0.20294178506030688
+independent_v1_insufficient_info_006,Usar fogo em vegetação e/ou deixar que ocorra queimada em área pertencente ao autuado.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.3228465716190816
+independent_v1_insufficient_info_007,um incêndio que atingiu aproximadamente cinco mil metros quadrados de vegetação.,INSUFFICIENT_INFO,OTHER,0.19489603432718378
+independent_v1_insufficient_info_008,a equipe da Defesa Civil de Itapecerica da Serra atuou no combate a um incêndio em vegetação às margens da Rodovia Régis Bittencourt,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.36982279269402096
+independent_v1_insufficient_info_009,"um homem que provocou incêndio em área de vegetação nativa às margens da GO-241, próximo à Estação Ecológica de Nova Roma",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.7656197130810479
+independent_v1_insufficient_info_010,"Um incêndio em vegetação atingiu aproximadamente 10 mil metros quadrados, o equivalente a um hectare",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.21211848840831554
+independent_v1_insufficient_info_011,onde a água invadiu diversas residências e provocou transtornos à população.,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0.25667772455991245
+independent_v1_insufficient_info_012,"Algumas casas foram invadidas pela água, forçando ao menos oito pessoas a deixarem seus lares",INSUFFICIENT_INFO,COBRADE_1_2_2_0_0,0.21577325444933593
+independent_v1_insufficient_info_013,A água também invadiu uma casa. A família passa bem e foi assistida pela Defesa Civil.,INSUFFICIENT_INFO,COBRADE_1_2_2_0_0,0.2796208707705378
+independent_v1_insufficient_info_014,"o nível da água subiu, chegando até a estrutura principal da ponte.",INSUFFICIENT_INFO,OTHER,0.28631051427256893
+independent_v1_insufficient_info_015,"o nível da agua subiu rapidamente, submergindo a ponte que liga a principal entrada do bairro",INSUFFICIENT_INFO,COBRADE_1_2_2_0_0,0.3505470977173864
+independent_v1_insufficient_info_016,o nível da água subiu a ponto de dificultar o acesso e a passagem de veículos.,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0.5286229519122326
+independent_v1_insufficient_info_017,"por diversas vezes a água invadiu sua casa, destruindo móveis e objetos pessoais.",INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0.23219296117304758
+independent_v1_insufficient_info_018,entrou em casas onde a altura da água passava de um metro.,INSUFFICIENT_INFO,OTHER,0.25774966910437597
+independent_v1_insufficient_info_019,A força da água invadiu residências e comprometeu o sistema de abastecimento do município,INSUFFICIENT_INFO,COBRADE_1_2_2_0_0,0.3345382999299458
+independent_v1_insufficient_info_020,"a água invadiu as cabines de entrada de energia elétrica, oferendo riscos de segurança",INSUFFICIENT_INFO,OTHER,0.35760971749844545
+independent_v1_insufficient_info_022,aumentando a possibilidade de ocorrências associadas a alagamentos e enxurradas.,INSUFFICIENT_INFO,OTHER,0.30785991367959303
+independent_v1_insufficient_info_024,alta probabilidade de incêndios em florestas ou nas demais formas de vegetação nativa.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.3011095269659759
+independent_v1_insufficient_info_025,o risco de incêndios aumenta e as consequências também.,INSUFFICIENT_INFO,OTHER,0.34943361296814524
+independent_v1_insufficient_info_026,Botucatu entra em uma época de maior risco para incêndios em áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_2,0.29432308966803805
+independent_v1_insufficient_info_027,"um pequeno foco de incêndio pode se espalhar rapidamente, causando danos ao meio ambiente, à fauna e à flora",INSUFFICIENT_INFO,OTHER,0.3164279266937019
+independent_v1_insufficient_info_028,Uma simples queimada pode sair do controle rapidamente e atingir áreas de vegetação,INSUFFICIENT_INFO,OTHER,0.2502553459706963
+independent_v1_insufficient_info_029,ações preventivas voltadas à redução dos impactos causados pela baixa umidade do ar e ao combate a incêndios em áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_2,0.21530294887662246
+independent_v1_insufficient_info_030,O risco é baixo a moderado para ocorrências associadas a alagamentos pontuais,INSUFFICIENT_INFO,OTHER,0.2679003350415717

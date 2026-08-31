@@ -1,0 +1,29 @@
+{
+  "dataset_name": "independent_test_v1",
+  "status": "FROZEN",
+  "frozen_at": "2026-08-31T09:22:11.621100-04:00",
+  "records": 270,
+  "classes": 9,
+  "records_per_class": {
+    "COBRADE_1_2_1_0_0": 30,
+    "COBRADE_1_2_2_0_0": 30,
+    "COBRADE_1_2_3_0_0": 30,
+    "COBRADE_1_4_1_3_1": 30,
+    "COBRADE_1_4_1_3_2": 30,
+    "COBRADE_2_3_1_1_0": 30,
+    "COBRADE_2_3_1_2_0": 30,
+    "OTHER": 30,
+    "INSUFFICIENT_INFO": 30
+  },
+  "sha256": "255ab010d57b0850433f38bccc1c1df3ad92437bf747840a6b0e51d11844ef54",
+  "dataset_file": "evaluation/nlp/independent_test_v1/independent_test_v1.jsonl",
+  "leakage_check": {
+    "maximum_similarity": 0.6075853305215401,
+    "pairs_ge_0_50": 5,
+    "pairs_ge_0_80": 0,
+    "pairs_ge_0_90": 0
+  },
+  "selection_rule": "270 confirmed independent examples; 30 examples per target class",
+  "model_predictions_used_during_selection": false,
+  "post_freeze_rule": "Do not tune models, relabel examples, or modify this dataset based on model predictions."
+}

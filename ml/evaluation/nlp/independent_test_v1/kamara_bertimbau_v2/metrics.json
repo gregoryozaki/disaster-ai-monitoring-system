@@ -1,0 +1,14 @@
+{
+  "dataset": "independent_test_v1",
+  "model": "kamara_bertimbau_v2",
+  "n": 270,
+  "accuracy": 0.7962962962962963,
+  "macro_precision": 0.7972975762830834,
+  "macro_recall": 0.7962962962962963,
+  "macro_f1": 0.7660342540748014,
+  "weighted_f1": 0.7660342540748013,
+  "errors": 55,
+  "device": "cpu",
+  "max_length": 128,
+  "batch_size": 32
+}

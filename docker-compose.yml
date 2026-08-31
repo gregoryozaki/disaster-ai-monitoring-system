@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kamara-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: kamara
+      POSTGRES_PASSWORD: kamara_dev
+      POSTGRES_DB: kamara
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kamara -d kamara"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: kamara-minio
+    restart: unless-stopped
+
+    command: server /data --console-address ":9001"
+
+    environment:
+      MINIO_ROOT_USER: kamara
+      MINIO_ROOT_PASSWORD: kamara_minio_dev
+
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+    volumes:
+      - minio_data:/data
+
+volumes:
+  postgres_data:
+  minio_data:

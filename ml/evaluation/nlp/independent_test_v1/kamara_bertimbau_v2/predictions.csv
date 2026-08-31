@@ -1,0 +1,271 @@
+sample_id,text,target_label,predicted_label,correct,confidence
+independent_v1_inundacao_001,após o Rio dos Sinos extravasar o leito na semana passada.,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9892969727516174
+independent_v1_inundacao_002,"visitou moradores das áreas atingidas pela cheia do Rio Amapari, entre elas está a Comunidade de Pedra Preta, onde as casas já foram inundadas.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9873613119125366
+independent_v1_inundacao_003,"No Povoado Garimpinho, onde a cheia do Rio Araguaia invadiu algumas casas, a Prefeitura montou duas tendas e intensificou as orientações.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.985586404800415
+independent_v1_inundacao_004,"em decorrência da cheia do rio Uruguai, que ultrapassou a cota de inundação.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9905434250831604
+independent_v1_inundacao_005,O córrego Pirajussara transbordou e inundou dezenas de casas.,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9902337789535522
+independent_v1_inundacao_006,"Córrego transbordou e inundou as casas com perda de móveis, eletrodomésticos e alimentos.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9670785069465637
+independent_v1_inundacao_007,"o Rio Tavares subiu muito e transbordou, causando alagamento em algumas residências do Parque Guarani.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9894925355911255
+independent_v1_inundacao_008,"o rio transbordou , vairos pontos de inundação nos bairro Centro e Vila Nova.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9906097054481506
+independent_v1_inundacao_009,"O rio transbordou, porém, no Capivari, na Praça Pinho Bravo e atrás do Parque Ferroviário, inundando as vias e comércios.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9903501272201538
+independent_v1_inundacao_010,"um córrego paralelo à Rua Mâncio Lima transbordou, causando transtornos e danos materiais à cerca de trinta famílias",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.8225249648094177
+independent_v1_inundacao_011,"No Cinturão Azul, o Arroio Fiúza transbordou e deixou dezenas de famílias ilhadas.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9880750775337219
+independent_v1_inundacao_012,"O Rio Paraíba do Meio transbordou, na tarde desta sexta-feira (1), e já afeta diversas ruas da cidade.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9863749742507935
+independent_v1_inundacao_013,"o rio São Miguel transbordou e afetou diversos moradores, especialmente nos bairros Multidão, Humberto Alves e Coité.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9908490180969238
+independent_v1_inundacao_014,"o rio Capivari atingiu os 5 metros de altura, ficando bem acima do seu nível normal que é de 1,5 metros. Com isso ele transbordou",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.989781379699707
+independent_v1_inundacao_015,O córrego do local transbordou após as intensas chuvas registradas no município durante o final de semana e provocou alagamento na via,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9884406328201294
+independent_v1_inundacao_016,"o Igarapé Ilha do Coco transbordou, atingindo residências no bairro Novo Brasil.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9895501732826233
+independent_v1_inundacao_017,"o Igarapé Branco transbordou. Sem capacidade para escoar o grande volume de água, o igarapé invadiu propriedades",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9911359548568726
+independent_v1_inundacao_018,"No temporal de 12 de janeiro, o córrego transbordou e alagou casas, tingindo principalmente o bairro São Mateus.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9903761744499207
+independent_v1_inundacao_019,"O Rio Botas transbordou por volta das 16h15 de quarta e chegou a atingir 4,77m de nível às 17h45.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9808025360107422
+independent_v1_inundacao_020,"Em 2020, o córrego que passa pelo local transbordou e atingiu todas essas casas.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.990481436252594
+independent_v1_inundacao_021,"Com as intensas chuvas, o Rio Iguaçu transbordou, inundando diversas áreas e deixando muitas famílias desabrigadas.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9905967712402344
+independent_v1_inundacao_022,em 2010 perderam seus móveis depois que o rio transbordou e alagou as casas.,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9903091788291931
+independent_v1_inundacao_023,"o rio, que transbordou em função das fortes chuvas ocorridas no dia 14 de fevereiro, atingindo várias casas e causando prejuízo aos moradores.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.990476131439209
+independent_v1_inundacao_024,Nos dias em que o Rio Tubarão transbordou e vários bairros ficaram alagados,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9879997372627258
+independent_v1_inundacao_025,o córrego do Horto transbordou e invadiu várias casas.,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9853465557098389
+independent_v1_inundacao_026,"o rio transbordou em vários pontos inundando a cidade, invadindo várias casas e causando a interdição de duas pontes.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9895943403244019
+independent_v1_inundacao_027,O Riacho Cacau transbordou e inundou residências,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9908351898193359
+independent_v1_inundacao_028,o Rio Fubá transbordou da calha e inundou ruas e casas.,COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9912842512130737
+independent_v1_inundacao_029,"o aumento do volume do Rio das Velhas, que transbordou e inundou os imóveis.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9911999106407166
+independent_v1_inundacao_030,"Rio Vermelho em janeiro, afluente do Rio Itapecerica, que transbordou e invadiu o Bairro Bom Jesus e o Bairro Nossa Senhora das Graças.",COBRADE_1_2_1_0_0,COBRADE_1_2_1_0_0,True,0.9904090166091919
+independent_v1_enxurrada_001,"o veículo arrastado, ontem, pela enxurrada foi encontrado no canal da Avenida Caracas",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9788851141929626
+independent_v1_enxurrada_002,"A força da enxurrada arrastou veículos, inclusive um ônibus da viação Fênix.",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9911642074584961
+independent_v1_enxurrada_003,"chuvas formadas na cabeceira de um rio, com o aumento repentino do volume e força da água conhecido como Cabeça D'água.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,False,0.9835805296897888
+independent_v1_enxurrada_004,levantamento preliminar feito por equipe da Secretaria de Desenvolvimento Rural aponta duas pontes arrastadas pelas águas,COBRADE_1_2_2_0_0,INSUFFICIENT_INFO,False,0.7956055402755737
+independent_v1_enxurrada_005,"A força da água durante a enxurrada, danificou a estrutura da passarela",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.5290907621383667
+independent_v1_enxurrada_006,o córrego transbordou e a correnteza arrastou algumas moradias que existiam na margem.,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.4918542802333832
+independent_v1_enxurrada_007,"chuva intensa a montante, que formou uma onda repentina capaz de arrastar veículos e pessoas.",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9178220629692078
+independent_v1_enxurrada_008,"A enxurrada desceu nos fundos do Jardim Pinheiros, transpondo a rodovia, levando água e lama.",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9815331101417542
+independent_v1_enxurrada_009,"a água passasse sobre a ponte, arrastando muito material, o que ocasionou trincas e deslocamento da mesma",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.5407907962799072
+independent_v1_enxurrada_010,Boa parte do guarda corpo e das pranchas foram arrastada pela enxurrada,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.5978107452392578
+independent_v1_enxurrada_011,"A enxurrada destruiu parte do sistema viário, danificando pontes e estradas na área rural",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,False,0.9715393781661987
+independent_v1_enxurrada_012,esta ponte foi levada pela enxurrada em 2016,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.982958972454071
+independent_v1_enxurrada_013,"Uma enxurrada destruiu completamente parte da pista, impossibilitando o acesso de pessoas ou veículos",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.5735632181167603
+independent_v1_enxurrada_014,"PONTE NA LOCALIDADE DE ALTO PEDRA BRANCA, A QUAL FOI ARRANCADA COM A ENXURRADA DE JUNHO DE 2023.",COBRADE_1_2_2_0_0,COBRADE_1_4_1_3_2,False,0.3819964528083801
+independent_v1_enxurrada_015,"Durante as fortes enxurradas ocorridas nos dias 21 e 22 de julho, na estrada geral da localidade de Morrinhos, uma ponte-galeria foi seriamente avariada",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,False,0.7309474945068359
+independent_v1_enxurrada_016,acúmulo de pedras em vias públicas arrastadas pela enxurrada,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9848314523696899
+independent_v1_enxurrada_017,o grande volume de enxurrada arrastou sedimentos para a pista,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9895841479301453
+independent_v1_enxurrada_018,uma enxurrada derrubou a ponte sobre o Arroio Sampaio.,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9323243498802185
+independent_v1_enxurrada_019,"Casas foram invadidas e destruídas, pontes derrubadas, máquinas agrícolas e até caminhões arrastados.",COBRADE_1_2_2_0_0,OTHER,False,0.8804683685302734
+independent_v1_enxurrada_020,"Em julho, quando uma forte enxurrada derrubou a ponte",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.8303040266036987
+independent_v1_enxurrada_021,A casa de uma idosa foi totalmente danificada pela água de uma enxurrada que rompeu uma das paredes,COBRADE_1_2_2_0_0,COBRADE_2_3_1_2_0,False,0.5020608901977539
+independent_v1_enxurrada_022,a força da enxurrada abriu uma cratera no meio da via,COBRADE_1_2_2_0_0,OTHER,False,0.9732163548469543
+independent_v1_enxurrada_023,No bairro Pindaúva a água arrastou outra ponte e isolou duas residências.,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9652868509292603
+independent_v1_enxurrada_024,"moradores do Sana, na Região Serrana, registraram a força da enxurrada, que destruiu pontes e bloqueou estradas.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,False,0.8498417735099792
+independent_v1_enxurrada_025,"a enxurrada destruiu a ala da ponte, além de descalçar a via, comprometendo a estrutura da mesma",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.393152117729187
+independent_v1_enxurrada_026,"No Rio Pequeno, a enxurrada fez com que o muro da EMEF Paulo VI e um barraco desmoronassem.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,False,0.977857232093811
+independent_v1_enxurrada_027,eles foram surpreendidos por uma cabeça d’água e a força da correnteza arrastou a mulher em direção ao Rio Meia Ponte.,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9913759827613831
+independent_v1_enxurrada_028,levada pela enxurrada após o veículo Uber em que se encontrava ter caído no canal da Avenida Caracas,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9891201257705688
+independent_v1_enxurrada_029,"uma mulher que conduzia uma motocicleta Honda Biz foi surpreendida por uma forte enxurrada, perdeu o controle do veículo e foi arrastada",COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9786767363548279
+independent_v1_enxurrada_030,O trabalho também incluiu a remoção de árvores e materiais arrastados pela enxurrada,COBRADE_1_2_2_0_0,COBRADE_1_2_2_0_0,True,0.9567292928695679
+independent_v1_alagamento_001,"em dias de intensas chuvas a drenagem não suporta a vazão, extravasando a água para fora da boca de lobo",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9876799583435059
+independent_v1_alagamento_002,"Este ponto continuou sendo local de alagamento, assim como em 2014.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9896731376647949
+independent_v1_alagamento_003,"houve extravasamento de água na galeria pluvial do Hospital Geral de Nova Iguaçu, o que resultou em pontos de alagamento na unidade.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9709723591804504
+independent_v1_alagamento_004,"Como consequência, o local registrava constantes pontos de alagamento e o avanço do processo erosivo.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.8302785158157349
+independent_v1_alagamento_005,"termina na tubulação, entupindo a rede e provocando alagamentos em dias de chuva.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9893723130226135
+independent_v1_alagamento_006,Tubulação entupida causou alagamento em residências.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9871517419815063
+independent_v1_alagamento_007,"um temporal isolado atingisse essa região causando chuva forte, com acumulado de chuva de 50 milímetros em menos de uma hora. Várias ruas ficaram alagadas.",COBRADE_1_2_3_0_0,OTHER,False,0.9066891074180603
+independent_v1_alagamento_008,problemas históricos de alagamento causados pela obstrução da rede de drenagem da região.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9872942566871643
+independent_v1_alagamento_009,sofriam com o alagamento da via durante as chuvas.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9884424805641174
+independent_v1_alagamento_010,Alagamento ocasionado devido a ausência de bocas de lobo,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9884351491928101
+independent_v1_alagamento_011,Alagamentos da Rua Cel. Camisão próximo da Unidade Mista – Bairro jardim ouro verde,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.8729985356330872
+independent_v1_alagamento_012,Após o registro de alagamentos provocados pelas chuvas que atingiram Cuiabá,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9312291145324707
+independent_v1_alagamento_013,A intervenção ocorre após registros de alagamentos em um trecho de aproximadamente 100 metros.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9886114001274109
+independent_v1_alagamento_014,"Assim que a ocorrência foi registrada, equipes se deslocaram até o local e realizaram o bombeamento da água acumulada nas vias.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.46623659133911133
+independent_v1_alagamento_015,"a ocupação irregular obstruía a galeria pluvial, contribuindo para o alagamento de ruas do bairro durante o temporal",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9776861667633057
+independent_v1_alagamento_016,"a água acumulava até mais de um metro, fizemos toda a drenagem",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9892045855522156
+independent_v1_alagamento_017,há anos enfrenta problemas de alagamento na região.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9415009617805481
+independent_v1_alagamento_018,"As ações concentram-se principalmente em pontos críticos com alagamentos, como a Comunidade Locomotiva, onde equipes realizam manutenções paliativas para drenagem das águas acumuladas.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.7851908206939697
+independent_v1_alagamento_019,sanar os problemas de alagamento durante o período chuvoso em diversos bairros daquela região.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9781686663627625
+independent_v1_alagamento_020,a forte chuva deixou alguns trechos da via temporariamente alagados.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9901766180992126
+independent_v1_alagamento_021,"Em fevereiro de 2021, João Pessoa chegou a registrar uma chuva de 180 mm, o que contabilizou 110 pontos de alagamentos.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.7508916258811951
+independent_v1_alagamento_022,problemas de alagamento que acontecem no bairro em dias de fortes chuva.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9759148955345154
+independent_v1_alagamento_023,Nesses dois bairros encontramos pontos de grande alagamento,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9891295433044434
+independent_v1_alagamento_024,O acúmulo de água durante períodos de chuva vinha causando transtornos a moradores e comprometendo o escoamento natural das águas.,COBRADE_1_2_3_0_0,COBRADE_1_2_1_0_0,False,0.5025387406349182
+independent_v1_alagamento_025,o alagamento teria ocorrido em razão do entupimento de uma boca de lobo por material de cascalho,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9293480515480042
+independent_v1_alagamento_026,Solicitação de providências na Boca de Lobo – Alagamento em Via Pública na Rua Joracy Cruz,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9585681557655334
+independent_v1_alagamento_027,"sanar os problemas com alagamento na Travessa Dourados, localizada no bairro Morumbi.",COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9855121970176697
+independent_v1_alagamento_028,diversos pontos da cidade que enfrentam alagamentos recorrentes e problemas relacionados ao escoamento das águas pluviais.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9830086827278137
+independent_v1_alagamento_029,resolver um problema de alagamento das ruas em períodos de chuvas intensas.,COBRADE_1_2_3_0_0,COBRADE_1_2_3_0_0,True,0.9803658127784729
+independent_v1_alagamento_030,os alagamentos que vêm afetando a comunidade local durante o período chuvoso.,COBRADE_1_2_3_0_0,COBRADE_1_2_1_0_0,False,0.9042614102363586
+independent_v1_incendio_florestal_protegido_001,"foi registrado um incêndio florestal, nesta segunda-feira (10/08), no Parque Estadual Telma Ortegal, em Abadia de Goiás (GO).",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.989163875579834
+independent_v1_incendio_florestal_protegido_002,"um incêndio florestal no Parque Estadual de Mata das Flores, em Castelo.",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9919277429580688
+independent_v1_incendio_florestal_protegido_003,dois focos de incêndios florestais no interior do Parque Nacional do Pantanal Mato-grossense,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9915071725845337
+independent_v1_incendio_florestal_protegido_004,"o parque foi o mais atingido, com 3.855,32 hectares de área queimada, no incêndio iniciado no dia 5 de setembro",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9891496300697327
+independent_v1_incendio_florestal_protegido_005,O Parque Nacional foi atingido por diversos incêndios florestais a partir do começo do mês de setembro.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9919643402099609
+independent_v1_incendio_florestal_protegido_006,"um incêndio detectado ao sul da Reserva Biológica do Gurupi, no Maranhão, atinge a unidade de conservação.",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9916455149650574
+independent_v1_incendio_florestal_protegido_007,combate ao incêndio florestal do Parque Estadual de Guajará-Mirim,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9917889833450317
+independent_v1_incendio_florestal_protegido_008,acionado para o incêndio florestal no Parque Nacional das Emas.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9913411736488342
+independent_v1_incendio_florestal_protegido_009,a Unidade de Conservação foi atingida por um incêndio,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9917128086090088
+independent_v1_incendio_florestal_protegido_010,operação de combate ao incêndio florestal na Unidade de Conservação (UC) estadual.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9917353391647339
+independent_v1_incendio_florestal_protegido_011,"incêndio, que destruiu parte significativa da vegetação da Unidade de Conservação (UC)",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9919945001602173
+independent_v1_incendio_florestal_protegido_012,"Foram decretados extintos os incêndios no Parque Estadual Cristalino II, em Novo Mundo",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9916725754737854
+independent_v1_incendio_florestal_protegido_013,o fogo já havia destruído 12 mil hectares de vegetação no interior do parque.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9918083548545837
+independent_v1_incendio_florestal_protegido_014,o incêndio que começou na semana passada na área protegida.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.991293728351593
+independent_v1_incendio_florestal_protegido_015,incêndio que atinge o Parque Nacional da Chapada dos Guimarães (MT),COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9918862581253052
+independent_v1_incendio_florestal_protegido_016,20% da vegetação do Parque foi destruída,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9906461238861084
+independent_v1_incendio_florestal_protegido_017,Incêndio nos campos de altitude do Parque Nacional da Serra dos Órgãos (PARNASO),COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9910174608230591
+independent_v1_incendio_florestal_protegido_018,trabalhando no combate ao incêndio florestal no Parque Nacional de Brasília.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9914104342460632
+independent_v1_incendio_florestal_protegido_019,"um incêndio florestal no Parque Nacional da Serra do Itajaí, em Santa Catarina.",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9916585087776184
+independent_v1_incendio_florestal_protegido_020,controlaram com sucesso um incêndio no Parque Estadual do Itacolomi,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.990251898765564
+independent_v1_incendio_florestal_protegido_021,"o incêndio que atingiu o Parque Estadual do Itacolomi, em Ouro Preto",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9916616678237915
+independent_v1_incendio_florestal_protegido_022,O incêndio ocorreu dentro do Parque Nacional da Chapada Diamantina,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9916303753852844
+independent_v1_incendio_florestal_protegido_023,no dia 4 de novembro registramos um incêndio no Parque Estadual Serra do Rola Moça,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.991356611251831
+independent_v1_incendio_florestal_protegido_024,Parque Estadual Serra do Intendente. Município: Conceição do Mato Dentro. Incêndio foi identificado às 11 horas do dia 13/06.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9412636756896973
+independent_v1_incendio_florestal_protegido_025,Parque Estadual do Biribiri. Município: Diamantina. O incêndio foi identificado às 13h50min dessa sexta (13/07).,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9689173102378845
+independent_v1_incendio_florestal_protegido_026,ocorrência de incêndio florestal na Reserva Biológica Marinha da Ilha do Arvoredo.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9918755292892456
+independent_v1_incendio_florestal_protegido_027,Área de Proteção Ambiental Fernão Dias. Município: Monte Verde. O Incêndio foi extinto na manhã de quinta (12/07).,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9857169389724731
+independent_v1_incendio_florestal_protegido_028,ocorreu um grande incêndio florestal que culminou na queima de uma área de 500 a 700 hectares no Parque Nacional e Histórico do Monte Pascoal.,COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.991253674030304
+independent_v1_incendio_florestal_protegido_029,"Em Mucugê, na localidade do Córrego das Perdizes, interior do Parque Nacional da Chapada Diamantina, o combate ao incêndio teve continuidade durante a madrugada",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.98316490650177
+independent_v1_incendio_florestal_protegido_030,"combate aos incêndios na Reserva Particular do Patrimônio Natural (RPPN) SESC Pantanal, em Barão de Melgaço",COBRADE_1_4_1_3_1,COBRADE_1_4_1_3_1,True,0.9913231134414673
+independent_v1_incendio_florestal_nao_protegido_001,fogo na vegetação herbácea da zona lindeira da rodovia [...] A fumaça provocada pela a ação prejudicou a visibilidade dos motoristas,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,False,0.5703485608100891
+independent_v1_incendio_florestal_nao_protegido_002,três homens ateando fogo na vegetação às margens da rodovia [...] a fumaça já causava redução da visibilidade dos motoristas,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9205714464187622
+independent_v1_incendio_florestal_nao_protegido_003,"incêndio em vegetação que atingiu cerca de 30 mil metros quadrados [...] intensa fumaça e fuligem, resultando em poluição atmosférica perceptível na região",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9775527715682983
+independent_v1_incendio_florestal_nao_protegido_004,"ocorrência em incêndio em vegetação [...] Por causa da fumaça, muitos populares passaram mal",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9279627799987793
+independent_v1_incendio_florestal_nao_protegido_005,"uma queimada de pasto no Jardim das Rosas [...] A fumaça provocada pelo fogo chegou a invadir residências próximas, causando transtornos à população",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9858697652816772
+independent_v1_incendio_florestal_nao_protegido_006,incêndio que atingiu a divisa entre Albertina e Andradas [...] vegetação castigada pela falta de chuvas [...] fumaça e piorando a qualidade do ar,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9520512223243713
+independent_v1_incendio_florestal_nao_protegido_007,queimada que atingiu cerca de 8.100 m² de área de vegetação [...] evitando também que a fumaça provocasse acidentes de trânsito,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,False,0.533950686454773
+independent_v1_incendio_florestal_nao_protegido_008,queimada que atingiu cerca de 4.700 metros quadrados de área de vegetação [...] grande quantidade de fumaça poderia comprometer a visibilidade dos motoristas,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.4916580021381378
+independent_v1_incendio_florestal_nao_protegido_009,queimada de grandes proporções [...] extensa área de vegetação no bairro Jardim Baronesa. A fumaça intensa pôde ser vista da base operacional,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.979129433631897
+independent_v1_incendio_florestal_nao_protegido_010,o fogo começou em lixo descartado de forma irregular em meio à vegetação. A situação gerou bastante fumaça,COBRADE_1_4_1_3_2,COBRADE_2_3_1_1_0,False,0.3906898498535156
+independent_v1_incendio_florestal_nao_protegido_011,ocorrência de incêndio em vegetação natural às margens da rodovia [...] fumaça que prejudica a visibilidade,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.8667985796928406
+independent_v1_incendio_florestal_nao_protegido_012,"incêndio de grandes proporções teve início no Morro de Bofete [...] fumaça intensa atingindo áreas próximas, exigindo atenção à saúde quanto à qualidade do ar",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9059025645256042
+independent_v1_incendio_florestal_nao_protegido_013,Um incêndio atingiu uma área verde de aproximadamente 40 mil metros quadrados [...] O fogo espalhou uma densa cortina de fumaça,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9754020571708679
+independent_v1_incendio_florestal_nao_protegido_014,"O fogo [...] atingiu uma extensa área de vegetação [...] grande parte da cidade está tomada pela fumaça resultante deste incêndio, gerando intensa poluição",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9394347071647644
+independent_v1_incendio_florestal_nao_protegido_015,o incêndio atingiu aproximadamente 5.000 metros quadrados de vegetação [...] evitar que a fumaça comprometesse a visibilidade na via,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.7912018895149231
+independent_v1_incendio_florestal_nao_protegido_016,"o fogo [...] prejudicou a vegetação em volta [...] problemas respiratórios, agravados com a fumaça das queimadas",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.4917435646057129
+independent_v1_incendio_florestal_nao_protegido_017,"fogo em vegetação e resíduos de limpeza em um terreno no perímetro urbano [...] grande quantidade de fuligem e fumaça, causando incômodos à vizinhança",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9880902767181396
+independent_v1_incendio_florestal_nao_protegido_018,um incêndio em vegetação no bairro Recanto do Sol [...] O fogo e a fumaça geram prejuízos [...] à saúde pública,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.983858048915863
+independent_v1_incendio_florestal_nao_protegido_019,incêndio que resultou em poluição atmosférica e do solo [...] crime de incêndio em vegetação,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.43897801637649536
+independent_v1_incendio_florestal_nao_protegido_020,uma semana inteira de fogos na área de mata que contorna o bairro [...] A fumaça provocada pelo incêndio na mata assustou os moradores,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9412294626235962
+independent_v1_incendio_florestal_nao_protegido_021,"um incêndio em vegetação atingia a Av. Rogaciano Leite, no bairro Salinas [...] apesar da fumaça intensa, o incêndio foi rapidamente controlado",COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,False,0.742457926273346
+independent_v1_incendio_florestal_nao_protegido_022,INCENDIO EM LOTE BALDIO [...] TIPO DE INCÊNDIO: VEGETACAO [...] estava ocasionando fumaça para as residencias circo vizinhas,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,False,0.9209005236625671
+independent_v1_incendio_florestal_nao_protegido_023,"intensa fumaça sobre a rodovia, situação que reduzia significativamente a visibilidade [...] focos de incêndio em vegetação adjacente à faixa de domínio da BR",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9544817805290222
+independent_v1_incendio_florestal_nao_protegido_024,incêndio de grandes proporções em uma área de mata em Ribeirão Preto [...] O vento trouxe grande quantidade de fumaça,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9876229763031006
+independent_v1_incendio_florestal_nao_protegido_025,"incêndio em área de vegetação com presença de lixo às margens da Linha Azul. O fogo gerou intensa fumaça, comprometendo a visibilidade dos motoristas",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9663345217704773
+independent_v1_incendio_florestal_nao_protegido_026,incêndio em vegetação no Bairro Dias Macedo [...] conter as chamas e fumaça que avançava sobre as residências dessa localização,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,False,0.9411839842796326
+independent_v1_incendio_florestal_nao_protegido_027,ocorreu uma queimada próximo ao Residencial Dom Bosco [...] áreas de vegetação [...] comprometendo a qualidade do ar,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9381100535392761
+independent_v1_incendio_florestal_nao_protegido_028,Rua Francisco Lopes [...] terreno baldio [...] existência de foco de queimada em toda sua extensão [...] incômodo da população [...] emissão de poluentes,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.9141277074813843
+independent_v1_incendio_florestal_nao_protegido_029,incêndio atingiu um terreno baldio no Jardim Los Angeles [...] fumaça e fuligem pelas casas vizinhas [...] fumaça produzida pela queima de vegetação,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,False,0.8741730451583862
+independent_v1_incendio_florestal_nao_protegido_030,"foco de incêndio em vegetação no município [...] grandes queimadas, trazendo prejuízos à fauna, flora, qualidade do ar e à saúde da população",COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_2,True,0.8971291780471802
+independent_v1_incendio_industrial_001,incêndio de grandes proporções em um depósito aberto de reciclagem em Anápolis,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9913950562477112
+independent_v1_incendio_industrial_002,incêndio de grandes proporções que atingiu o pátio de uma indústria metalúrgica,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9916931986808777
+independent_v1_incendio_industrial_003,incêndio de grandes proporções em uma indústria local [...] conjunto de carretas e um tanque contendo 17 mil litros de Tolueno,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9899498224258423
+independent_v1_incendio_industrial_004,incêndio em um galpão de uma empresa de resíduos sólidos situada em Sobral,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9917973279953003
+independent_v1_incendio_industrial_005,as chamas [...] atingiram um galpão industrial situado no distrito de Calumbi,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9920989274978638
+independent_v1_incendio_industrial_006,um incêndio que atingiu uma fábrica de produtos de limpeza e velas,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9912928938865662
+independent_v1_incendio_industrial_007,um incêndio em um galpão industrial. O galpão abrigava uma grande quantidade de materiais inflamáveis,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9926449060440063
+independent_v1_incendio_industrial_008,o incêndio atingia um galpão utilizado como gráfica para confecção de embalagens,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9924328327178955
+independent_v1_incendio_industrial_009,O fogo atingiu um galpão que armazenava cachaça com 04 tanques e cachaças engarrafadas,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9917595982551575
+independent_v1_incendio_industrial_010,"incêndio em um galpão de pintura localizado [...] no bairro Jardim Aquarius, em Palhoça",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9914485812187195
+independent_v1_incendio_industrial_011,o fogo estava concentrado em um galpão [...] onde funcionava uma empresa especializada no comércio de peças veiculares usadas,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9927449226379395
+independent_v1_incendio_industrial_012,um incêndio em um galpão [...] o teto da edificação havia sido consumido pelas chamas [...] 45 toneladas de material reciclado,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9920414090156555
+independent_v1_incendio_industrial_013,Um incêndio atingiu uma indústria [...] o incêndio se concentrou na área externa da fábrica que armazenava uma grande quantidade de borracha,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9926460981369019
+independent_v1_incendio_industrial_014,"O incêndio ocorreu em uma empresa de fabricação, comercialização e transporte de maravalha",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9917776584625244
+independent_v1_incendio_industrial_015,"ocorrência de incêndio numa fábrica de móveis, localizada no bairro Mato Preto",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9917224049568176
+independent_v1_incendio_industrial_016,"um incêndio em uma fábrica de móveis [...] as chamas já tomavam conta da fábrica, que produz móveis de madeira",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9926676154136658
+independent_v1_incendio_industrial_017,"combate ao incêndio [...] na empresa Isoplast, em Maracanaú [...] o fogo [foi] confinado [...] ao depósito de materiais da empresa",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9924353957176208
+independent_v1_incendio_industrial_018,uma fábrica de castanhas [...] enfrentou um incêndio que resultou em danos significativos,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9912880063056946
+independent_v1_incendio_industrial_019,"Um incêndio industrial em uma fábrica de chapéus [...] em Sobral, causou danos",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9919822812080383
+independent_v1_incendio_industrial_020,"as chamas se concentravam em um dos tachos de cera da empresa [...] no Bairro Distrito Industrial, em Maracanaú",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9919633865356445
+independent_v1_incendio_industrial_021,"um incêndio atingiu uma indústria de lingerie no bairro Pajuçara, em Maracanaú",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9916408061981201
+independent_v1_incendio_industrial_022,"a fábrica estava vazia, mas por conter muito material de plástico, o fogo se espalhou de forma rápida e consumiu quase toda a estrutura",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9839993119239807
+independent_v1_incendio_industrial_023,incêndio em indústria de produtos químicos no distrito industrial da cidade,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9908801317214966
+independent_v1_incendio_industrial_024,"um incêndio urbano, que ocorreu em uma fábrica de asfalto localizada no município de São Cristóvão",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9918973445892334
+independent_v1_incendio_industrial_025,"incêndio [...] em uma fábrica de isopor localizada na Estrada do Marapatá, Distrito Industrial 2",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9922282099723816
+independent_v1_incendio_industrial_026,incêndio em depósito de empresa terceirizada utilizado pela Receita Federal em Santos,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9859278202056885
+independent_v1_incendio_industrial_027,O fogo [...] atingiu a área dos containers que funciona como depósito de materiais,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9871630072593689
+independent_v1_incendio_industrial_028,O fogo atingiu um pavilhão [...] utilizado como depósito de materiais de construção,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9914827346801758
+independent_v1_incendio_industrial_029,um incêndio que atingiu um depósito no bairro Jardim das Oliveiras,COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.990625262260437
+independent_v1_incendio_industrial_030,"incêndio em edificação de aproximadamente 300 m², utilizada como depósito de materiais diversos, tais como madeiras, sofás e eletrodomésticos",COBRADE_2_3_1_1_0,COBRADE_2_3_1_1_0,True,0.9800549745559692
+independent_v1_incendio_aglomerado_residencial_001,havia um incêndio em várias residências em uma vila no Km 12 da via MA-26 na zona rural.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9620827436447144
+independent_v1_incendio_aglomerado_residencial_002,"cerca de 30 residências foram atingidas pelas chamas, afetando 58 famílias, totalizando aproximadamente 199 pessoas.",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9889780879020691
+independent_v1_incendio_aglomerado_residencial_003,um incêndio de grandes proporções atingiu cinco residências localizadas na Passagem Jambu [...] diversas famílias da comunidade,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9907141923904419
+independent_v1_incendio_aglomerado_residencial_004,duas residências já antigas e o fogo espalhando para uma terceira casa.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9914284348487854
+independent_v1_incendio_aglomerado_residencial_005,um incêndio que atingiu uma vila de quitinetes [...] seis quitinetes de madeira foram atingidas com perda total,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.983889102935791
+independent_v1_incendio_aglomerado_residencial_006,incêndio que afetava três residências no mesmo terreno.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9902793765068054
+independent_v1_incendio_aglomerado_residencial_007,incêndio na favela Jardim Edite [...] 80 famílias atingidas,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9588614702224731
+independent_v1_incendio_aglomerado_residencial_008,"incêndio que desalojou 13 famílias e destruiu 16 casas, na rua Ambrósio Ayres, beco Jesus me Deu, bairro São Jorge",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9866427183151245
+independent_v1_incendio_aglomerado_residencial_009,"Incêndio de pequena proporção atingiu comunidade [...] Cinco moradias foram destruídas, total e parcialmente.",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9750614762306213
+independent_v1_incendio_aglomerado_residencial_010,"incêndios que atingiu três casas de madeira no beco Amazonas, no bairro Cidade de Deus",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.983607828617096
+independent_v1_incendio_aglomerado_residencial_011,"incêndio ocorrido na manhã deste sábado, 20/1, que destruiu pelo menos 30 casas de madeira no beco José Casemiro",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9553279876708984
+independent_v1_incendio_aglomerado_residencial_012,"O incidente destruiu oito casas, resultando em duas mortes e deixando a área em risco de desabamento.",COBRADE_2_3_1_2_0,OTHER,False,0.5656586289405823
+independent_v1_incendio_aglomerado_residencial_013,"causou um incêndio na madrugada de ontem, que provocou sua própria morte, a destruição de outras seis moradias",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.8996602892875671
+independent_v1_incendio_aglomerado_residencial_014,"Seis barracos foram totalmente destruídos por incêndio [...] No total, o fogo atingiu dez habitações, deixando quatro parcialmente danificadas.",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9824657440185547
+independent_v1_incendio_aglomerado_residencial_015,"incêndio que atingiu cerca de 200 barracos, na madrugada desta terça-feira (19), na Vila Alemoa.",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.7993190288543701
+independent_v1_incendio_aglomerado_residencial_016,O incêndio no Caminho São Sebastião teve duração de quatro horas e a estimativa é que 70 barracos em madeira tenham sido atingidos.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_1_0,False,0.46327757835388184
+independent_v1_incendio_aglomerado_residencial_017,Cerca de 150 barracos foram queimados ou então derrubados para evitar o alastramento do incêndio.,COBRADE_2_3_1_2_0,OTHER,False,0.26273491978645325
+independent_v1_incendio_aglomerado_residencial_018,"incêndio que atingiu cerca de 60 barracos no Caminho da Divisa, entre os becos 22 e 40",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.560951292514801
+independent_v1_incendio_aglomerado_residencial_019,"incêndio que destruiu cerca de 100 moradias sobre palafitas no Caminho São Sebastião, na Zona Noroeste",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.737488865852356
+independent_v1_incendio_aglomerado_residencial_020,o incêndio ocorreu na noite de 27 de janeiro de 2026 e afetou diretamente 22 moradias.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.945807933807373
+independent_v1_incendio_aglomerado_residencial_021,"Cinco casas ficaram completamente destruídas. Outras três tiveram perda parcial. No total, 12 famílias ficaram desabrigadas",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.740139365196228
+independent_v1_incendio_aglomerado_residencial_022,o incêndio ocorreu em 28 de agosto de 2025 e atingiu uma extensa área de palafitas.,COBRADE_2_3_1_2_0,COBRADE_1_4_1_3_1,False,0.8298432230949402
+independent_v1_incendio_aglomerado_residencial_023,cerca de 15 casas foram atingidas totalmente pelo fogo na Rua Amaral Neto e o Caminho Santa Rosa,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9872583746910095
+independent_v1_incendio_aglomerado_residencial_024,O incêndio ocorreu nesta segunda (16) e atingiu 150 moradias,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9638803005218506
+independent_v1_incendio_aglomerado_residencial_025,pelo menos 10 moradias foram atingidas pelas chamas e totalmente destruídas.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.96364825963974
+independent_v1_incendio_aglomerado_residencial_026,O fogo consumiu 175 barracos e desabrigou cerca de 280 famílias.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9087993502616882
+independent_v1_incendio_aglomerado_residencial_027,"O fogo atingiu cerca de 80 moradias da comunidade, até ser controlado pelo Corpo de Bombeiros.",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9193585515022278
+independent_v1_incendio_aglomerado_residencial_028,"cerca de 40 barracos localizados na rua Barbeiro de Sevilha, foram totalmente destruídos por um incêndio",COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9398119449615479
+independent_v1_incendio_aglomerado_residencial_029,O incêndio que consumiu aproximadamente 20 barracos na favela da Comunidade Wilson,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.6620737910270691
+independent_v1_incendio_aglomerado_residencial_030,Um incêndio atingiu mais de 150 moradias por volta das 4h da manhã desta quinta-feira (18) na comunidade de Paraisópolis,COBRADE_2_3_1_2_0,COBRADE_2_3_1_2_0,True,0.9729365110397339
+independent_v1_other_001,Paranaguá enfrentou [...] os impactos de um vendaval provocado por um ciclone extratropical formado no Oceano Atlântico.,OTHER,OTHER,True,0.9728589057922363
+independent_v1_other_002,"situação de emergência na cidade paranaense de Pinhão, atingida por vendaval.",OTHER,INSUFFICIENT_INFO,False,0.812070906162262
+independent_v1_other_003,O forte vendaval e a chuva que atingiram Votuporanga [...] provocaram muitas quedas de árvores e alguns destelhamentos em ruas e avenidas da cidade,OTHER,OTHER,True,0.9543594717979431
+independent_v1_other_004,"residências foram mais afetadas pelo vendaval do último sábado, 1º de novembro [...] mais de 100 tiveram algum dano na estrutura",OTHER,OTHER,True,0.9224436283111572
+independent_v1_other_005,"vendaval que atingiu residências do setor na noite de quinta-feira, 8",OTHER,OTHER,True,0.9336162209510803
+independent_v1_other_006,"três casas do bairro Cidade Verde, destelhadas por um vendaval ocorrido em 24 de janeiro",OTHER,OTHER,True,0.6677522659301758
+independent_v1_other_007,600 casas foram danificadas pela tempestade de granizo que atingiu a cidade dos Campos Gerais,OTHER,OTHER,True,0.9797525405883789
+independent_v1_other_008,danos causados pelo forte temporal de granizo registrado em novembro de 2025 no município.,OTHER,OTHER,True,0.988021194934845
+independent_v1_other_009,"cidade gaúcha de Amaral Ferrador, atingida por queda de granizo.",OTHER,OTHER,True,0.9866675734519958
+independent_v1_other_010,forte temporal de chuva e granizo [...] 224 residências afetadas e 896 pessoas atingidas pelo desastre,OTHER,OTHER,True,0.7346374988555908
+independent_v1_other_011,forte temporal de granizo que atingiu o município no dia 23 de novembro [...] 1.991 ocorrências já foram atendidas,OTHER,OTHER,True,0.8796249032020569
+independent_v1_other_012,"Araquari, atingida por queda de granizo",OTHER,OTHER,True,0.9893043041229248
+independent_v1_other_013,"grave estiagem que afeta a região, cujas consequências já comprometem as reservas hídricas locais",OTHER,COBRADE_1_2_1_0_0,False,0.47857773303985596
+independent_v1_other_014,A falta de chuvas resultou em [...] Falta de acesso à água potável para consumo humano.,OTHER,COBRADE_1_2_3_0_0,False,0.6175572276115417
+independent_v1_other_015,grandes prejuízos devido à longa estiagem [...] lavouras de soja registraram uma perda estimada entre 40% e 50%.,OTHER,OTHER,True,0.9676908254623413
+independent_v1_other_016,"estiagem prolongada [...] drástica redução das chuvas e da escassez hídrica, que comprometeram a produção agropecuária local.",OTHER,OTHER,True,0.8581106066703796
+independent_v1_other_017,A seca tem causado prejuízos significativos na produção agropecuária,OTHER,OTHER,True,0.9247037172317505
+independent_v1_other_018,áreas do Município afetadas por Estiagem – 1.4.1.1.0 [...] diminuição ou exaurimento das reservas hídricas abastecedoras do município,OTHER,COBRADE_1_4_1_3_2,False,0.7179543375968933
+independent_v1_other_019,"um tornado se formou sobre a área rural do município, resultando em queda e quebra de árvores e postes",OTHER,OTHER,True,0.8578066825866699
+independent_v1_other_020,"um tornado [...] causando danos bastante severos sobre a cidade. Foram registrados tombamentos de veículos, quedas de árvores inteiras e inclusive de casas",OTHER,OTHER,True,0.9800019264221191
+independent_v1_other_021,"danos por conta da passagem de um tornado, caracterizando a ocorrência de uma tempestade severa na região",OTHER,OTHER,True,0.9877612590789795
+independent_v1_other_022,passagem de um tornado que trouxe grandes estragos para a localidade.,OTHER,OTHER,True,0.9757726192474365
+independent_v1_other_023,"Xanxerê, em Santa Catarina, obtiveram o reconhecimento federal de situação de emergência por causa de [...] tornado",OTHER,OTHER,True,0.4360053241252899
+independent_v1_other_024,Turvo [...] Tempestade Local/Convectiva - Tornados [...] 58 pessoas afetadas [...] 16 casas danificadas [...] 5 casas destruídas,OTHER,OTHER,True,0.968730092048645
+independent_v1_other_025,"uma ocorrência de deslizamento de barranco, na zona Leste.",OTHER,OTHER,True,0.9910179376602173
+independent_v1_other_026,evento foi classificado com Tempestade Local/Convectiva Vendaval (COBRADE 1.3.2.1.5) [...] ocasionando impactos em todas as regiões do território do Município,OTHER,OTHER,True,0.9569152593612671
+independent_v1_other_027,um deslizamento de barranco também na zona Norte,OTHER,OTHER,True,0.9922285676002502
+independent_v1_other_028,"Soure, atingida por erosão costeira.",OTHER,OTHER,True,0.5555344223976135
+independent_v1_other_029,intensificando o processo de erosão costeira/marinha nas Praias de Crispim e de Marudá,OTHER,OTHER,True,0.47736656665802
+independent_v1_other_030,"Jaboatão dos Gararapes, em Pernambuco [...] foram atingidas por erosão costeira/marinha",OTHER,OTHER,True,0.5943682789802551
+independent_v1_insufficient_info_001,uma ocorrência de incêndio em vegetação no bairro Jardim das Acácias.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_2,False,0.42025014758110046
+independent_v1_insufficient_info_002,"um incêndio em uma área de vegetação na Avenida Menino Marcelo, em frente a um shopping center",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.5835050344467163
+independent_v1_insufficient_info_003,"A Defesa Civil de Tupã atuou, na tarde desta sexta-feira (14), no combate a um incêndio em vegetação.",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9505821466445923
+independent_v1_insufficient_info_004,Um incêndio em vegetação mobilizou equipes do Corpo de Bombeiros Militar de Santa Catarina na região central de Balneário Camboriú,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.3882761597633362
+independent_v1_insufficient_info_005,"ao chegar ao local, constatou fogo em campo aberto.",INSUFFICIENT_INFO,INSUFFICIENT_INFO,True,0.7132489085197449
+independent_v1_insufficient_info_006,Usar fogo em vegetação e/ou deixar que ocorra queimada em área pertencente ao autuado.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.8308541774749756
+independent_v1_insufficient_info_007,um incêndio que atingiu aproximadamente cinco mil metros quadrados de vegetação.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9866513013839722
+independent_v1_insufficient_info_008,a equipe da Defesa Civil de Itapecerica da Serra atuou no combate a um incêndio em vegetação às margens da Rodovia Régis Bittencourt,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.8461601734161377
+independent_v1_insufficient_info_009,"um homem que provocou incêndio em área de vegetação nativa às margens da GO-241, próximo à Estação Ecológica de Nova Roma",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.988237202167511
+independent_v1_insufficient_info_010,"Um incêndio em vegetação atingiu aproximadamente 10 mil metros quadrados, o equivalente a um hectare",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.7903597354888916
+independent_v1_insufficient_info_011,onde a água invadiu diversas residências e provocou transtornos à população.,INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,False,0.7887926697731018
+independent_v1_insufficient_info_012,"Algumas casas foram invadidas pela água, forçando ao menos oito pessoas a deixarem seus lares",INSUFFICIENT_INFO,COBRADE_2_3_1_2_0,False,0.44770511984825134
+independent_v1_insufficient_info_013,A água também invadiu uma casa. A família passa bem e foi assistida pela Defesa Civil.,INSUFFICIENT_INFO,INSUFFICIENT_INFO,True,0.878800630569458
+independent_v1_insufficient_info_014,"o nível da água subiu, chegando até a estrutura principal da ponte.",INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,False,0.5326787829399109
+independent_v1_insufficient_info_015,"o nível da agua subiu rapidamente, submergindo a ponte que liga a principal entrada do bairro",INSUFFICIENT_INFO,COBRADE_1_2_2_0_0,False,0.8130618333816528
+independent_v1_insufficient_info_016,o nível da água subiu a ponto de dificultar o acesso e a passagem de veículos.,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,False,0.9786369800567627
+independent_v1_insufficient_info_017,"por diversas vezes a água invadiu sua casa, destruindo móveis e objetos pessoais.",INSUFFICIENT_INFO,OTHER,False,0.4396822452545166
+independent_v1_insufficient_info_018,entrou em casas onde a altura da água passava de um metro.,INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,False,0.43976646661758423
+independent_v1_insufficient_info_019,A força da água invadiu residências e comprometeu o sistema de abastecimento do município,INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,False,0.9482383728027344
+independent_v1_insufficient_info_020,"a água invadiu as cabines de entrada de energia elétrica, oferendo riscos de segurança",INSUFFICIENT_INFO,OTHER,False,0.9222716689109802
+independent_v1_insufficient_info_021,risco moderado para ocorrências associadas a alagamentos e enxurradas pontuais,INSUFFICIENT_INFO,OTHER,False,0.9457300901412964
+independent_v1_insufficient_info_022,aumentando a possibilidade de ocorrências associadas a alagamentos e enxurradas.,INSUFFICIENT_INFO,INSUFFICIENT_INFO,True,0.5695497393608093
+independent_v1_insufficient_info_023,"o cenário de risco hidrológico também indica risco de cheias com extravasamento em arroios e pequenos rios, enxurradas, alagamentos em áreas urbanas",INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,False,0.5434918999671936
+independent_v1_insufficient_info_024,alta probabilidade de incêndios em florestas ou nas demais formas de vegetação nativa.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9892827272415161
+independent_v1_insufficient_info_025,o risco de incêndios aumenta e as consequências também.,INSUFFICIENT_INFO,OTHER,False,0.5452685952186584
+independent_v1_insufficient_info_026,Botucatu entra em uma época de maior risco para incêndios em áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9424527287483215
+independent_v1_insufficient_info_027,"um pequeno foco de incêndio pode se espalhar rapidamente, causando danos ao meio ambiente, à fauna e à flora",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9420657157897949
+independent_v1_insufficient_info_028,Uma simples queimada pode sair do controle rapidamente e atingir áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9859445095062256
+independent_v1_insufficient_info_029,ações preventivas voltadas à redução dos impactos causados pela baixa umidade do ar e ao combate a incêndios em áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,False,0.9051142334938049
+independent_v1_insufficient_info_030,O risco é baixo a moderado para ocorrências associadas a alagamentos pontuais,INSUFFICIENT_INFO,OTHER,False,0.4790548086166382

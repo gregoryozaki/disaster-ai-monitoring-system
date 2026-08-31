@@ -1,0 +1,56 @@
+sample_id,text,target_label,predicted_label,confidence
+independent_v1_enxurrada_003,"chuvas formadas na cabeceira de um rio, com o aumento repentino do volume e força da água conhecido como Cabeça D'água.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0.9835805296897888
+independent_v1_enxurrada_004,levantamento preliminar feito por equipe da Secretaria de Desenvolvimento Rural aponta duas pontes arrastadas pelas águas,COBRADE_1_2_2_0_0,INSUFFICIENT_INFO,0.7956055402755737
+independent_v1_enxurrada_011,"A enxurrada destruiu parte do sistema viário, danificando pontes e estradas na área rural",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0.9715393781661987
+independent_v1_enxurrada_014,"PONTE NA LOCALIDADE DE ALTO PEDRA BRANCA, A QUAL FOI ARRANCADA COM A ENXURRADA DE JUNHO DE 2023.",COBRADE_1_2_2_0_0,COBRADE_1_4_1_3_2,0.3819964528083801
+independent_v1_enxurrada_015,"Durante as fortes enxurradas ocorridas nos dias 21 e 22 de julho, na estrada geral da localidade de Morrinhos, uma ponte-galeria foi seriamente avariada",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0.7309474945068359
+independent_v1_enxurrada_019,"Casas foram invadidas e destruídas, pontes derrubadas, máquinas agrícolas e até caminhões arrastados.",COBRADE_1_2_2_0_0,OTHER,0.8804683685302734
+independent_v1_enxurrada_021,A casa de uma idosa foi totalmente danificada pela água de uma enxurrada que rompeu uma das paredes,COBRADE_1_2_2_0_0,COBRADE_2_3_1_2_0,0.5020608901977539
+independent_v1_enxurrada_022,a força da enxurrada abriu uma cratera no meio da via,COBRADE_1_2_2_0_0,OTHER,0.9732163548469543
+independent_v1_enxurrada_024,"moradores do Sana, na Região Serrana, registraram a força da enxurrada, que destruiu pontes e bloqueou estradas.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0.8498417735099792
+independent_v1_enxurrada_026,"No Rio Pequeno, a enxurrada fez com que o muro da EMEF Paulo VI e um barraco desmoronassem.",COBRADE_1_2_2_0_0,COBRADE_1_2_1_0_0,0.977857232093811
+independent_v1_alagamento_007,"um temporal isolado atingisse essa região causando chuva forte, com acumulado de chuva de 50 milímetros em menos de uma hora. Várias ruas ficaram alagadas.",COBRADE_1_2_3_0_0,OTHER,0.9066891074180603
+independent_v1_alagamento_024,O acúmulo de água durante períodos de chuva vinha causando transtornos a moradores e comprometendo o escoamento natural das águas.,COBRADE_1_2_3_0_0,COBRADE_1_2_1_0_0,0.5025387406349182
+independent_v1_alagamento_030,os alagamentos que vêm afetando a comunidade local durante o período chuvoso.,COBRADE_1_2_3_0_0,COBRADE_1_2_1_0_0,0.9042614102363586
+independent_v1_incendio_florestal_nao_protegido_001,fogo na vegetação herbácea da zona lindeira da rodovia [...] A fumaça provocada pela a ação prejudicou a visibilidade dos motoristas,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.5703485608100891
+independent_v1_incendio_florestal_nao_protegido_007,queimada que atingiu cerca de 8.100 m² de área de vegetação [...] evitando também que a fumaça provocasse acidentes de trânsito,COBRADE_1_4_1_3_2,COBRADE_1_4_1_3_1,0.533950686454773
+independent_v1_incendio_florestal_nao_protegido_010,o fogo começou em lixo descartado de forma irregular em meio à vegetação. A situação gerou bastante fumaça,COBRADE_1_4_1_3_2,COBRADE_2_3_1_1_0,0.3906898498535156
+independent_v1_incendio_florestal_nao_protegido_021,"um incêndio em vegetação atingia a Av. Rogaciano Leite, no bairro Salinas [...] apesar da fumaça intensa, o incêndio foi rapidamente controlado",COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,0.742457926273346
+independent_v1_incendio_florestal_nao_protegido_022,INCENDIO EM LOTE BALDIO [...] TIPO DE INCÊNDIO: VEGETACAO [...] estava ocasionando fumaça para as residencias circo vizinhas,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,0.9209005236625671
+independent_v1_incendio_florestal_nao_protegido_026,incêndio em vegetação no Bairro Dias Macedo [...] conter as chamas e fumaça que avançava sobre as residências dessa localização,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,0.9411839842796326
+independent_v1_incendio_florestal_nao_protegido_029,incêndio atingiu um terreno baldio no Jardim Los Angeles [...] fumaça e fuligem pelas casas vizinhas [...] fumaça produzida pela queima de vegetação,COBRADE_1_4_1_3_2,COBRADE_2_3_1_2_0,0.8741730451583862
+independent_v1_incendio_aglomerado_residencial_012,"O incidente destruiu oito casas, resultando em duas mortes e deixando a área em risco de desabamento.",COBRADE_2_3_1_2_0,OTHER,0.5656586289405823
+independent_v1_incendio_aglomerado_residencial_016,O incêndio no Caminho São Sebastião teve duração de quatro horas e a estimativa é que 70 barracos em madeira tenham sido atingidos.,COBRADE_2_3_1_2_0,COBRADE_2_3_1_1_0,0.46327757835388184
+independent_v1_incendio_aglomerado_residencial_017,Cerca de 150 barracos foram queimados ou então derrubados para evitar o alastramento do incêndio.,COBRADE_2_3_1_2_0,OTHER,0.26273491978645325
+independent_v1_incendio_aglomerado_residencial_022,o incêndio ocorreu em 28 de agosto de 2025 e atingiu uma extensa área de palafitas.,COBRADE_2_3_1_2_0,COBRADE_1_4_1_3_1,0.8298432230949402
+independent_v1_other_002,"situação de emergência na cidade paranaense de Pinhão, atingida por vendaval.",OTHER,INSUFFICIENT_INFO,0.812070906162262
+independent_v1_other_013,"grave estiagem que afeta a região, cujas consequências já comprometem as reservas hídricas locais",OTHER,COBRADE_1_2_1_0_0,0.47857773303985596
+independent_v1_other_014,A falta de chuvas resultou em [...] Falta de acesso à água potável para consumo humano.,OTHER,COBRADE_1_2_3_0_0,0.6175572276115417
+independent_v1_other_018,áreas do Município afetadas por Estiagem – 1.4.1.1.0 [...] diminuição ou exaurimento das reservas hídricas abastecedoras do município,OTHER,COBRADE_1_4_1_3_2,0.7179543375968933
+independent_v1_insufficient_info_001,uma ocorrência de incêndio em vegetação no bairro Jardim das Acácias.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_2,0.42025014758110046
+independent_v1_insufficient_info_002,"um incêndio em uma área de vegetação na Avenida Menino Marcelo, em frente a um shopping center",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.5835050344467163
+independent_v1_insufficient_info_003,"A Defesa Civil de Tupã atuou, na tarde desta sexta-feira (14), no combate a um incêndio em vegetação.",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9505821466445923
+independent_v1_insufficient_info_004,Um incêndio em vegetação mobilizou equipes do Corpo de Bombeiros Militar de Santa Catarina na região central de Balneário Camboriú,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.3882761597633362
+independent_v1_insufficient_info_006,Usar fogo em vegetação e/ou deixar que ocorra queimada em área pertencente ao autuado.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.8308541774749756
+independent_v1_insufficient_info_007,um incêndio que atingiu aproximadamente cinco mil metros quadrados de vegetação.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9866513013839722
+independent_v1_insufficient_info_008,a equipe da Defesa Civil de Itapecerica da Serra atuou no combate a um incêndio em vegetação às margens da Rodovia Régis Bittencourt,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.8461601734161377
+independent_v1_insufficient_info_009,"um homem que provocou incêndio em área de vegetação nativa às margens da GO-241, próximo à Estação Ecológica de Nova Roma",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.988237202167511
+independent_v1_insufficient_info_010,"Um incêndio em vegetação atingiu aproximadamente 10 mil metros quadrados, o equivalente a um hectare",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.7903597354888916
+independent_v1_insufficient_info_011,onde a água invadiu diversas residências e provocou transtornos à população.,INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,0.7887926697731018
+independent_v1_insufficient_info_012,"Algumas casas foram invadidas pela água, forçando ao menos oito pessoas a deixarem seus lares",INSUFFICIENT_INFO,COBRADE_2_3_1_2_0,0.44770511984825134
+independent_v1_insufficient_info_014,"o nível da água subiu, chegando até a estrutura principal da ponte.",INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0.5326787829399109
+independent_v1_insufficient_info_015,"o nível da agua subiu rapidamente, submergindo a ponte que liga a principal entrada do bairro",INSUFFICIENT_INFO,COBRADE_1_2_2_0_0,0.8130618333816528
+independent_v1_insufficient_info_016,o nível da água subiu a ponto de dificultar o acesso e a passagem de veículos.,INSUFFICIENT_INFO,COBRADE_1_2_3_0_0,0.9786369800567627
+independent_v1_insufficient_info_017,"por diversas vezes a água invadiu sua casa, destruindo móveis e objetos pessoais.",INSUFFICIENT_INFO,OTHER,0.4396822452545166
+independent_v1_insufficient_info_018,entrou em casas onde a altura da água passava de um metro.,INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,0.43976646661758423
+independent_v1_insufficient_info_019,A força da água invadiu residências e comprometeu o sistema de abastecimento do município,INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,0.9482383728027344
+independent_v1_insufficient_info_020,"a água invadiu as cabines de entrada de energia elétrica, oferendo riscos de segurança",INSUFFICIENT_INFO,OTHER,0.9222716689109802
+independent_v1_insufficient_info_021,risco moderado para ocorrências associadas a alagamentos e enxurradas pontuais,INSUFFICIENT_INFO,OTHER,0.9457300901412964
+independent_v1_insufficient_info_023,"o cenário de risco hidrológico também indica risco de cheias com extravasamento em arroios e pequenos rios, enxurradas, alagamentos em áreas urbanas",INSUFFICIENT_INFO,COBRADE_1_2_1_0_0,0.5434918999671936
+independent_v1_insufficient_info_024,alta probabilidade de incêndios em florestas ou nas demais formas de vegetação nativa.,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9892827272415161
+independent_v1_insufficient_info_025,o risco de incêndios aumenta e as consequências também.,INSUFFICIENT_INFO,OTHER,0.5452685952186584
+independent_v1_insufficient_info_026,Botucatu entra em uma época de maior risco para incêndios em áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9424527287483215
+independent_v1_insufficient_info_027,"um pequeno foco de incêndio pode se espalhar rapidamente, causando danos ao meio ambiente, à fauna e à flora",INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9420657157897949
+independent_v1_insufficient_info_028,Uma simples queimada pode sair do controle rapidamente e atingir áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9859445095062256
+independent_v1_insufficient_info_029,ações preventivas voltadas à redução dos impactos causados pela baixa umidade do ar e ao combate a incêndios em áreas de vegetação,INSUFFICIENT_INFO,COBRADE_1_4_1_3_1,0.9051142334938049
+independent_v1_insufficient_info_030,O risco é baixo a moderado para ocorrências associadas a alagamentos pontuais,INSUFFICIENT_INFO,OTHER,0.4790548086166382

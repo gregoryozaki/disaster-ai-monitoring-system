@@ -1,0 +1,10 @@
+{
+  "model": "tfidf_logreg_v2",
+  "dataset": "independent_test_v1",
+  "n_samples": 270,
+  "accuracy": 0.5814814814814815,
+  "macro_precision": 0.6754516456185693,
+  "macro_recall": 0.5814814814814815,
+  "macro_f1": 0.5651997734966571,
+  "weighted_f1": 0.5651997734966572
+}

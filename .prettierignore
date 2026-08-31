@@ -1,0 +1,15 @@
+**/node_modules
+**/.next
+**/build
+**/dist
+**/coverage
+
+**/src/generated/prisma
+**/prisma/migrations
+
+ml/data
+ml/artifacts
+
+docs
+
+package-lock.json

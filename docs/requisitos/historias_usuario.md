@@ -55,7 +55,7 @@ A prioridade abaixo considera **valor para usuários + evidência da literatura 
 
 ## 1. Visão geral do sistema
 
-O MBOI será composto por dois ambientes principais:
+Será composto por dois ambientes principais:
 
 1. **Aplicativo web responsivo/PWA para cidadãos**  
    Permite registrar ocorrências com evidência visual, descrição contextual, localização, data/hora, nível de urgência e indicação de risco humano. O aplicativo deve continuar utilizável em conectividade limitada, armazenando registros localmente quando necessário. Também permite acompanhar o status e consultar ocorrências públicas confirmadas.

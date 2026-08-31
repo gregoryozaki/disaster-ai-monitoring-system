@@ -1,0 +1,148 @@
+{
+  "records": 270,
+  "bertimbau": {
+    "errors_path": "evaluation/nlp/independent_test_v1/kamara_bertimbau_v2/errors.csv",
+    "metrics_path": "evaluation/nlp/independent_test_v1/kamara_bertimbau_v2/metrics.json",
+    "metrics": {
+      "dataset": "independent_test_v1",
+      "model": "kamara_bertimbau_v2",
+      "n": 270,
+      "accuracy": 0.7962962962962963,
+      "macro_precision": 0.7972975762830834,
+      "macro_recall": 0.7962962962962963,
+      "macro_f1": 0.7660342540748014,
+      "weighted_f1": 0.7660342540748013,
+      "errors": 55,
+      "device": "cpu",
+      "max_length": 128,
+      "batch_size": 32
+    },
+    "errors": 55,
+    "correct": 215,
+    "accuracy_from_errors": 0.7962962962962963,
+    "per_class_recall": {
+      "COBRADE_1_2_1_0_0": {
+        "correct": 30,
+        "errors": 0,
+        "recall": 1.0
+      },
+      "COBRADE_1_2_2_0_0": {
+        "correct": 20,
+        "errors": 10,
+        "recall": 0.6666666666666666
+      },
+      "COBRADE_1_2_3_0_0": {
+        "correct": 27,
+        "errors": 3,
+        "recall": 0.9
+      },
+      "COBRADE_1_4_1_3_1": {
+        "correct": 30,
+        "errors": 0,
+        "recall": 1.0
+      },
+      "COBRADE_1_4_1_3_2": {
+        "correct": 23,
+        "errors": 7,
+        "recall": 0.7666666666666667
+      },
+      "COBRADE_2_3_1_1_0": {
+        "correct": 30,
+        "errors": 0,
+        "recall": 1.0
+      },
+      "COBRADE_2_3_1_2_0": {
+        "correct": 26,
+        "errors": 4,
+        "recall": 0.8666666666666667
+      },
+      "OTHER": {
+        "correct": 26,
+        "errors": 4,
+        "recall": 0.8666666666666667
+      },
+      "INSUFFICIENT_INFO": {
+        "correct": 3,
+        "errors": 27,
+        "recall": 0.1
+      }
+    }
+  },
+  "tfidf": {
+    "errors_path": "evaluation/nlp/independent_test_v1/tfidf_logreg_v2/errors.csv",
+    "metrics_path": "evaluation/nlp/independent_test_v1/tfidf_logreg_v2/metrics.json",
+    "metrics": {
+      "model": "tfidf_logreg_v2",
+      "dataset": "independent_test_v1",
+      "n_samples": 270,
+      "accuracy": 0.5814814814814815,
+      "macro_precision": 0.6754516456185693,
+      "macro_recall": 0.5814814814814815,
+      "macro_f1": 0.5651997734966571,
+      "weighted_f1": 0.5651997734966572
+    },
+    "errors": 113,
+    "correct": 157,
+    "accuracy_from_errors": 0.5814814814814815,
+    "per_class_recall": {
+      "COBRADE_1_2_1_0_0": {
+        "correct": 25,
+        "errors": 5,
+        "recall": 0.8333333333333334
+      },
+      "COBRADE_1_2_2_0_0": {
+        "correct": 16,
+        "errors": 14,
+        "recall": 0.5333333333333333
+      },
+      "COBRADE_1_2_3_0_0": {
+        "correct": 19,
+        "errors": 11,
+        "recall": 0.6333333333333333
+      },
+      "COBRADE_1_4_1_3_1": {
+        "correct": 25,
+        "errors": 5,
+        "recall": 0.8333333333333334
+      },
+      "COBRADE_1_4_1_3_2": {
+        "correct": 9,
+        "errors": 21,
+        "recall": 0.3
+      },
+      "COBRADE_2_3_1_1_0": {
+        "correct": 28,
+        "errors": 2,
+        "recall": 0.9333333333333333
+      },
+      "COBRADE_2_3_1_2_0": {
+        "correct": 10,
+        "errors": 20,
+        "recall": 0.3333333333333333
+      },
+      "OTHER": {
+        "correct": 23,
+        "errors": 7,
+        "recall": 0.7666666666666667
+      },
+      "INSUFFICIENT_INFO": {
+        "correct": 2,
+        "errors": 28,
+        "recall": 0.06666666666666667
+      }
+    }
+  },
+  "paired_comparison": {
+    "both_wrong": 46,
+    "bertimbau_only_wrong": 9,
+    "tfidf_only_wrong": 67,
+    "accuracy_difference": 0.2148148148148148,
+    "relative_error_reduction": 0.5132743362831859,
+    "mcnemar": {
+      "bert_correct_tfidf_wrong": 67,
+      "bert_wrong_tfidf_correct": 9,
+      "discordant": 76,
+      "exact_two_sided_p_value": 4.334352264140022e-12
+    }
+  }
+}
