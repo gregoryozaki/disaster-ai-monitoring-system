@@ -25,6 +25,14 @@ interface PersistClassificationInput {
 
   confidence: number | null
 
+  visualConfidence: number | null
+
+  textConfidence: number | null
+
+  ambiguous: boolean
+
+  ambiguityReason: string | null
+
   explanationSimple: string
 
   signals: Record<string, unknown>
@@ -37,39 +45,60 @@ interface PersistClassificationInput {
   }
 }
 
-function resolveModalityConfidences(
-  modelType: AIModelType,
+/**
+ * Ponte de compatibilidade durante a migração
+ * do contrato.
+ *
+ * O novo contrato possui visualConfidence e
+ * textConfidence explicitamente. Entretanto,
+ * respostas antigas e mocks ainda podem chegar
+ * com ambos nulos.
+ *
+ * Enquanto a orquestração multimodal ainda não
+ * estiver implementada, preservamos o
+ * comportamento anterior para respostas
+ * exclusivamente VISUAL ou TEXTUAL.
+ *
+ * Esta função poderá ser simplificada/removida
+ * quando todos os produtores enviarem os scores
+ * de modalidade explicitamente.
+ */
+function resolveModalityConfidences(input: {
+  modelType: AIModelType
   confidence: number | null
-): {
+  visualConfidence: number | null
+  textConfidence: number | null
+}): {
   visualConfidence: number | null
   textConfidence: number | null
 } {
-  if (modelType === "VISUAL") {
+  if (input.visualConfidence !== null || input.textConfidence !== null) {
     return {
-      visualConfidence: confidence,
+      visualConfidence: input.visualConfidence,
+
+      textConfidence: input.textConfidence
+    }
+  }
+
+  if (input.modelType === "VISUAL") {
+    return {
+      visualConfidence: input.confidence,
+
       textConfidence: null
     }
   }
 
-  if (modelType === "TEXTUAL") {
+  if (input.modelType === "TEXTUAL") {
     return {
       visualConfidence: null,
-      textConfidence: confidence
+
+      textConfidence: input.confidence
     }
   }
 
-  /*
-   * Quando o classificador MULTIMODAL real
-   * for implementado, ele deverá fornecer
-   * separadamente as confianças visual e
-   * textual.
-   *
-   * Até lá, não inferimos esses valores
-   * artificialmente a partir da confiança
-   * global.
-   */
   return {
     visualConfidence: null,
+
     textConfidence: null
   }
 }
@@ -115,6 +144,7 @@ async function persistClassification(input: PersistClassificationInput) {
 
       select: {
         id: true,
+
         active: true
       }
     })
@@ -124,10 +154,15 @@ async function persistClassification(input: PersistClassificationInput) {
     }
   }
 
-  const { visualConfidence, textConfidence } = resolveModalityConfidences(
-    input.model.modelType,
-    input.confidence
-  )
+  const { visualConfidence, textConfidence } = resolveModalityConfidences({
+    modelType: input.model.modelType,
+
+    confidence: input.confidence,
+
+    visualConfidence: input.visualConfidence,
+
+    textConfidence: input.textConfidence
+  })
 
   const signals = {
     ...input.signals,
@@ -151,9 +186,9 @@ async function persistClassification(input: PersistClassificationInput) {
 
       textConfidence,
 
-      ambiguous: false,
+      ambiguous: input.ambiguous,
 
-      ambiguityReason: null,
+      ambiguityReason: input.ambiguityReason,
 
       explanationSimple: input.explanationSimple,
 
@@ -166,8 +201,11 @@ async function persistClassification(input: PersistClassificationInput) {
       predictedCategory: {
         select: {
           id: true,
+
           cobradeCode: true,
+
           name: true,
+
           groupName: true
         }
       }
@@ -205,6 +243,7 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
 
         select: {
           storageRef: true,
+
           mimeType: true
         }
       }
@@ -263,6 +302,14 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
       predictedCobradeCode: result.predictedCobradeCode,
 
       confidence: result.confidence,
+
+      visualConfidence: result.visualConfidence,
+
+      textConfidence: result.textConfidence,
+
+      ambiguous: result.ambiguous,
+
+      ambiguityReason: result.ambiguityReason,
 
       explanationSimple: result.explanationSimple,
 

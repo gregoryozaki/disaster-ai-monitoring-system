@@ -11,6 +11,7 @@ import type {
 
 const healthResponseSchema = z.object({
   status: z.string(),
+
   service: z.string()
 })
 
@@ -24,12 +25,33 @@ const modelInfoSchema = z.object({
   syntheticData: z.boolean()
 })
 
+const nullableConfidenceSchema = z.number().min(0).max(1).nullable()
+
 const classifyResponseSchema = z.object({
   resultStatus: z.enum(["AVAILABLE", "UNAVAILABLE", "ERROR"]),
 
   predictedCobradeCode: z.string().min(1).nullable(),
 
-  confidence: z.number().min(0).max(1).nullable(),
+  confidence: nullableConfidenceSchema,
+
+  /*
+   * Compatibilidade temporária:
+   *
+   * enquanto todos os produtores e mocks não
+   * tiverem migrado para o novo contrato, a
+   * ausência desses campos é interpretada como
+   * null/false.
+   *
+   * O objeto retornado por safeParse já terá os
+   * campos materializados.
+   */
+  visualConfidence: nullableConfidenceSchema.default(null),
+
+  textConfidence: nullableConfidenceSchema.default(null),
+
+  ambiguous: z.boolean().default(false),
+
+  ambiguityReason: z.string().min(1).nullable().default(null),
 
   explanationSimple: z.string(),
 
