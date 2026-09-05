@@ -26,41 +26,66 @@ NLP_RUN_METADATA_FILENAME = (
 
 def _repository_root() -> Path:
     """
-    Resolve a raiz do monorepo durante
-    o desenvolvimento local.
+    Localiza dinamicamente a raiz do monorepo.
 
-    constants.py/model_config.py está em:
-
-    apps/ai-service/backend/app/core/
-
-    Portanto parents[5] corresponde
-    à raiz do repositório.
+    Essa resolução é usada somente quando os
+    diretórios dos modelos não são informados
+    explicitamente por variáveis de ambiente.
     """
 
+    current_file = Path(__file__).resolve()
+
+    for parent in current_file.parents:
+        if (
+            (parent / "package.json").is_file()
+            and (parent / "ml" / "artifacts").is_dir()
+        ):
+            return parent
+
+    raise RuntimeError(
+        "Não foi possível localizar a raiz do "
+        "repositório Kamara. Configure "
+        "KAMARA_VISUAL_MODEL_DIR e "
+        "KAMARA_NLP_MODEL_DIR."
+    )
+
+
+def _resolve_model_dir(
+    env_name: str,
+    *default_parts: str,
+) -> Path:
+    """
+    Usa primeiro o caminho explicitamente
+    configurado por variável de ambiente.
+
+    Somente quando a variável não existe é
+    necessário localizar a raiz do repositório.
+    """
+
+    configured_path = os.getenv(env_name)
+
+    if configured_path:
+        return (
+            Path(configured_path)
+            .expanduser()
+            .resolve()
+        )
+
     return (
-        Path(__file__)
+        _repository_root()
+        .joinpath(*default_parts)
+        .expanduser()
         .resolve()
-        .parents[5]
     )
 
 
-DEFAULT_VISUAL_MODEL_DIR = (
-    _repository_root()
-    / "ml"
-    / "artifacts"
-    / "computer-vision"
-    / MODEL_ARTIFACT_NAME
+VISUAL_MODEL_DIR = _resolve_model_dir(
+    "KAMARA_VISUAL_MODEL_DIR",
+    "ml",
+    "artifacts",
+    "computer-vision",
+    MODEL_ARTIFACT_NAME,
 )
-
-
-VISUAL_MODEL_DIR = Path(
-    os.getenv(
-        "KAMARA_VISUAL_MODEL_DIR",
-        str(
-            DEFAULT_VISUAL_MODEL_DIR
-        ),
-    )
-).expanduser().resolve()
 
 
 VISUAL_MODEL_PATH = (
@@ -75,23 +100,13 @@ VISUAL_CLASS_MAPPING_PATH = (
 )
 
 
-DEFAULT_NLP_MODEL_DIR = (
-    _repository_root()
-    / "ml"
-    / "artifacts"
-    / "nlp"
-    / NLP_MODEL_ARTIFACT_NAME
+NLP_MODEL_DIR = _resolve_model_dir(
+    "KAMARA_NLP_MODEL_DIR",
+    "ml",
+    "artifacts",
+    "nlp",
+    NLP_MODEL_ARTIFACT_NAME,
 )
-
-
-NLP_MODEL_DIR = Path(
-    os.getenv(
-        "KAMARA_NLP_MODEL_DIR",
-        str(
-            DEFAULT_NLP_MODEL_DIR
-        ),
-    )
-).expanduser().resolve()
 
 
 NLP_RUN_METADATA_PATH = (
