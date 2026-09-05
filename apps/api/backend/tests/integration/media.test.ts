@@ -138,6 +138,12 @@ describe("Mídia de ocorrências", () => {
 
     expect(contentResponse.headers["content-type"]).toContain("image/png")
 
+    expect(contentResponse.headers["cross-origin-resource-policy"]).toBe(
+      "cross-origin"
+    )
+
+    expect(contentResponse.headers["content-disposition"]).toBe("inline")
+
     expect(contentResponse.headers["content-length"]).toBe(
       String(testPngBuffer.length)
     )

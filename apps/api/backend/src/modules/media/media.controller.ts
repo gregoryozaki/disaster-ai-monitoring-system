@@ -92,6 +92,10 @@ export async function getMediaContentController(
 
     res.setHeader("Cache-Control", "private, max-age=300")
 
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin")
+
+    res.setHeader("Content-Disposition", "inline")
+
     return res.status(200).send(result.content.body)
   } catch (error) {
     next(error)

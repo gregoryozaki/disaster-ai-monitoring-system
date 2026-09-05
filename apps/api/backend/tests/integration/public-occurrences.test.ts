@@ -45,7 +45,7 @@ describe("Ocorrências públicas", () => {
     expect(listResponse.body.data).toEqual([])
   })
 
-  it("deve expor ocorrência CONFIRMED", async () => {
+  it("deve expor ocorrência CONFIRMED com projeção pública minimizada", async () => {
     const citizen = await createAuthenticatedCitizen()
 
     const manager = await createAuthenticatedManager()
@@ -54,7 +54,11 @@ describe("Ocorrências públicas", () => {
 
     const createResponse = await citizen.agent.post("/api/v1/occurrences").send(
       buildOccurrencePayload({
-        description: "Ocorrência confirmada para teste público."
+        description: "Ocorrência confirmada para teste público.",
+
+        latitude: -3.119027,
+
+        longitude: -60.021731
       })
     )
 
@@ -66,6 +70,7 @@ describe("Ocorrências públicas", () => {
       .post(`/api/v1/manager/occurrences/${occurrenceId}/validations`)
       .send({
         decision: "CONFIRM",
+
         finalCategoryId: category.id
       })
 
@@ -86,14 +91,32 @@ describe("Ocorrências públicas", () => {
 
       status: "CONFIRMED",
 
+      location: {
+        latitude: -3.119,
+
+        longitude: -60.022,
+
+        approximate: true
+      },
+
+      distanceKm: null,
+
       category: {
         id: category.id,
 
         cobradeCode: category.cobradeCode,
 
         name: category.name
+      },
+
+      validation: {
+        confirmed: true
       }
     })
+
+    expect(detailResponse.body.data.location.latitude).not.toBe(-3.119027)
+
+    expect(detailResponse.body.data.location.longitude).not.toBe(-60.021731)
 
     expect(detailResponse.body.data).not.toHaveProperty("reporterId")
 
@@ -108,6 +131,108 @@ describe("Ocorrências públicas", () => {
     expect(listResponse.body.data).toHaveLength(1)
 
     expect(listResponse.body.data[0].id).toBe(occurrenceId)
+
+    expect(listResponse.body.meta).toMatchObject({
+      center: null,
+
+      radiusKm: null,
+
+      count: 1
+    })
+  })
+
+  it("deve filtrar ocorrências pelo raio e retornar distância aproximada", async () => {
+    const citizen = await createAuthenticatedCitizen()
+
+    const manager = await createAuthenticatedManager()
+
+    const category = await createTestDisasterCategory()
+
+    const nearResponse = await citizen.agent.post("/api/v1/occurrences").send(
+      buildOccurrencePayload({
+        description: "Ocorrência próxima ao ponto de consulta.",
+
+        latitude: -3.12,
+
+        longitude: -60.02
+      })
+    )
+
+    expect(nearResponse.status).toBe(201)
+
+    await manager.agent
+      .post(
+        `/api/v1/manager/occurrences/${nearResponse.body.data.id}/validations`
+      )
+      .send({
+        decision: "CONFIRM",
+
+        finalCategoryId: category.id
+      })
+      .expect(201)
+
+    const farResponse = await citizen.agent.post("/api/v1/occurrences").send(
+      buildOccurrencePayload({
+        description: "Ocorrência fora do raio de cinco quilômetros.",
+
+        latitude: -3.2,
+
+        longitude: -60.1
+      })
+    )
+
+    expect(farResponse.status).toBe(201)
+
+    await manager.agent
+      .post(
+        `/api/v1/manager/occurrences/${farResponse.body.data.id}/validations`
+      )
+      .send({
+        decision: "CONFIRM",
+
+        finalCategoryId: category.id
+      })
+      .expect(201)
+
+    const response = await request(app).get(
+      "/api/v1/public/occurrences?lat=-3.119&lon=-60.022&radiusKm=5"
+    )
+
+    expect(response.status).toBe(200)
+
+    expect(response.body.data).toHaveLength(1)
+
+    expect(response.body.data[0].id).toBe(nearResponse.body.data.id)
+
+    expect(response.body.data[0].distanceKm).toEqual(expect.any(Number))
+
+    expect(response.body.data[0].distanceKm).toBeLessThan(5)
+
+    expect(response.body.meta).toMatchObject({
+      center: {
+        latitude: -3.119,
+
+        longitude: -60.022
+      },
+
+      radiusKm: 5,
+
+      count: 1
+    })
+  })
+
+  it("deve rejeitar consulta geográfica incompleta", async () => {
+    const response = await request(app).get(
+      "/api/v1/public/occurrences?lat=-3.119&radiusKm=10"
+    )
+
+    expect(response.status).toBe(422)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "VALIDATION_ERROR"
+      }
+    })
   })
 
   it("não deve expor ocorrência REJECTED", async () => {

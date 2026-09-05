@@ -1,14 +1,18 @@
 import { randomUUID } from "node:crypto"
 
 import bcrypt from "bcryptjs"
+
 import request from "supertest"
 
 import { app } from "../../src/app.js"
+
 import { prisma } from "../../src/prisma/client.js"
 
 interface TestUserOptions {
   name?: string
+
   email?: string
+
   password?: string
 }
 
@@ -25,7 +29,9 @@ export async function createAuthenticatedCitizen(
 
   const registerResponse = await agent.post("/api/v1/auth/register").send({
     name,
+
     email,
+
     password
   })
 
@@ -39,6 +45,7 @@ export async function createAuthenticatedCitizen(
 
   const loginResponse = await agent.post("/api/v1/auth/login").send({
     email,
+
     password
   })
 
@@ -52,9 +59,12 @@ export async function createAuthenticatedCitizen(
 
   return {
     agent,
+
     user: loginResponse.body.data,
+
     credentials: {
       email,
+
       password
     }
   }
@@ -74,9 +84,13 @@ export async function createAuthenticatedManager(
   const user = await prisma.user.create({
     data: {
       name,
+
       email,
+
       passwordHash,
+
       role: "MANAGER",
+
       status: "ACTIVE"
     }
   })
@@ -85,6 +99,7 @@ export async function createAuthenticatedManager(
 
   const loginResponse = await agent.post("/api/v1/auth/login").send({
     email,
+
     password
   })
 
@@ -98,9 +113,64 @@ export async function createAuthenticatedManager(
 
   return {
     agent,
+
     user,
+
     credentials: {
       email,
+
+      password
+    }
+  }
+}
+
+export async function createAuthenticatedAdmin(options: TestUserOptions = {}) {
+  const name = options.name ?? "Administrador Teste"
+
+  const email = options.email ?? `admin-${randomUUID()}@test.local`
+
+  const password = options.password ?? "AdministradorTeste123!"
+
+  const passwordHash = await bcrypt.hash(password, 12)
+
+  const user = await prisma.user.create({
+    data: {
+      name,
+
+      email,
+
+      passwordHash,
+
+      role: "ADMIN",
+
+      status: "ACTIVE"
+    }
+  })
+
+  const agent = request.agent(app)
+
+  const loginResponse = await agent.post("/api/v1/auth/login").send({
+    email,
+
+    password
+  })
+
+  if (loginResponse.status !== 200) {
+    throw new Error(
+      `Falha ao autenticar administrador de teste: ${JSON.stringify(
+        loginResponse.body
+      )}`
+    )
+  }
+
+  return {
+    agent,
+
+    user,
+
+    credentials: {
+      email,
+
       password
     }
   }

@@ -6,6 +6,8 @@ import type {
   AIClassifyInput,
   AIClassifyResult,
   AIHealthResponse,
+  AIPredictInput,
+  AIPredictResult,
   AIService
 } from "./ai-service.js"
 
@@ -137,6 +139,24 @@ const classifyResponseSchema = z
     }
   })
 
+const predictionResponseSchema = z
+  .object({
+    riskLevel: z.enum(["LOW", "MEDIUM", "HIGH"]),
+
+    probability: z.number().min(0).max(1),
+
+    trend: z.enum(["DECREASING", "STABLE", "INCREASING", "UNKNOWN"]),
+
+    factors: z.array(z.string().min(1)),
+
+    explanationSimple: z.string().min(1),
+
+    synthetic: z.boolean(),
+
+    modelVersion: z.string().min(1)
+  })
+  .strict()
+
 export class AIServiceUnavailableError extends Error {
   constructor(message: string) {
     super(message)
@@ -252,6 +272,54 @@ export class HttpAIService implements AIService {
     if (!parsed.success) {
       throw new AIServiceUnavailableError(
         "O serviço de IA retornou um contrato de classificação inválido."
+      )
+    }
+
+    return parsed.data
+  }
+
+  async predict(input: AIPredictInput): Promise<AIPredictResult> {
+    let response: Response
+
+    try {
+      response = await fetch(`${env.AI_SERVICE_URL}/predict`, {
+        method: "POST",
+
+        headers: {
+          accept: "application/json",
+
+          "content-type": "application/json"
+        },
+
+        body: JSON.stringify({
+          region: input.region,
+
+          disaster_type: input.disasterType,
+
+          horizon_hours: input.horizonHours
+        }),
+
+        signal: createAbortSignal()
+      })
+    } catch {
+      throw new AIServiceUnavailableError(
+        "Não foi possível conectar ao serviço de IA."
+      )
+    }
+
+    if (!response.ok) {
+      throw new AIServiceUnavailableError(
+        `Serviço de IA respondeu com HTTP ${response.status}.`
+      )
+    }
+
+    const body = await parseJsonResponse(response)
+
+    const parsed = predictionResponseSchema.safeParse(body)
+
+    if (!parsed.success) {
+      throw new AIServiceUnavailableError(
+        "O serviço de IA retornou um contrato de previsão inválido."
       )
     }
 

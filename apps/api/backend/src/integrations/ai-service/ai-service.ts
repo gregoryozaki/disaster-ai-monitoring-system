@@ -32,31 +32,12 @@ export interface AIClassifyResult {
 
   predictedCobradeCode: string | null
 
-  /**
-   * Score principal da modalidade responsável
-   * pela resposta.
-   *
-   * Para uma resposta MULTIMODAL, permanece
-   * nulo enquanto não existir um score de fusão
-   * metodologicamente definido.
-   */
   confidence: number | null
 
-  /**
-   * Scores produzidos individualmente pelas
-   * modalidades visual e textual.
-   *
-   * Eles não devem ser combinados por média
-   * aritmética.
-   */
   visualConfidence: number | null
 
   textConfidence: number | null
 
-  /**
-   * Indica ambiguidade detectada durante a
-   * pré-análise.
-   */
   ambiguous: boolean
 
   ambiguityReason: string | null
@@ -68,8 +49,40 @@ export interface AIClassifyResult {
   signals: Record<string, unknown>
 }
 
+export type AIDisasterType = "INCENDIO_QUEIMADA" | "INUNDACAO_ALAGAMENTO"
+
+export type AIRiskLevel = "LOW" | "MEDIUM" | "HIGH"
+
+export type AIRiskTrend = "DECREASING" | "STABLE" | "INCREASING" | "UNKNOWN"
+
+export interface AIPredictInput {
+  region: string
+
+  disasterType: AIDisasterType
+
+  horizonHours: number
+}
+
+export interface AIPredictResult {
+  riskLevel: AIRiskLevel
+
+  probability: number
+
+  trend: AIRiskTrend
+
+  factors: string[]
+
+  explanationSimple: string
+
+  synthetic: boolean
+
+  modelVersion: string
+}
+
 export interface AIService {
   health(): Promise<AIHealthResponse>
 
   classify(input: AIClassifyInput): Promise<AIClassifyResult>
+
+  predict(input: AIPredictInput): Promise<AIPredictResult>
 }

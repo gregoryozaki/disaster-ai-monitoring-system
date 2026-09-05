@@ -1,23 +1,41 @@
 import bcrypt from "bcryptjs"
+
 import { Router } from "express"
+
 import { z } from "zod"
 
 import { env } from "../config/env.js"
+
 import { HttpError } from "../lib/http-error.js"
+
 import { authenticate, signSession } from "../middlewares/auth.js"
+
 import { validateBody } from "../middlewares/validate.js"
+
+import { acceptManagerInviteSchema } from "../modules/manager-invites/manager-invite.schema.js"
+
+import { acceptManagerInvite } from "../modules/manager-invites/manager-invite.service.js"
+
+import {
+  requestPasswordReset,
+  resetPassword
+} from "../modules/password-reset/password-reset.service.js"
+
 import { prisma } from "../prisma/client.js"
 
 const router = Router()
 
 const cookieBaseOptions = {
   httpOnly: true,
+
   sameSite: "lax" as const,
+
   secure: env.NODE_ENV === "production"
 }
 
 const sessionCookieOptions = {
   ...cookieBaseOptions,
+
   maxAge: 2 * 60 * 60 * 1000
 }
 
@@ -32,6 +50,7 @@ const passwordSchema = z.string().min(8).max(128)
 const credentialsSchema = z
   .object({
     email: emailSchema,
+
     password: passwordSchema
   })
   .strict()
@@ -62,7 +81,9 @@ const resetPasswordSchema = z
 
 router.post(
   "/register",
+
   validateBody(registerSchema),
+
   async (req, res, next) => {
     try {
       const existingUser = await prisma.user.findUnique({
@@ -84,24 +105,25 @@ router.post(
       const user = await prisma.user.create({
         data: {
           name: req.body.name,
-          email: req.body.email,
-          passwordHash
 
-          /*
-           * role e status não vêm do cliente.
-           *
-           * CITIZEN e ACTIVE são definidos
-           * pelos defaults do schema Prisma.
-           */
+          email: req.body.email,
+
+          passwordHash
         },
 
         select: {
           id: true,
+
           name: true,
+
           email: true,
+
           role: true,
+
           status: true,
+
           createdAt: true,
+
           updatedAt: true
         }
       })
@@ -117,7 +139,9 @@ router.post(
 
 router.post(
   "/login",
+
   validateBody(credentialsSchema),
+
   async (req, res, next) => {
     try {
       const user = await prisma.user.findUnique({
@@ -145,11 +169,17 @@ router.post(
       return res.json({
         data: {
           id: user.id,
+
           name: user.name,
+
           email: user.email,
+
           role: user.role,
+
           status: user.status,
+
           createdAt: user.createdAt,
+
           updatedAt: user.updatedAt
         }
       })
@@ -159,48 +189,92 @@ router.post(
   }
 )
 
-router.post("/logout", (_req, res) => {
-  res.clearCookie("kamara_session", cookieBaseOptions)
+router.post(
+  "/manager-invites/accept",
 
-  return res.status(204).send()
-})
+  validateBody(acceptManagerInviteSchema),
 
-router.get("/me", authenticate, (req, res) => {
-  return res.json({
-    data: req.user
-  })
-})
+  async (req, res, next) => {
+    try {
+      const manager = await acceptManagerInvite(req.body)
 
-/*
- * Ainda não implementados de verdade.
- *
- * Mantemos contrato neutro até implementar
- * PasswordResetToken e envio de e-mail.
- */
+      return res.status(201).json({
+        data: manager
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 router.post(
-  "/password/forgot",
-  validateBody(forgotPasswordSchema),
+  "/logout",
+
   (_req, res) => {
-    return res.status(202).json({
-      data: {
-        message: "Se existir uma conta, as instruções serão enviadas."
-      }
+    res.clearCookie("kamara_session", cookieBaseOptions)
+
+    return res.status(204).send()
+  }
+)
+
+router.get(
+  "/me",
+
+  authenticate,
+
+  (req, res) => {
+    return res.json({
+      data: req.user
     })
   }
 )
 
 router.post(
-  "/password/reset",
-  validateBody(resetPasswordSchema),
-  (_req, res) => {
-    return res.status(501).json({
-      error: {
-        code: "NOT_IMPLEMENTED",
+  "/password/forgot",
 
-        message: "Redefinição de senha ainda não implementada."
-      }
-    })
+  validateBody(forgotPasswordSchema),
+
+  async (req, res, next) => {
+    try {
+      const result = await requestPasswordReset(req.body.email)
+
+      return res.status(202).json({
+        data: {
+          message:
+            "Se existir uma conta ativa para este e-mail, uma solicitação de redefinição foi criada.",
+
+          ...(env.NODE_ENV !== "production" && result.resetToken
+            ? {
+                developmentResetToken: result.resetToken
+              }
+            : {})
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+router.post(
+  "/password/reset",
+
+  validateBody(resetPasswordSchema),
+
+  async (req, res, next) => {
+    try {
+      await resetPassword(req.body.token, req.body.password)
+
+      res.clearCookie("kamara_session", cookieBaseOptions)
+
+      return res.json({
+        data: {
+          message: "Senha redefinida com sucesso."
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 )
 

@@ -1,4 +1,7 @@
+import { createHash } from "node:crypto"
+
 import bcrypt from "bcryptjs"
+
 import request from "supertest"
 
 import { describe, expect, it } from "vitest"
@@ -6,6 +9,10 @@ import { describe, expect, it } from "vitest"
 import { app } from "../../src/app.js"
 
 import { prisma } from "../../src/prisma/client.js"
+
+function sha256(value: string) {
+  return createHash("sha256").update(value).digest("hex")
+}
 
 describe("Autenticação", () => {
   it("deve registrar um novo cidadão", async () => {
@@ -198,5 +205,341 @@ describe("Autenticação", () => {
     })
 
     expect(storedUser).not.toBeNull()
+  })
+
+  it("deve criar token de redefinição armazenando somente seu hash", async () => {
+    await request(app).post("/api/v1/auth/register").send({
+      name: "Cidadão Recuperação",
+      email: "recuperacao@test.local",
+      password: "SenhaOriginal123!"
+    })
+
+    const response = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: "recuperacao@test.local"
+      })
+
+    expect(response.status).toBe(202)
+
+    expect(response.body.data.message).toContain("solicitação de redefinição")
+
+    const rawToken = response.body.data.developmentResetToken
+
+    expect(typeof rawToken).toBe("string")
+
+    expect(rawToken.length).toBeGreaterThanOrEqual(10)
+
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        email: "recuperacao@test.local"
+      }
+    })
+
+    const storedToken = await prisma.passwordResetToken.findFirst({
+      where: {
+        userId: user.id
+      },
+
+      orderBy: {
+        createdAt: "desc"
+      }
+    })
+
+    expect(storedToken).not.toBeNull()
+
+    expect(storedToken?.tokenHash).not.toBe(rawToken)
+
+    expect(storedToken?.tokenHash).toBe(sha256(rawToken))
+
+    expect(storedToken?.usedAt).toBeNull()
+
+    expect(storedToken!.expiresAt.getTime()).toBeGreaterThan(Date.now())
+
+    const audit = await prisma.auditLog.findFirst({
+      where: {
+        actorUserId: user.id,
+
+        action: "PASSWORD_RESET_REQUESTED",
+
+        entityType: "PASSWORD_RESET_TOKEN",
+
+        entityId: storedToken!.id
+      }
+    })
+
+    expect(audit).not.toBeNull()
+  })
+
+  it("não deve revelar se um e-mail inexistente possui conta", async () => {
+    const before = await prisma.passwordResetToken.count()
+
+    const response = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: "conta-inexistente@test.local"
+      })
+
+    expect(response.status).toBe(202)
+
+    expect(response.body.data.message).toContain("solicitação de redefinição")
+
+    expect(response.body.data).not.toHaveProperty("developmentResetToken")
+
+    const after = await prisma.passwordResetToken.count()
+
+    expect(after).toBe(before)
+  })
+
+  it("não deve criar token de redefinição para usuário inativo", async () => {
+    const passwordHash = await bcrypt.hash("UsuarioInativo123!", 12)
+
+    const user = await prisma.user.create({
+      data: {
+        name: "Usuário Inativo",
+
+        email: "usuario-inativo-reset@test.local",
+
+        passwordHash,
+
+        role: "CITIZEN",
+
+        status: "INACTIVE"
+      }
+    })
+
+    const response = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: user.email
+      })
+
+    expect(response.status).toBe(202)
+
+    expect(response.body.data).not.toHaveProperty("developmentResetToken")
+
+    const tokens = await prisma.passwordResetToken.count({
+      where: {
+        userId: user.id
+      }
+    })
+
+    expect(tokens).toBe(0)
+  })
+
+  it("deve invalidar token anterior quando nova recuperação for solicitada", async () => {
+    await request(app).post("/api/v1/auth/register").send({
+      name: "Cidadão Tokens",
+
+      email: "multiplos-tokens@test.local",
+
+      password: "SenhaTokens123!"
+    })
+
+    const firstRequest = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: "multiplos-tokens@test.local"
+      })
+
+    expect(firstRequest.status).toBe(202)
+
+    const firstRawToken = firstRequest.body.data.developmentResetToken
+
+    const secondRequest = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: "multiplos-tokens@test.local"
+      })
+
+    expect(secondRequest.status).toBe(202)
+
+    const secondRawToken = secondRequest.body.data.developmentResetToken
+
+    expect(secondRawToken).not.toBe(firstRawToken)
+
+    const firstStoredToken = await prisma.passwordResetToken.findUnique({
+      where: {
+        tokenHash: sha256(firstRawToken)
+      }
+    })
+
+    const secondStoredToken = await prisma.passwordResetToken.findUnique({
+      where: {
+        tokenHash: sha256(secondRawToken)
+      }
+    })
+
+    expect(firstStoredToken).not.toBeNull()
+
+    expect(firstStoredToken?.usedAt).not.toBeNull()
+
+    expect(secondStoredToken).not.toBeNull()
+
+    expect(secondStoredToken?.usedAt).toBeNull()
+
+    const oldTokenResponse = await request(app)
+      .post("/api/v1/auth/password/reset")
+      .send({
+        token: firstRawToken,
+
+        password: "NovaSenhaTokens123!"
+      })
+
+    expect(oldTokenResponse.status).toBe(400)
+
+    expect(oldTokenResponse.body.error.code).toBe(
+      "INVALID_PASSWORD_RESET_TOKEN"
+    )
+
+    const currentTokenResponse = await request(app)
+      .post("/api/v1/auth/password/reset")
+      .send({
+        token: secondRawToken,
+
+        password: "NovaSenhaTokens123!"
+      })
+
+    expect(currentTokenResponse.status).toBe(200)
+  })
+
+  it("deve redefinir a senha, permitir login com a nova senha e impedir reutilização do token", async () => {
+    await request(app).post("/api/v1/auth/register").send({
+      name: "Cidadão Nova Senha",
+
+      email: "nova-senha@test.local",
+
+      password: "SenhaAntiga123!"
+    })
+
+    const forgotResponse = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: "nova-senha@test.local"
+      })
+
+    expect(forgotResponse.status).toBe(202)
+
+    const rawToken = forgotResponse.body.data.developmentResetToken
+
+    const resetResponse = await request(app)
+      .post("/api/v1/auth/password/reset")
+      .send({
+        token: rawToken,
+
+        password: "SenhaNova456!"
+      })
+
+    expect(resetResponse.status).toBe(200)
+
+    expect(resetResponse.body.data.message).toBe(
+      "Senha redefinida com sucesso."
+    )
+
+    const oldPasswordLogin = await request(app)
+      .post("/api/v1/auth/login")
+      .send({
+        email: "nova-senha@test.local",
+
+        password: "SenhaAntiga123!"
+      })
+
+    expect(oldPasswordLogin.status).toBe(401)
+
+    expect(oldPasswordLogin.body.error.code).toBe("INVALID_CREDENTIALS")
+
+    const newPasswordLogin = await request(app)
+      .post("/api/v1/auth/login")
+      .send({
+        email: "nova-senha@test.local",
+
+        password: "SenhaNova456!"
+      })
+
+    expect(newPasswordLogin.status).toBe(200)
+
+    const reusedTokenResponse = await request(app)
+      .post("/api/v1/auth/password/reset")
+      .send({
+        token: rawToken,
+
+        password: "OutraSenha789!"
+      })
+
+    expect(reusedTokenResponse.status).toBe(400)
+
+    expect(reusedTokenResponse.body.error.code).toBe(
+      "INVALID_PASSWORD_RESET_TOKEN"
+    )
+
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        email: "nova-senha@test.local"
+      }
+    })
+
+    const token = await prisma.passwordResetToken.findUniqueOrThrow({
+      where: {
+        tokenHash: sha256(rawToken)
+      }
+    })
+
+    expect(token.usedAt).not.toBeNull()
+
+    const audit = await prisma.auditLog.findFirst({
+      where: {
+        actorUserId: user.id,
+
+        action: "PASSWORD_RESET_COMPLETED",
+
+        entityType: "USER",
+
+        entityId: user.id
+      }
+    })
+
+    expect(audit).not.toBeNull()
+  })
+
+  it("deve rejeitar token de redefinição expirado", async () => {
+    await request(app).post("/api/v1/auth/register").send({
+      name: "Cidadão Token Expirado",
+
+      email: "token-expirado@test.local",
+
+      password: "SenhaExpirada123!"
+    })
+
+    const forgotResponse = await request(app)
+      .post("/api/v1/auth/password/forgot")
+      .send({
+        email: "token-expirado@test.local"
+      })
+
+    expect(forgotResponse.status).toBe(202)
+
+    const rawToken = forgotResponse.body.data.developmentResetToken
+
+    await prisma.passwordResetToken.update({
+      where: {
+        tokenHash: sha256(rawToken)
+      },
+
+      data: {
+        expiresAt: new Date(Date.now() - 60_000)
+      }
+    })
+
+    const resetResponse = await request(app)
+      .post("/api/v1/auth/password/reset")
+      .send({
+        token: rawToken,
+
+        password: "NovaSenhaExpirada123!"
+      })
+
+    expect(resetResponse.status).toBe(400)
+
+    expect(resetResponse.body.error.code).toBe("INVALID_PASSWORD_RESET_TOKEN")
   })
 })

@@ -1,5 +1,5 @@
 import type { OccurrenceStatus, RiskLevel } from '@kamara/shared-types';
-import { statusLabels } from '@/lib/mock-data';
+import { riskLabels, statusLabels } from '@/lib/labels';
 
 const statusStyles: Record<OccurrenceStatus, string> = {
   DRAFT: 'border-slate-200 bg-slate-50 text-slate-700',
@@ -26,10 +26,9 @@ export function StatusBadge({ status }: { status: OccurrenceStatus }) {
 }
 
 export function RiskBadge({ level }: { level: RiskLevel }) {
-  const label = level === 'LOW' ? 'Baixo' : level === 'MEDIUM' ? 'Medio' : 'Alto';
   return (
     <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${riskStyles[level]}`}>
-      Risco {label}
+      Risco {riskLabels[level]}
     </span>
   );
 }

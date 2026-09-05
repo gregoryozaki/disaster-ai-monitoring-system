@@ -1,5 +1,7 @@
 import { HttpError } from "../../lib/http-error.js"
 
+import { triggerPreAnalysis } from "../ai-classification/ai-classification.service.js"
+
 import type { CreateOccurrenceInput } from "./occurrence.schema.js"
 
 import {
@@ -33,6 +35,8 @@ export async function registerOccurrence(
   }
 
   const occurrence = await createOccurrence(reporterId, input)
+
+  triggerPreAnalysis(occurrence.id, "TEXT_ONLY")
 
   return {
     occurrence,

@@ -4,10 +4,27 @@ from app.schemas.prediction import (
 )
 
 
+MODEL_VERSION = "kamara_synthetic_risk_baseline@0.1.0"
+
+
 def predict_risk(
     payload: PredictRequest,
 ) -> PredictionResponse:
-    high_risk = (
+    """
+    Baseline sintético utilizado apenas para demonstrar
+    o contrato arquitetural de previsão de risco.
+
+    Nesta versão, região e horizonte são preservados na
+    requisição, mas não alteram numericamente o resultado.
+
+    Não utiliza:
+    - dados meteorológicos reais;
+    - dados hidrológicos reais;
+    - histórico real de ocorrências;
+    - modelo estatístico ou de machine learning treinado.
+    """
+
+    hydrological_risk = (
         payload.disaster_type
         == "INUNDACAO_ALAGAMENTO"
     )
@@ -15,28 +32,29 @@ def predict_risk(
     return PredictionResponse(
         riskLevel=(
             "HIGH"
-            if high_risk
+            if hydrological_risk
             else "MEDIUM"
         ),
         probability=(
             0.78
-            if high_risk
+            if hydrological_risk
             else 0.57
         ),
         trend=(
             "INCREASING"
-            if high_risk
+            if hydrological_risk
             else "STABLE"
         ),
         factors=[
-            "histórico simulado",
-            "ocorrências confirmadas",
-            "dados ambientais sintéticos",
+            "cenário sintético de demonstração",
+            "regra fixa por família de desastre",
+            "sem dados ambientais reais",
         ],
         explanationSimple=(
-            "Previsão experimental para apoio à decisão, "
-            "não alerta oficial."
+            "Estimativa sintética e experimental para "
+            "demonstração da arquitetura de apoio à decisão. "
+            "Não constitui alerta oficial."
         ),
         synthetic=True,
-        modelVersion="risk-rf@0.1.0",
+        modelVersion=MODEL_VERSION,
     )

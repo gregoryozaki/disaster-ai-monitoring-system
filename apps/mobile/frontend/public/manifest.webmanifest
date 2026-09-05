@@ -1,0 +1,35 @@
+{
+  "id": "/",
+  "name": "Kamara Cidadão",
+  "short_name": "Kamara",
+  "description": "PWA para registro e acompanhamento de ocorrências ambientais.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#047857",
+  "icons": [
+    {
+      "src": "/kamara-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Registrar ocorrência",
+      "short_name": "Registrar",
+      "description": "Registrar uma nova ocorrência ambiental",
+      "url": "/report"
+    },
+    {
+      "name": "Meu acompanhamento",
+      "short_name": "Histórico",
+      "description": "Consultar ocorrências registradas e pendências de sincronização",
+      "url": "/history"
+    }
+  ]
+}

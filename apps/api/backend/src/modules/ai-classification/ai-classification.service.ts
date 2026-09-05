@@ -1,3 +1,5 @@
+import { env } from "../../config/env.js"
+
 import type {
   AIModelType,
   AIResultStatus
@@ -12,8 +14,12 @@ import { objectStorage } from "../../integrations/storage/s3-storage.js"
 
 import { prisma } from "../../prisma/client.js"
 
+export type PreAnalysisMode = "TEXT_ONLY" | "LATEST_EVIDENCE"
+
 interface PreAnalyzeOccurrenceInput {
   occurrenceId: string
+
+  mode?: PreAnalysisMode
 }
 
 interface PersistClassificationInput {
@@ -145,7 +151,54 @@ async function persistClassification(input: PersistClassificationInput) {
   })
 }
 
+async function canPersistClassification(
+  occurrenceId: string,
+  mode: PreAnalysisMode
+) {
+  const occurrence = await prisma.occurrence.findFirst({
+    where: {
+      id: occurrenceId,
+
+      deletedAt: null,
+
+      status: "UNDER_REVIEW"
+    },
+
+    select: {
+      id: true
+    }
+  })
+
+  if (!occurrence) {
+    return false
+  }
+
+  if (mode === "TEXT_ONLY") {
+    const primaryImage = await prisma.occurrenceMedia.findFirst({
+      where: {
+        occurrenceId,
+
+        type: "IMAGE",
+
+        isPrimary: true
+      },
+
+      select: {
+        id: true
+      }
+    })
+
+    if (primaryImage) {
+      return false
+    }
+  }
+
+  return true
+}
+
 export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
+  const mode = input.mode ?? "LATEST_EVIDENCE"
+
   const occurrence = await prisma.occurrence.findFirst({
     where: {
       id: input.occurrenceId,
@@ -167,9 +220,15 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
           isPrimary: true
         },
 
-        orderBy: {
-          createdAt: "desc"
-        },
+        orderBy: [
+          {
+            createdAt: "desc"
+          },
+
+          {
+            id: "desc"
+          }
+        ],
 
         take: 1,
 
@@ -186,7 +245,23 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
     return null
   }
 
+  const text = occurrence.description?.trim() || undefined
+
   const primaryImage = occurrence.media[0]
+
+  if (mode === "TEXT_ONLY") {
+    if (primaryImage) {
+      return null
+    }
+
+    if (!text) {
+      return null
+    }
+  }
+
+  if (mode === "LATEST_EVIDENCE" && !text && !primaryImage) {
+    return null
+  }
 
   let image:
     | {
@@ -196,7 +271,7 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
       }
     | undefined
 
-  if (primaryImage) {
+  if (mode === "LATEST_EVIDENCE" && primaryImage) {
     try {
       const storedImage = await objectStorage.get(primaryImage.storageRef)
 
@@ -221,10 +296,16 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
     const result = await aiService.classify({
       occurrenceId: occurrence.id,
 
-      text: occurrence.description ?? undefined,
+      text,
 
       image
     })
+
+    const canPersist = await canPersistClassification(occurrence.id, mode)
+
+    if (!canPersist) {
+      return null
+    }
 
     return await persistClassification({
       occurrenceId: occurrence.id,
@@ -261,4 +342,23 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
 
     throw error
   }
+}
+
+export function triggerPreAnalysis(
+  occurrenceId: string,
+  mode: PreAnalysisMode = "LATEST_EVIDENCE"
+): void {
+  if (!env.AI_PREANALYSIS_ENABLED) {
+    return
+  }
+
+  void preAnalyzeOccurrence({
+    occurrenceId,
+    mode
+  }).catch((error) => {
+    console.error(
+      `Falha inesperada na pré-análise da ocorrência ${occurrenceId}:`,
+      error
+    )
+  })
 }

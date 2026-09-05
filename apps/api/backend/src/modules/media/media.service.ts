@@ -1,16 +1,14 @@
 import { randomUUID } from "node:crypto"
 
-import { env } from "../../config/env.js"
-
 import type { UserRole } from "../../generated/prisma/enums.js"
 
 import { objectStorage } from "../../integrations/storage/s3-storage.js"
 
 import { HttpError } from "../../lib/http-error.js"
 
-import { preAnalyzeOccurrence } from "../ai-classification/ai-classification.service.js"
-
 import { prisma } from "../../prisma/client.js"
+
+import { triggerPreAnalysis } from "../ai-classification/ai-classification.service.js"
 
 import { inspectPhoto } from "./media-image.js"
 
@@ -28,21 +26,6 @@ function isUniqueConstraintError(error: unknown): boolean {
   )
 }
 
-function triggerPreAnalysis(occurrenceId: string): void {
-  if (!env.AI_PREANALYSIS_ENABLED) {
-    return
-  }
-
-  void preAnalyzeOccurrence({
-    occurrenceId
-  }).catch((error) => {
-    console.error(
-      `Falha inesperada na pré-análise da ocorrência ${occurrenceId}:`,
-      error
-    )
-  })
-}
-
 export async function uploadInitialPhoto(
   occurrenceId: string,
   citizenId: string,
@@ -51,12 +34,15 @@ export async function uploadInitialPhoto(
   const occurrence = await prisma.occurrence.findFirst({
     where: {
       id: occurrenceId,
+
       reporterId: citizenId,
+
       deletedAt: null
     },
 
     select: {
       id: true,
+
       status: true
     }
   })
@@ -134,7 +120,7 @@ export async function uploadInitialPhoto(
       }
     })
 
-    triggerPreAnalysis(occurrence.id)
+    triggerPreAnalysis(occurrence.id, "LATEST_EVIDENCE")
 
     return media
   } catch (error) {
@@ -163,7 +149,9 @@ export async function listCitizenOccurrenceMedia(
   const occurrence = await prisma.occurrence.findFirst({
     where: {
       id: occurrenceId,
+
       reporterId: citizenId,
+
       deletedAt: null
     },
 
@@ -195,6 +183,7 @@ export async function listManagerOccurrenceMedia(occurrenceId: string) {
   const occurrence = await prisma.occurrence.findFirst({
     where: {
       id: occurrenceId,
+
       deletedAt: null
     },
 
@@ -232,6 +221,7 @@ export async function getMediaContent(mediaId: string, viewer: MediaViewer) {
       occurrence: {
         select: {
           reporterId: true,
+
           deletedAt: true
         }
       }

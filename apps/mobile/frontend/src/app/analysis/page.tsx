@@ -1,12 +1,29 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, Brain, CheckCircle2, Clock } from 'lucide-react';
-import { CategoryIcon } from '@/components/category-icon';
 import { StatusBadge } from '@/components/badges';
-import { occurrences } from '@/lib/mock-data';
+import { api, ApiOccurrence } from '@/lib/api';
 
 export default function AnalysisPage() {
-  const occurrence = occurrences[0];
-  const ai = occurrence.aiClassification!;
+  const [occurrenceId, setOccurrenceId] = useState<string | null>(null);
+  const [occurrence, setOccurrence] = useState<ApiOccurrence | null>(null);
+  const [loading, setLoading] = useState(Boolean(occurrenceId));
+
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('occurrenceId');
+    setOccurrenceId(id);
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+
+    void api
+      .listCitizenOccurrences()
+      .then((response) => setOccurrence(response.data.find((item) => item.id === id) ?? null))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <main className="mx-auto min-h-screen max-w-md bg-white">
@@ -22,38 +39,27 @@ export default function AnalysisPage() {
             <CheckCircle2 className="h-10 w-10" />
           </div>
           <h1 className="text-xl font-semibold text-slate-900">Registro recebido</h1>
-          <p className="text-sm text-slate-600">A classificacao abaixo e preliminar e sera revisada por um gestor.</p>
+          <p className="text-sm text-slate-600">A classificacao da IA e registrada pelo backend quando houver foto/texto e o servico estiver disponivel.</p>
         </div>
 
-        <article className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4">
-          <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-600 text-white">
-              <CategoryIcon type={ai.predictedCategory!.type} />
-            </div>
-            <div>
-              <p className="text-sm text-red-900">Categoria prevista</p>
-              <h2 className="font-semibold text-slate-900">{ai.predictedCategory!.name}</h2>
-            </div>
+        <article className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <h2 className="font-semibold text-slate-900">Ocorrencia</h2>
+            <StatusBadge status={occurrence?.status ?? 'UNDER_REVIEW'} />
           </div>
-          <div className="mb-3 rounded-lg bg-white p-3">
-            <div className="mb-1 flex justify-between text-sm">
-              <span className="text-slate-600">Confianca da IA</span>
-              <strong>{Math.round((ai.confidence ?? 0) * 100)}%</strong>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-slate-200">
-              <div className="h-full rounded-full bg-red-600" style={{ width: `${Math.round((ai.confidence ?? 0) * 100)}%` }} />
-            </div>
-          </div>
-          <StatusBadge status="UNDER_REVIEW" />
+          {loading ? (
+            <p className="text-sm text-slate-600">Consultando API...</p>
+          ) : (
+            <p className="text-sm leading-relaxed text-slate-700">{occurrence?.description ?? 'A ocorrencia foi enviada para analise humana.'}</p>
+          )}
         </article>
 
         <article className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
           <div className="mb-2 flex items-center gap-2 font-semibold text-slate-900">
             <Brain className="h-5 w-5 text-blue-700" />
-            Explicacao simples
+            Pre-analise
           </div>
-          <p className="text-sm leading-relaxed text-slate-700">{ai.explanationSimple}</p>
-          <p className="mt-3 text-xs text-slate-500">Modelo: {ai.modelVersion}</p>
+          <p className="text-sm leading-relaxed text-slate-700">A decisao final permanece com o gestor. Quando a foto principal e enviada, o backend aciona a pre-analise em segundo plano.</p>
         </article>
 
         <article className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
@@ -61,7 +67,7 @@ export default function AnalysisPage() {
             <Clock className="h-4 w-4" />
             Proximos passos
           </div>
-          O registro entrou em analise humana. Se o gestor pedir complemento, voce vera a solicitacao no historico.
+          Acompanhe o status no historico. Se o gestor pedir complemento, a solicitacao aparecera por la.
         </article>
 
         <div className="mt-4 grid grid-cols-2 gap-3">

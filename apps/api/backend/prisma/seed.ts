@@ -4,6 +4,11 @@ import { PrismaPg } from "@prisma/adapter-pg"
 
 import { PrismaClient } from "../src/generated/prisma/client.js"
 
+import {
+  isOperationalCobradeCode,
+  OPERATIONAL_COBRADE_CODES
+} from "../src/modules/disaster-categories/disaster-category.scope.js"
+
 const connectionString = process.env.DATABASE_URL
 
 if (!connectionString) {
@@ -369,26 +374,60 @@ async function main() {
   console.log("Iniciando seed COBRADE...")
 
   for (const category of cobradeCategories) {
+    const active = isOperationalCobradeCode(category.cobradeCode)
+
     await prisma.disasterCategory.upsert({
       where: {
         cobradeCode: category.cobradeCode
       },
+
       update: {
         name: category.name,
+
         groupName: category.groupName,
-        active: true
+
+        active
       },
+
       create: {
         cobradeCode: category.cobradeCode,
+
         name: category.name,
+
         groupName: category.groupName,
-        active: true
+
+        active
       }
     })
   }
 
+  await prisma.disasterCategory.updateMany({
+    where: {
+      cobradeCode: {
+        notIn: [...OPERATIONAL_COBRADE_CODES]
+      }
+    },
+
+    data: {
+      active: false
+    }
+  })
+
+  await prisma.disasterCategory.updateMany({
+    where: {
+      cobradeCode: {
+        in: [...OPERATIONAL_COBRADE_CODES]
+      }
+    },
+
+    data: {
+      active: true
+    }
+  })
+
   console.log(
-    `Seed COBRADE concluído: ${cobradeCategories.length} categorias processadas.`
+    `Seed COBRADE concluído: ${cobradeCategories.length} categorias processadas; ` +
+      `${OPERATIONAL_COBRADE_CODES.length} categorias operacionais ativas.`
   )
 }
 

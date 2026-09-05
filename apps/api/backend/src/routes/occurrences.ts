@@ -24,6 +24,10 @@ import {
 
 import { createOccurrenceSchema } from "../modules/occurrences/occurrence.schema.js"
 
+import { syncOccurrenceController } from "../modules/occurrences/occurrence-sync.controller.js"
+
+import { syncOccurrenceSchema } from "../modules/occurrences/occurrence-sync.schema.js"
+
 import {
   informationRequestParamsSchema,
   occurrenceIdParamsSchema
@@ -32,12 +36,27 @@ import {
 const router = Router()
 
 router.use(authenticate)
+
 router.use(authorize("CITIZEN"))
 
+/*
+ * Registro online normal.
+ */
 router.post(
   "/",
   validateBody(createOccurrenceSchema),
   createOccurrenceController
+)
+
+/*
+ * Registro criado anteriormente
+ * no IndexedDB e sincronizado
+ * quando a conectividade retorna.
+ */
+router.post(
+  "/sync",
+  validateBody(syncOccurrenceSchema),
+  syncOccurrenceController
 )
 
 router.get("/", listOccurrencesController)

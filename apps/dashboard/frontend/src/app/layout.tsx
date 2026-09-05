@@ -1,15 +1,23 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next"
+
+import "leaflet/dist/leaflet.css"
+
+import "./globals.css"
 
 export const metadata: Metadata = {
-  title: 'MBOI Dashboard',
-  description: 'Dashboard gestor e administrativo do Sistema Kamara/MBOI.',
-};
+  title: "Kamara Dashboard",
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+  description: "Dashboard operacional, analítico e administrativo do Kamara."
+}
+
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="pt-BR">
       <body>{children}</body>
     </html>
-  );
+  )
 }
