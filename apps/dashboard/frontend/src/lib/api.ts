@@ -329,15 +329,20 @@ async function requestJson<T>(
   path: string,
   init: RequestInit = {}
 ): Promise<T> {
+  const headers = new Headers(init.headers)
+
+  headers.set("x-kamara-client", "DASHBOARD")
+
+  if (!(init.body instanceof FormData) && !headers.has("content-type")) {
+    headers.set("content-type", "application/json")
+  }
+
   const response = await fetch(`${API_URL}${path}`, {
     ...init,
 
     credentials: "include",
 
-    headers: {
-      "content-type": "application/json",
-      ...init.headers
-    }
+    headers
   })
 
   if (!response.ok) {
@@ -357,6 +362,30 @@ async function requestJson<T>(
   }
 
   return response.json() as Promise<T>
+}
+
+async function requestBlob(path: string): Promise<Blob> {
+  const response = await fetch(`${API_URL}${path}`, {
+    credentials: "include",
+
+    headers: {
+      "x-kamara-client": "DASHBOARD"
+    }
+  })
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => null)
+
+    throw new ApiError(
+      body?.error?.message ?? "Nao foi possivel carregar a midia.",
+
+      response.status,
+
+      body?.error?.code
+    )
+  }
+
+  return response.blob()
 }
 
 export const api = {
@@ -460,6 +489,10 @@ export const api = {
     return requestJson<{
       data: ApiMedia[]
     }>(`/api/v1/manager/occurrences/${id}/media`)
+  },
+
+  getMediaContent(path: string) {
+    return requestBlob(path)
   },
 
   listCategories() {
@@ -596,7 +629,11 @@ export const api = {
 
   async downloadExport(id: string) {
     const response = await fetch(`${API_URL}/api/v1/exports/${id}/content`, {
-      credentials: "include"
+      credentials: "include",
+
+      headers: {
+        "x-kamara-client": "DASHBOARD"
+      }
     })
 
     if (!response.ok) {
@@ -621,8 +658,4 @@ export const api = {
       filename: match?.[1] ?? `kamara-export-${id}`
     }
   }
-}
-
-export function apiContentUrl(path: string) {
-  return `${API_URL}${path}`
 }

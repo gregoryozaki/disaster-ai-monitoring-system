@@ -20,6 +20,7 @@ export async function requestPasswordReset(email: string) {
 
     select: {
       id: true,
+
       status: true
     }
   })
@@ -97,6 +98,7 @@ export async function resetPassword(token: string, newPassword: string) {
       user: {
         select: {
           id: true,
+
           status: true
         }
       }
@@ -153,6 +155,20 @@ export async function resetPassword(token: string, newPassword: string) {
       }
     })
 
+    await tx.userSession.updateMany({
+      where: {
+        userId: resetToken.user.id,
+
+        revokedAt: null
+      },
+
+      data: {
+        revokedAt: now,
+
+        revokedReason: "PASSWORD_RESET"
+      }
+    })
+
     await tx.passwordResetToken.updateMany({
       where: {
         userId: resetToken.user.id,
@@ -176,7 +192,9 @@ export async function resetPassword(token: string, newPassword: string) {
         entityId: resetToken.user.id,
 
         metadata: {
-          resetTokenId: resetToken.id
+          resetTokenId: resetToken.id,
+
+          sessionsRevoked: true
         }
       }
     })

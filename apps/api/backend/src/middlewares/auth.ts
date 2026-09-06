@@ -1,10 +1,18 @@
-import type { NextFunction, Request, Response } from "express"
-import jwt from "jsonwebtoken"
+import type {
+  NextFunction,
+  Request,
+  Response
+} from "express"
 
-import { env } from "../config/env.js"
-import type { UserRole, UserStatus } from "../generated/prisma/enums.js"
+import type {
+  SessionClient,
+  UserRole,
+  UserStatus
+} from "../generated/prisma/enums.js"
+
 import { HttpError } from "../lib/http-error.js"
-import { prisma } from "../prisma/client.js"
+
+import { loadActiveSession } from "../modules/auth-sessions/auth-session.service.js"
 
 export interface AuthenticatedUser {
   id: string
@@ -14,22 +22,20 @@ export interface AuthenticatedUser {
   status: UserStatus
 }
 
+export interface AuthenticatedSession {
+  id: string
+  client: SessionClient
+  createdAt: Date
+  lastSeenAt: Date
+  idleExpiresAt: Date
+  absoluteExpiresAt: Date
+}
+
 declare module "express-serve-static-core" {
   interface Request {
     user?: AuthenticatedUser
+    authSession?: AuthenticatedSession
   }
-}
-
-export function signSession(userId: string): string {
-  return jwt.sign(
-    {
-      sub: userId
-    },
-    env.JWT_SECRET,
-    {
-      expiresIn: "2h"
-    }
-  )
 }
 
 export async function authenticate(
@@ -37,69 +43,45 @@ export async function authenticate(
   _res: Response,
   next: NextFunction
 ) {
-  const token =
-    req.cookies?.kamara_session ?? readBearerToken(req.headers.authorization)
-
-  if (!token) {
-    return next(
-      new HttpError(401, "Autenticação obrigatória.", "AUTH_REQUIRED")
-    )
-  }
-
   try {
-    const payload = jwt.verify(token, env.JWT_SECRET) as jwt.JwtPayload
+    const authenticated = await loadActiveSession(req)
 
-    if (typeof payload.sub !== "string" || !payload.sub) {
-      return next(new HttpError(401, "Sessão inválida.", "INVALID_SESSION"))
-    }
+    req.user = authenticated.user
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: payload.sub
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        status: true
-      }
-    })
-
-    if (!user || user.status !== "ACTIVE") {
-      return next(new HttpError(401, "Sessão inválida.", "INVALID_SESSION"))
-    }
-
-    req.user = user
+    req.authSession = authenticated.session
 
     return next()
-  } catch {
-    return next(
-      new HttpError(401, "Sessão inválida ou expirada.", "INVALID_SESSION")
-    )
+  } catch (error) {
+    return next(error)
   }
 }
 
 export function authorize(...roles: UserRole[]) {
-  return (req: Request, _res: Response, next: NextFunction) => {
+  return (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ) => {
     if (!req.user) {
       return next(
-        new HttpError(401, "Autenticação obrigatória.", "AUTH_REQUIRED")
+        new HttpError(
+          401,
+          "Autenticação obrigatória.",
+          "AUTH_REQUIRED"
+        )
       )
     }
 
     if (!roles.includes(req.user.role)) {
-      return next(new HttpError(403, "Permissão insuficiente.", "FORBIDDEN"))
+      return next(
+        new HttpError(
+          403,
+          "Permissão insuficiente.",
+          "FORBIDDEN"
+        )
+      )
     }
 
     return next()
   }
-}
-
-function readBearerToken(header?: string) {
-  if (!header?.startsWith("Bearer ")) {
-    return undefined
-  }
-
-  return header.slice("Bearer ".length)
 }

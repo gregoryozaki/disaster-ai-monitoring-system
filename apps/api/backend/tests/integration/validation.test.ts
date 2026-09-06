@@ -313,12 +313,14 @@ describe("Validação humana de ocorrências", () => {
 
     const createResponse = await citizen.agent
       .post("/api/v1/occurrences")
+      .set("x-kamara-client", "CITIZEN_PWA")
       .send(buildOccurrencePayload())
 
     const occurrenceId = createResponse.body.data.id
 
     const response = await citizen.agent
       .post(`/api/v1/manager/occurrences/${occurrenceId}/validations`)
+      .set("x-kamara-client", "CITIZEN_PWA")
       .send({
         decision: "REJECT",
         rejectionReason: "Tentativa não autorizada."

@@ -16,24 +16,31 @@ interface TestUserOptions {
   password?: string
 }
 
+const CLIENT_HEADER = "x-kamara-client"
+
 export async function createAuthenticatedCitizen(
   options: TestUserOptions = {}
 ) {
-  const name = options.name ?? "Cidadão Teste"
+  const name =
+    options.name ?? "Cidadão Teste"
 
-  const email = options.email ?? `citizen-${randomUUID()}@test.local`
+  const email =
+    options.email ??
+    `citizen-${randomUUID()}@test.local`
 
-  const password = options.password ?? "CidadaoTeste123!"
+  const password =
+    options.password ??
+    "CidadaoTeste123!"
 
   const agent = request.agent(app)
 
-  const registerResponse = await agent.post("/api/v1/auth/register").send({
-    name,
-
-    email,
-
-    password
-  })
+  const registerResponse = await agent
+    .post("/api/v1/auth/register")
+    .send({
+      name,
+      email,
+      password
+    })
 
   if (registerResponse.status !== 201) {
     throw new Error(
@@ -43,11 +50,16 @@ export async function createAuthenticatedCitizen(
     )
   }
 
-  const loginResponse = await agent.post("/api/v1/auth/login").send({
-    email,
-
-    password
-  })
+  const loginResponse = await agent
+    .post("/api/v1/auth/login")
+    .set(
+      CLIENT_HEADER,
+      "CITIZEN_PWA"
+    )
+    .send({
+      email,
+      password
+    })
 
   if (loginResponse.status !== 200) {
     throw new Error(
@@ -64,7 +76,6 @@ export async function createAuthenticatedCitizen(
 
     credentials: {
       email,
-
       password
     }
   }
@@ -73,13 +84,21 @@ export async function createAuthenticatedCitizen(
 export async function createAuthenticatedManager(
   options: TestUserOptions = {}
 ) {
-  const name = options.name ?? "Gestor Teste"
+  const name =
+    options.name ?? "Gestor Teste"
 
-  const email = options.email ?? `manager-${randomUUID()}@test.local`
+  const email =
+    options.email ??
+    `manager-${randomUUID()}@test.local`
 
-  const password = options.password ?? "ManagerTeste123!"
+  const password =
+    options.password ??
+    "ManagerTeste123!"
 
-  const passwordHash = await bcrypt.hash(password, 12)
+  const passwordHash = await bcrypt.hash(
+    password,
+    12
+  )
 
   const user = await prisma.user.create({
     data: {
@@ -97,11 +116,16 @@ export async function createAuthenticatedManager(
 
   const agent = request.agent(app)
 
-  const loginResponse = await agent.post("/api/v1/auth/login").send({
-    email,
-
-    password
-  })
+  const loginResponse = await agent
+    .post("/api/v1/auth/login")
+    .set(
+      CLIENT_HEADER,
+      "DASHBOARD"
+    )
+    .send({
+      email,
+      password
+    })
 
   if (loginResponse.status !== 200) {
     throw new Error(
@@ -118,20 +142,30 @@ export async function createAuthenticatedManager(
 
     credentials: {
       email,
-
       password
     }
   }
 }
 
-export async function createAuthenticatedAdmin(options: TestUserOptions = {}) {
-  const name = options.name ?? "Administrador Teste"
+export async function createAuthenticatedAdmin(
+  options: TestUserOptions = {}
+) {
+  const name =
+    options.name ??
+    "Administrador Teste"
 
-  const email = options.email ?? `admin-${randomUUID()}@test.local`
+  const email =
+    options.email ??
+    `admin-${randomUUID()}@test.local`
 
-  const password = options.password ?? "AdministradorTeste123!"
+  const password =
+    options.password ??
+    "AdministradorTeste123!"
 
-  const passwordHash = await bcrypt.hash(password, 12)
+  const passwordHash = await bcrypt.hash(
+    password,
+    12
+  )
 
   const user = await prisma.user.create({
     data: {
@@ -149,11 +183,16 @@ export async function createAuthenticatedAdmin(options: TestUserOptions = {}) {
 
   const agent = request.agent(app)
 
-  const loginResponse = await agent.post("/api/v1/auth/login").send({
-    email,
-
-    password
-  })
+  const loginResponse = await agent
+    .post("/api/v1/auth/login")
+    .set(
+      CLIENT_HEADER,
+      "DASHBOARD"
+    )
+    .send({
+      email,
+      password
+    })
 
   if (loginResponse.status !== 200) {
     throw new Error(
@@ -170,7 +209,6 @@ export async function createAuthenticatedAdmin(options: TestUserOptions = {}) {
 
     credentials: {
       email,
-
       password
     }
   }

@@ -125,8 +125,7 @@ describe("Autenticação", () => {
       ? cookies.join(";")
       : String(cookies)
 
-    expect(cookieHeader).toContain("kamara_session=")
-
+    expect(cookieHeader).toContain("kamara_citizen_session=")
     expect(cookieHeader).toContain("HttpOnly")
   })
 
@@ -433,7 +432,7 @@ describe("Autenticação", () => {
     expect(resetResponse.status).toBe(200)
 
     expect(resetResponse.body.data.message).toBe(
-      "Senha redefinida com sucesso."
+      "Senha redefinida com sucesso. Entre novamente com a nova senha."
     )
 
     const oldPasswordLogin = await request(app)

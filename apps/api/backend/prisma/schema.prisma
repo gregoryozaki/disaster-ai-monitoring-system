@@ -20,6 +20,11 @@ enum UserStatus {
   INACTIVE
 }
 
+enum SessionClient {
+  CITIZEN_PWA
+  DASHBOARD
+}
+
 enum OccurrenceStatus {
   DRAFT
   PENDING_SYNC
@@ -145,6 +150,7 @@ model User {
   invitesCreated       ManagerInvite[]        @relation("InviteCreator")
   invitesAccepted      ManagerInvite[]        @relation("InviteAcceptedBy")
   passwordResetTokens  PasswordResetToken[]
+  sessions             UserSession[]
   thresholdsCreated    ConfidenceThreshold[]  @relation("ThresholdCreator")
   auditLogs            AuditLog[]             @relation("AuditActor")
   exportJobs           ExportJob[]            @relation("ExportRequester")
@@ -184,6 +190,25 @@ model PasswordResetToken {
 
   @@index([userId, expiresAt])
   @@map("password_reset_tokens")
+}
+
+model UserSession {
+  id                String        @id @default(uuid()) @db.Uuid
+  userId            String        @db.Uuid
+  client            SessionClient
+  createdAt         DateTime      @default(now())
+  lastSeenAt        DateTime      @default(now())
+  idleExpiresAt     DateTime
+  absoluteExpiresAt DateTime
+  revokedAt         DateTime?
+  revokedReason     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, client, revokedAt])
+  @@index([idleExpiresAt])
+  @@index([absoluteExpiresAt])
+  @@map("user_sessions")
 }
 
 model DisasterCategory {

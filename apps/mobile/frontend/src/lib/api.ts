@@ -222,20 +222,21 @@ async function requestJson<T>(
 ): Promise<T> {
   let response: Response
 
+  const headers = new Headers(init.headers)
+
+  headers.set("x-kamara-client", "CITIZEN_PWA")
+
+  if (!(init.body instanceof FormData) && !headers.has("content-type")) {
+    headers.set("content-type", "application/json")
+  }
+
   try {
     response = await fetch(`${API_URL}${path}`, {
       ...init,
 
       credentials: "include",
 
-      headers:
-        init.body instanceof FormData
-          ? init.headers
-          : {
-              "content-type": "application/json",
-
-              ...init.headers
-            }
+      headers
     })
   } catch {
     throw new ApiNetworkError()
@@ -463,8 +464,4 @@ export const api = {
       warning?: string
     }>("/api/v1/predictions")
   }
-}
-
-export function apiContentUrl(path: string) {
-  return `${API_URL}${path}`
 }

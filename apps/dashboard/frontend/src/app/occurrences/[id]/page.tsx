@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+import { AuthenticatedMediaImage } from "@/components/authenticated-media-image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
@@ -16,13 +16,7 @@ import { DashboardShell } from "@/components/dashboard-shell"
 import { CategoryIcon } from "@/components/category-icon"
 import { StatusBadge } from "@/components/badges"
 
-import {
-  api,
-  apiContentUrl,
-  ApiCategory,
-  ApiMedia,
-  ApiOccurrence
-} from "@/lib/api"
+import { api, ApiCategory, ApiMedia, ApiOccurrence } from "@/lib/api"
 
 import {
   categoryType,
@@ -222,13 +216,11 @@ export default function OccurrenceDetailPage({
           <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
             <div className="relative flex aspect-video items-center justify-center bg-slate-100">
               {primaryImage ? (
-                <Image
-                  src={apiContentUrl(primaryImage.contentUrl)}
+                <AuthenticatedMediaImage
+                  src={primaryImage.contentUrl}
                   alt="Midia da ocorrencia"
-                  fill
                   sizes="(min-width: 1280px) 60vw, 100vw"
                   className="object-contain"
-                  unoptimized
                 />
               ) : (
                 <ImageIcon className="h-20 w-20 text-slate-400" />
@@ -382,13 +374,11 @@ export default function OccurrenceDetailPage({
                                       key={item.id}
                                       className="relative aspect-video overflow-hidden rounded-lg border border-slate-200 bg-slate-100"
                                     >
-                                      <Image
-                                        src={apiContentUrl(item.contentUrl)}
+                                      <AuthenticatedMediaImage
+                                        src={item.contentUrl}
                                         alt="Imagem complementar enviada pelo cidadão"
-                                        fill
                                         sizes="400px"
                                         className="object-contain"
-                                        unoptimized
                                       />
                                     </div>
                                   ))}

@@ -6,11 +6,21 @@ import { z } from "zod"
 
 import { env } from "../config/env.js"
 
+import type { SessionClient, UserRole } from "../generated/prisma/enums.js"
+
 import { HttpError } from "../lib/http-error.js"
 
-import { authenticate, signSession } from "../middlewares/auth.js"
+import { authenticate } from "../middlewares/auth.js"
 
 import { validateBody } from "../middlewares/validate.js"
+
+import {
+  createAuthSession,
+  getRequestSessionClient,
+  getSessionCookieName,
+  revokeSessionFromRequest,
+  roleCanUseClient
+} from "../modules/auth-sessions/auth-session.service.js"
 
 import { acceptManagerInviteSchema } from "../modules/manager-invites/manager-invite.schema.js"
 
@@ -23,6 +33,8 @@ import {
 
 import { prisma } from "../prisma/client.js"
 
+import { newPasswordSchema } from "../security/password-policy.js"
+
 const router = Router()
 
 const cookieBaseOptions = {
@@ -30,13 +42,9 @@ const cookieBaseOptions = {
 
   sameSite: "lax" as const,
 
-  secure: env.NODE_ENV === "production"
-}
+  secure: env.NODE_ENV === "production",
 
-const sessionCookieOptions = {
-  ...cookieBaseOptions,
-
-  maxAge: 2 * 60 * 60 * 1000
+  path: "/"
 }
 
 const emailSchema = z
@@ -45,23 +53,23 @@ const emailSchema = z
   .email()
   .transform((email) => email.toLowerCase())
 
-const passwordSchema = z.string().min(8).max(128)
+const loginPasswordSchema = z.string().min(1).max(128)
 
 const credentialsSchema = z
   .object({
     email: emailSchema,
 
-    password: passwordSchema
+    password: loginPasswordSchema
   })
   .strict()
 
 const registerSchema = z
   .object({
-    name: z.string().trim().min(2).max(100),
+    name: z.string().trim().min(2).max(100).optional(),
 
     email: emailSchema,
 
-    password: passwordSchema
+    password: newPasswordSchema
   })
   .strict()
 
@@ -75,9 +83,21 @@ const resetPasswordSchema = z
   .object({
     token: z.string().min(10),
 
-    password: passwordSchema
+    password: newPasswordSchema
   })
   .strict()
+
+function defaultClientForRole(role: UserRole): SessionClient | null {
+  if (role === "CITIZEN") {
+    return "CITIZEN_PWA"
+  }
+
+  if (role === "MANAGER" || role === "ADMIN") {
+    return "DASHBOARD"
+  }
+
+  return null
+}
 
 router.post(
   "/register",
@@ -104,7 +124,7 @@ router.post(
 
       const user = await prisma.user.create({
         data: {
-          name: req.body.name,
+          name: req.body.name ?? null,
 
           email: req.body.email,
 
@@ -162,9 +182,38 @@ router.post(
         )
       }
 
-      const token = signSession(user.id)
+      const requestedClient = getRequestSessionClient(req)
 
-      res.cookie("kamara_session", token, sessionCookieOptions)
+      const client = requestedClient ?? defaultClientForRole(user.role)
+
+      if (!client) {
+        throw new HttpError(
+          403,
+          "Este perfil não possui uma aplicação de acesso configurada.",
+          "UNSUPPORTED_LOGIN_CLIENT"
+        )
+      }
+
+      if (!roleCanUseClient(user.role, client)) {
+        throw new HttpError(
+          403,
+          client === "CITIZEN_PWA"
+            ? "Esta área aceita somente conta de cidadão."
+            : "Esta área exige perfil de gestor ou administrador.",
+          "ROLE_NOT_ALLOWED_FOR_CLIENT"
+        )
+      }
+
+      const { token, session, policy } = await createAuthSession(
+        user.id,
+        client
+      )
+
+      res.cookie(getSessionCookieName(client), token, {
+        ...cookieBaseOptions,
+
+        maxAge: policy.absoluteTtlMs
+      })
 
       return res.json({
         data: {
@@ -181,6 +230,16 @@ router.post(
           createdAt: user.createdAt,
 
           updatedAt: user.updatedAt
+        },
+
+        session: {
+          id: session.id,
+
+          client: session.client,
+
+          idleExpiresAt: session.idleExpiresAt,
+
+          absoluteExpiresAt: session.absoluteExpiresAt
         }
       })
     } catch (error) {
@@ -210,10 +269,22 @@ router.post(
 router.post(
   "/logout",
 
-  (_req, res) => {
-    res.clearCookie("kamara_session", cookieBaseOptions)
+  async (req, res, next) => {
+    try {
+      const requestedClient = getRequestSessionClient(req)
 
-    return res.status(204).send()
+      const revokedClient = await revokeSessionFromRequest(req)
+
+      const client = revokedClient ?? requestedClient
+
+      if (client) {
+        res.clearCookie(getSessionCookieName(client), cookieBaseOptions)
+      }
+
+      return res.status(204).send()
+    } catch (error) {
+      next(error)
+    }
   }
 )
 
@@ -224,7 +295,9 @@ router.get(
 
   (req, res) => {
     return res.json({
-      data: req.user
+      data: req.user,
+
+      session: req.authSession
     })
   }
 )
@@ -265,11 +338,14 @@ router.post(
     try {
       await resetPassword(req.body.token, req.body.password)
 
-      res.clearCookie("kamara_session", cookieBaseOptions)
+      res.clearCookie(getSessionCookieName("CITIZEN_PWA"), cookieBaseOptions)
+
+      res.clearCookie(getSessionCookieName("DASHBOARD"), cookieBaseOptions)
 
       return res.json({
         data: {
-          message: "Senha redefinida com sucesso."
+          message:
+            "Senha redefinida com sucesso. Entre novamente com a nova senha."
         }
       })
     } catch (error) {

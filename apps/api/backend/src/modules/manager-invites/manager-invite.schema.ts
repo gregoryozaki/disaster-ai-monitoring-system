@@ -1,12 +1,12 @@
 import { z } from "zod"
 
+import { newPasswordSchema } from "../../security/password-policy.js"
+
 const emailSchema = z
   .string()
   .trim()
   .email()
   .transform((email) => email.toLowerCase())
-
-const passwordSchema = z.string().min(8).max(128)
 
 export const createManagerInviteSchema = z
   .object({
@@ -20,7 +20,7 @@ export const acceptManagerInviteSchema = z
   .object({
     token: z.string().trim().min(32).max(256),
 
-    password: passwordSchema
+    password: newPasswordSchema
   })
   .strict()
 
@@ -30,8 +30,14 @@ export const updateManagerStatusSchema = z
   })
   .strict()
 
-export type CreateManagerInviteInput = z.infer<typeof createManagerInviteSchema>
+export type CreateManagerInviteInput = z.infer<
+  typeof createManagerInviteSchema
+>
 
-export type AcceptManagerInviteInput = z.infer<typeof acceptManagerInviteSchema>
+export type AcceptManagerInviteInput = z.infer<
+  typeof acceptManagerInviteSchema
+>
 
-export type UpdateManagerStatusInput = z.infer<typeof updateManagerStatusSchema>
+export type UpdateManagerStatusInput = z.infer<
+  typeof updateManagerStatusSchema
+>

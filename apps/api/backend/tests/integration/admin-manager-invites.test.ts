@@ -96,6 +96,7 @@ describe("Administração de gestores e convites", () => {
 
     const response = await citizen.agent
       .post("/api/v1/admin/managers/invites")
+      .set("x-kamara-client", "CITIZEN_PWA")
       .send({
         name: "Gestor Não Autorizado",
 

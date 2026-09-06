@@ -210,8 +210,9 @@ describe("Ocorrências do cidadão", () => {
   it("deve impedir gestor de usar rota exclusiva de cidadão", async () => {
     const manager = await createAuthenticatedManager()
 
-    const response = await manager.agent.get("/api/v1/occurrences")
-
+    const response = await manager.agent
+      .get("/api/v1/occurrences")
+      .set("x-kamara-client", "DASHBOARD")
     expect(response.status).toBe(403)
   })
 
