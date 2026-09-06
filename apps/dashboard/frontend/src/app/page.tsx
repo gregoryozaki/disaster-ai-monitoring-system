@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+
 import Link from "next/link"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -21,6 +22,8 @@ import {
 import { DashboardShell } from "@/components/dashboard-shell"
 
 import { CategoryIcon } from "@/components/category-icon"
+
+import { PasswordField } from "@/components/password-field"
 
 import { StatusBadge } from "@/components/badges"
 
@@ -274,6 +277,8 @@ export default function DashboardHomePage() {
         return
       }
 
+      setPassword("")
+
       await loadSession()
     } catch (error) {
       setMessage(
@@ -289,11 +294,6 @@ export default function DashboardHomePage() {
     [occurrences]
   )
 
-  /*
-   * Se a ocorrência selecionada deixar de fazer
-   * parte do resultado depois de um filtro,
-   * a seleção é descartada.
-   */
   useEffect(() => {
     if (!selectedOccurrenceId) {
       return
@@ -363,24 +363,38 @@ export default function DashboardHomePage() {
             </div>
 
             <form onSubmit={submitLogin} className="space-y-3">
-              <input
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                type="email"
-                placeholder="E-mail"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                required
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-slate-700">
+                  E-mail
+                </span>
+
+                <input
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  type="email"
+                  placeholder="gestor@exemplo.com"
+                  autoComplete="email"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600"
+                  required
+                />
+              </label>
+
+              <PasswordField
+                label="Senha"
+                value={password}
+                onChange={setPassword}
+                autoComplete="current-password"
+                placeholder="Digite sua senha"
               />
 
-              <input
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                type="password"
-                placeholder="Senha"
-                minLength={8}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                required
-              />
+              <div className="text-right">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-medium text-emerald-700 hover:text-emerald-800"
+                >
+                  Esqueci minha senha
+                </Link>
+              </div>
 
               {message && (
                 <p className="rounded-lg bg-red-50 p-3 text-xs text-red-700">
@@ -389,6 +403,7 @@ export default function DashboardHomePage() {
               )}
 
               <button
+                type="submit"
                 disabled={sessionLoading}
                 className="w-full rounded-lg bg-emerald-700 px-4 py-3 text-sm font-semibold text-white disabled:bg-slate-300"
               >

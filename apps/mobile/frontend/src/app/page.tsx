@@ -17,7 +17,17 @@ import {
   WifiOff
 } from "lucide-react"
 
+import {
+  isStrongPassword,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH
+} from "@kamara/shared-types"
+
 import { CategoryIcon, categoryColor } from "@/components/category-icon"
+
+import { PasswordField } from "@/components/password-field"
+
+import { PasswordRequirements } from "@/components/password-requirements"
 
 import { StatusBadge } from "@/components/badges"
 
@@ -82,6 +92,8 @@ export default function CitizenHomePage() {
   const [email, setEmail] = useState("")
 
   const [password, setPassword] = useState("")
+
+  const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
   const [name, setName] = useState("")
 
@@ -258,6 +270,20 @@ export default function CitizenHomePage() {
 
     setMessage(null)
 
+    if (mode === "register") {
+      if (!isStrongPassword(password)) {
+        setMessage("A senha ainda não atende a todos os requisitos.")
+
+        return
+      }
+
+      if (password !== passwordConfirmation) {
+        setMessage("As senhas não coincidem.")
+
+        return
+      }
+    }
+
     try {
       const response =
         mode === "login"
@@ -272,7 +298,7 @@ export default function CitizenHomePage() {
             })
 
       if (response.data.role !== "CITIZEN") {
-        setMessage("Esta tela aceita somente conta de cidadao.")
+        setMessage("Esta tela aceita somente conta de cidadão.")
 
         return
       }
@@ -289,9 +315,13 @@ export default function CitizenHomePage() {
       saveCitizenSession(response.data)
 
       setOfflineMode(false)
+
+      setPassword("")
+
+      setPasswordConfirmation("")
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Nao foi possivel autenticar."
+        error instanceof Error ? error.message : "Não foi possível autenticar."
       )
     }
   }
@@ -304,6 +334,20 @@ export default function CitizenHomePage() {
     setUser(null)
 
     setOfflineMode(false)
+
+    setMessage(null)
+
+    setPassword("")
+
+    setPasswordConfirmation("")
+  }
+
+  function changeMode(nextMode: "login" | "register") {
+    setMode(nextMode)
+
+    setPassword("")
+
+    setPasswordConfirmation("")
 
     setMessage(null)
   }
@@ -331,7 +375,7 @@ export default function CitizenHomePage() {
       <main className="mx-auto flex min-h-screen max-w-md flex-col bg-slate-50">
         <ShellHeader
           title="Kamara"
-          subtitle="Registro cidadao e mapa publico"
+          subtitle="Registro cidadão e mapa público"
         />
 
         <div className="flex flex-1 items-center justify-center p-6 text-sm text-slate-600">
@@ -343,7 +387,7 @@ export default function CitizenHomePage() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col bg-slate-50">
-      <ShellHeader title="Kamara" subtitle="Registro cidadao e mapa publico" />
+      <ShellHeader title="Kamara" subtitle="Registro cidadão e mapa público" />
 
       {offlineMode && user && (
         <section className="border-b border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
@@ -354,8 +398,8 @@ export default function CitizenHomePage() {
               <p className="font-medium">Modo offline</p>
 
               <p className="mt-1 text-xs">
-                A sessao foi validada anteriormente neste dispositivo. Novos
-                registros ficarao armazenados localmente ate a conexao voltar.
+                A sessão foi validada anteriormente neste dispositivo. Novos
+                registros ficarão armazenados localmente até a conexão voltar.
               </p>
             </div>
           </div>
@@ -366,38 +410,91 @@ export default function CitizenHomePage() {
         <section className="border-b border-slate-200 bg-white p-4">
           <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-800">
             <UserRound className="h-4 w-4 text-emerald-700" />
-            Acesso do cidadao
+            Acesso do cidadão
           </div>
 
           <form onSubmit={submitAuth} className="space-y-3">
             {mode === "register" && (
-              <input
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Nome"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                required
-              />
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-slate-700">
+                  Nome
+                </span>
+
+                <input
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="Seu nome"
+                  autoComplete="name"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600"
+                  required
+                />
+              </label>
             )}
 
-            <input
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              type="email"
-              placeholder="E-mail"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              required
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-slate-700">
+                E-mail
+              </span>
+
+              <input
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                type="email"
+                placeholder="voce@exemplo.com"
+                autoComplete="email"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600"
+                required
+              />
+            </label>
+
+            <PasswordField
+              label="Senha"
+              value={password}
+              onChange={setPassword}
+              autoComplete={
+                mode === "login" ? "current-password" : "new-password"
+              }
+              minLength={mode === "register" ? PASSWORD_MIN_LENGTH : undefined}
+              maxLength={PASSWORD_MAX_LENGTH}
+              placeholder={
+                mode === "register"
+                  ? "Crie uma senha forte"
+                  : "Digite sua senha"
+              }
             />
 
-            <input
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              type="password"
-              placeholder="Senha"
-              minLength={8}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              required
-            />
+            {mode === "register" && (
+              <>
+                <PasswordRequirements password={password} />
+
+                <PasswordField
+                  label="Confirmar senha"
+                  value={passwordConfirmation}
+                  onChange={setPasswordConfirmation}
+                  autoComplete="new-password"
+                  minLength={PASSWORD_MIN_LENGTH}
+                  maxLength={PASSWORD_MAX_LENGTH}
+                  placeholder="Digite novamente a senha"
+                />
+
+                {passwordConfirmation && password !== passwordConfirmation && (
+                  <p className="text-xs text-red-600">
+                    As senhas ainda não coincidem.
+                  </p>
+                )}
+              </>
+            )}
+
+            {mode === "login" && (
+              <div className="text-right">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-medium text-emerald-700 hover:text-emerald-800"
+                >
+                  Esqueci minha senha
+                </Link>
+              </div>
+            )}
 
             {message && (
               <p className="rounded-lg bg-red-50 p-3 text-xs text-red-700">
@@ -405,16 +502,21 @@ export default function CitizenHomePage() {
               </p>
             )}
 
-            <button className="w-full rounded-lg bg-emerald-700 px-4 py-3 text-sm font-semibold text-white">
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-emerald-700 px-4 py-3 text-sm font-semibold text-white"
+            >
               {mode === "login" ? "Entrar" : "Criar conta"}
             </button>
 
             <button
               type="button"
-              onClick={() => setMode(mode === "login" ? "register" : "login")}
+              onClick={() =>
+                changeMode(mode === "login" ? "register" : "login")
+              }
               className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700"
             >
-              {mode === "login" ? "Criar nova conta" : "Ja tenho conta"}
+              {mode === "login" ? "Criar nova conta" : "Já tenho conta"}
             </button>
           </form>
         </section>
@@ -452,7 +554,7 @@ export default function CitizenHomePage() {
 
               {locationState !== "AVAILABLE" && (
                 <p className="mt-1 text-xs text-slate-500">
-                  As ocorrencias confirmadas serao mostradas sem filtro de
+                  As ocorrências confirmadas serão mostradas sem filtro de
                   proximidade.
                 </p>
               )}
@@ -512,8 +614,8 @@ export default function CitizenHomePage() {
           <div>
             <h1 className="text-lg font-semibold text-slate-900">
               {position
-                ? "Ocorrencias publicas proximas"
-                : "Ocorrencias publicas confirmadas"}
+                ? "Ocorrências públicas próximas"
+                : "Ocorrências públicas confirmadas"}
             </h1>
 
             <p className="text-xs text-slate-500">
@@ -548,7 +650,7 @@ export default function CitizenHomePage() {
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex items-center justify-between gap-2">
                       <h2 className="line-clamp-1 text-sm font-semibold text-slate-900">
-                        {occurrence.category?.name ?? "Ocorrencia confirmada"}
+                        {occurrence.category?.name ?? "Ocorrência confirmada"}
                       </h2>
 
                       <StatusBadge status={occurrence.status} />
@@ -562,10 +664,10 @@ export default function CitizenHomePage() {
 
                     <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
                       {occurrence.distanceKm !== null && (
-                        <span>{occurrence.distanceKm} km de voce</span>
+                        <span>{occurrence.distanceKm} km de você</span>
                       )}
 
-                      <span>Posicao aproximada</span>
+                      <span>Posição aproximada</span>
                     </div>
                   </div>
                 </div>
@@ -575,8 +677,8 @@ export default function CitizenHomePage() {
         ) : (
           <p className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
             {position
-              ? `Nenhuma ocorrencia confirmada encontrada no raio de ${radiusKm} km.`
-              : "Nenhuma ocorrencia publica confirmada retornada pela API."}
+              ? `Nenhuma ocorrência confirmada encontrada no raio de ${radiusKm} km.`
+              : "Nenhuma ocorrência pública confirmada retornada pela API."}
           </p>
         )}
       </section>
@@ -601,7 +703,7 @@ export default function CitizenHomePage() {
           }`}
         >
           <History className="h-5 w-5" />
-          Historico
+          Histórico
         </Link>
       </nav>
     </main>

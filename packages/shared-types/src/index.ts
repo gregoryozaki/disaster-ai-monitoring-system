@@ -58,3 +58,5 @@ export interface RiskPredictionSummary {
   sources: string[];
   modelVersion: string;
 }
+
+export * from './password-policy';

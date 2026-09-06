@@ -304,6 +304,36 @@ export const api = {
     }>("/api/v1/auth/me")
   },
 
+  requestPasswordReset(payload: { email: string }) {
+    return requestJson<{
+      data: {
+        message: string
+
+        developmentResetToken?: string
+      }
+    }>("/api/v1/auth/password/forgot", {
+      method: "POST",
+
+      body: JSON.stringify(payload)
+    })
+  },
+
+  resetPassword(payload: {
+    token: string
+
+    password: string
+  }) {
+    return requestJson<{
+      data: {
+        message: string
+      }
+    }>("/api/v1/auth/password/reset", {
+      method: "POST",
+
+      body: JSON.stringify(payload)
+    })
+  },
+
   listPublicOccurrences(filters?: {
     latitude: number
 

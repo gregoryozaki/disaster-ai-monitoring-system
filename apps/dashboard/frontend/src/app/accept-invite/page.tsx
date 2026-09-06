@@ -3,9 +3,20 @@
 import { type FormEvent, useEffect, useState } from "react"
 
 import Image from "next/image"
+
 import Link from "next/link"
 
+import {
+  isStrongPassword,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH
+} from "@kamara/shared-types"
+
 import { CheckCircle2, KeyRound } from "lucide-react"
+
+import { PasswordField } from "@/components/password-field"
+
+import { PasswordRequirements } from "@/components/password-requirements"
 
 import { api, type ApiAdministrativeUser } from "@/lib/api"
 
@@ -38,6 +49,12 @@ export default function AcceptInvitePage() {
 
     setMessage(null)
 
+    if (!isStrongPassword(password)) {
+      setMessage("A senha ainda não atende a todos os requisitos.")
+
+      return
+    }
+
     if (password !== passwordConfirmation) {
       setMessage("As senhas não coincidem.")
 
@@ -53,6 +70,10 @@ export default function AcceptInvitePage() {
       })
 
       setAcceptedUser(response.data)
+
+      setPassword("")
+
+      setPasswordConfirmation("")
     } catch (error) {
       setMessage(
         error instanceof Error
@@ -127,43 +148,37 @@ export default function AcceptInvitePage() {
                 onChange={(event) => setToken(event.target.value)}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600"
                 placeholder="Cole o token do convite"
+                autoComplete="off"
               />
             </label>
 
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-slate-700">
-                Nova senha
-              </span>
+            <PasswordField
+              label="Nova senha"
+              value={password}
+              onChange={setPassword}
+              autoComplete="new-password"
+              minLength={PASSWORD_MIN_LENGTH}
+              maxLength={PASSWORD_MAX_LENGTH}
+              placeholder="Crie uma senha forte"
+            />
 
-              <input
-                required
-                type="password"
-                minLength={8}
-                maxLength={128}
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600"
-                placeholder="Mínimo de 8 caracteres"
-              />
-            </label>
+            <PasswordRequirements password={password} />
 
-            <label className="block">
-              <span className="mb-1 block text-sm font-medium text-slate-700">
-                Confirmar senha
-              </span>
+            <PasswordField
+              label="Confirmar senha"
+              value={passwordConfirmation}
+              onChange={setPasswordConfirmation}
+              autoComplete="new-password"
+              minLength={PASSWORD_MIN_LENGTH}
+              maxLength={PASSWORD_MAX_LENGTH}
+              placeholder="Digite novamente a senha"
+            />
 
-              <input
-                required
-                type="password"
-                minLength={8}
-                maxLength={128}
-                value={passwordConfirmation}
-                onChange={(event) =>
-                  setPasswordConfirmation(event.target.value)
-                }
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600"
-              />
-            </label>
+            {passwordConfirmation && password !== passwordConfirmation && (
+              <p className="text-xs text-red-600">
+                As senhas ainda não coincidem.
+              </p>
+            )}
 
             <button
               type="submit"

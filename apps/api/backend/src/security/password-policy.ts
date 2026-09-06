@@ -11,9 +11,7 @@ export interface PasswordRequirements {
   specialCharacter: boolean
 }
 
-export function evaluatePassword(
-  password: string
-): PasswordRequirements {
+export function evaluatePassword(password: string): PasswordRequirements {
   return {
     minimumLength: password.length >= PASSWORD_MIN_LENGTH,
 
@@ -28,6 +26,10 @@ export function evaluatePassword(
 }
 
 export function isStrongPassword(password: string): boolean {
+  if (password.length > PASSWORD_MAX_LENGTH) {
+    return false
+  }
+
   const requirements = evaluatePassword(password)
 
   return Object.values(requirements).every(Boolean)
@@ -70,8 +72,7 @@ export const newPasswordSchema = z
     if (!requirements.specialCharacter) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message:
-          "A senha deve possuir pelo menos um caractere especial."
+        message: "A senha deve possuir pelo menos um caractere especial."
       })
     }
   })
