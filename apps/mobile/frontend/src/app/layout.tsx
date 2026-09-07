@@ -10,6 +10,8 @@ import { OfflineSyncListener } from "@/components/offline-sync-listener"
 
 import { PwaServiceWorker } from "@/components/pwa-service-worker"
 
+import { ThemeProvider } from "@/components/theme-provider"
+
 export const metadata: Metadata = {
   title: "Kamara Cidadão",
 
@@ -46,21 +48,50 @@ export const viewport: Viewport = {
   themeColor: "#047857"
 }
 
+const themeBootstrapScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem("kamara-theme");
+    var theme = stored === "dark" ? "dark" : "light";
+
+    document.documentElement.classList.toggle(
+      "dark",
+      theme === "dark"
+    );
+
+    document.documentElement.dataset.theme = theme;
+  } catch (_) {
+    document.documentElement.classList.remove("dark");
+    document.documentElement.dataset.theme = "light";
+  }
+})();
+`
+
 export default function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeBootstrapScript
+          }}
+        />
+      </head>
+
       <body>
-        <CitizenSessionProvider>
-          <PwaServiceWorker />
+        <ThemeProvider>
+          <CitizenSessionProvider>
+            <PwaServiceWorker />
 
-          <OfflineSyncListener />
+            <OfflineSyncListener />
 
-          {children}
-        </CitizenSessionProvider>
+            {children}
+          </CitizenSessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

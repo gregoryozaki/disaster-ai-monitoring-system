@@ -75,12 +75,14 @@ export function MobileBottomNav() {
       active:
         pathname.startsWith("/profile") ||
         pathname.startsWith("/login") ||
-        pathname.startsWith("/register")
+        pathname.startsWith("/register") ||
+        pathname.startsWith("/terms") ||
+        pathname.startsWith("/manual")
     }
   ]
 
   return (
-    <nav className="fixed bottom-0 left-1/2 z-[1000] grid w-full max-w-md -translate-x-1/2 grid-cols-4 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-4px_18px_rgba(15,23,42,0.08)] backdrop-blur">
+    <nav className="fixed bottom-0 left-1/2 z-[1000] grid w-full max-w-md -translate-x-1/2 grid-cols-4 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-4px_18px_rgba(15,23,42,0.08)] backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
       {items.map((item) => {
         const Icon = item.icon
 
@@ -95,8 +97,8 @@ export function MobileBottomNav() {
               "flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 text-[11px] font-medium transition",
 
               item.active
-                ? "bg-emerald-50 text-emerald-700"
-                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
+                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100",
 
               temporarilyDisabled ? "pointer-events-none opacity-50" : ""
             ].join(" ")}

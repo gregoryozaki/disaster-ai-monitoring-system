@@ -4,8 +4,16 @@
 
 :root {
   color-scheme: light;
+
   --background: #f8fafc;
   --foreground: #111827;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --background: #020617;
+  --foreground: #e2e8f0;
 }
 
 * {
@@ -22,7 +30,17 @@ body {
 
 body {
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 a {
@@ -37,11 +55,178 @@ textarea {
   font: inherit;
 }
 
+html.dark input,
+html.dark textarea,
+html.dark select {
+  border-color: #475569;
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b;
+}
+
+html.dark .bg-white {
+  background-color: #0f172a;
+}
+
+html.dark .bg-white\/95 {
+  background-color: rgb(15 23 42 / 0.95);
+}
+
+html.dark .bg-slate-50 {
+  background-color: #020617;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #1e293b;
+}
+
+html.dark .bg-slate-200 {
+  background-color: #334155;
+}
+
+html.dark .border-slate-100 {
+  border-color: #1e293b;
+}
+
+html.dark .border-slate-200 {
+  border-color: #334155;
+}
+
+html.dark .border-slate-300 {
+  border-color: #475569;
+}
+
+html.dark .text-slate-900 {
+  color: #f8fafc;
+}
+
+html.dark .text-slate-800 {
+  color: #e2e8f0;
+}
+
+html.dark .text-slate-700 {
+  color: #cbd5e1;
+}
+
+html.dark .text-slate-600 {
+  color: #94a3b8;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+html.dark .text-slate-400 {
+  color: #64748b;
+}
+
+html.dark .bg-emerald-50 {
+  background-color: rgb(6 78 59 / 0.28);
+}
+
+html.dark .bg-emerald-100 {
+  background-color: rgb(6 78 59 / 0.45);
+}
+
+html.dark .border-emerald-200,
+html.dark .border-emerald-300 {
+  border-color: #065f46;
+}
+
+html.dark .text-emerald-950,
+html.dark .text-emerald-900,
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #6ee7b7;
+}
+
+html.dark .bg-blue-50 {
+  background-color: rgb(30 58 138 / 0.28);
+}
+
+html.dark .border-blue-200 {
+  border-color: #1e40af;
+}
+
+html.dark .text-blue-900 {
+  color: #bfdbfe;
+}
+
+html.dark .bg-amber-50 {
+  background-color: rgb(120 53 15 / 0.28);
+}
+
+html.dark .bg-amber-100 {
+  background-color: rgb(120 53 15 / 0.42);
+}
+
+html.dark .border-amber-200 {
+  border-color: #92400e;
+}
+
+html.dark .text-amber-950,
+html.dark .text-amber-900,
+html.dark .text-amber-800,
+html.dark .text-amber-700 {
+  color: #fde68a;
+}
+
+html.dark .bg-orange-50 {
+  background-color: rgb(124 45 18 / 0.28);
+}
+
+html.dark .bg-orange-100 {
+  background-color: rgb(124 45 18 / 0.42);
+}
+
+html.dark .border-orange-200,
+html.dark .border-orange-300 {
+  border-color: #9a3412;
+}
+
+html.dark .text-orange-950,
+html.dark .text-orange-900,
+html.dark .text-orange-800,
+html.dark .text-orange-700 {
+  color: #fed7aa;
+}
+
+html.dark .bg-red-50 {
+  background-color: rgb(127 29 29 / 0.28);
+}
+
+html.dark .bg-red-100 {
+  background-color: rgb(127 29 29 / 0.42);
+}
+
+html.dark .border-red-200,
+html.dark .border-red-300 {
+  border-color: #991b1b;
+}
+
+html.dark .text-red-800,
+html.dark .text-red-700,
+html.dark .text-red-600 {
+  color: #fecaca;
+}
+
+html.dark .shadow-sm,
+html.dark .shadow-lg,
+html.dark .shadow-xl,
+html.dark .shadow-2xl {
+  --tw-shadow-color: rgb(0 0 0 / 0.35);
+}
+
 @keyframes scale-in {
   0% {
     opacity: 0;
     transform: scale(0.96);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
