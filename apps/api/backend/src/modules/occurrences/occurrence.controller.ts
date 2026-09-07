@@ -1,11 +1,17 @@
-import type { NextFunction, Request, Response } from "express"
+import type {
+  NextFunction,
+  Request,
+  Response
+} from "express"
 
 import { toOccurrenceDto } from "./occurrence.dto.js"
 
 import {
-  getReporterOccurrence,
+  deleteReporterOccurrence,
+  getReporterOccurrenceDetail,
   listReporterOccurrences,
-  registerOccurrence
+  registerOccurrence,
+  updateReporterOccurrence
 } from "./occurrence.service.js"
 
 export async function createOccurrenceController(
@@ -15,17 +21,28 @@ export async function createOccurrenceController(
 ) {
   try {
     if (!req.user) {
-      throw new Error("Usuário autenticado não disponível.")
+      throw new Error(
+        "Usuário autenticado não disponível."
+      )
     }
 
-    const result = await registerOccurrence(req.user.id, req.body)
+    const result =
+      await registerOccurrence(
+        req.user.id,
+        req.body
+      )
 
-    res.status(result.created ? 201 : 200).json({
-      data: toOccurrenceDto(result.occurrence),
-      meta: {
-        created: result.created
-      }
-    })
+    return res
+      .status(result.created ? 201 : 200)
+      .json({
+        data: toOccurrenceDto(
+          result.occurrence
+        ),
+
+        meta: {
+          created: result.created
+        }
+      })
   } catch (error) {
     next(error)
   }
@@ -38,13 +55,20 @@ export async function listOccurrencesController(
 ) {
   try {
     if (!req.user) {
-      throw new Error("Usuário autenticado não disponível.")
+      throw new Error(
+        "Usuário autenticado não disponível."
+      )
     }
 
-    const occurrences = await listReporterOccurrences(req.user.id)
+    const occurrences =
+      await listReporterOccurrences(
+        req.user.id
+      )
 
-    res.json({
-      data: occurrences.map(toOccurrenceDto)
+    return res.json({
+      data: occurrences.map(
+        toOccurrenceDto
+      )
     })
   } catch (error) {
     next(error)
@@ -58,14 +82,84 @@ export async function getOccurrenceController(
 ) {
   try {
     if (!req.user) {
-      throw new Error("Usuário autenticado não disponível.")
+      throw new Error(
+        "Usuário autenticado não disponível."
+      )
     }
 
-    const occurrence = await getReporterOccurrence(req.params.id, req.user.id)
+    const result =
+      await getReporterOccurrenceDetail(
+        req.params.id,
+        req.user.id
+      )
 
-    res.json({
-      data: toOccurrenceDto(occurrence)
+    return res.json({
+      data: toOccurrenceDto(
+        result.occurrence
+      ),
+
+      meta: {
+        permissions:
+          result.permissions
+      }
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function updateOccurrenceController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    if (!req.user) {
+      throw new Error(
+        "Usuário autenticado não disponível."
+      )
+    }
+
+    const result =
+      await updateReporterOccurrence(
+        req.params.id,
+        req.user.id,
+        req.body
+      )
+
+    return res.json({
+      data: toOccurrenceDto(
+        result.occurrence
+      ),
+
+      meta: {
+        permissions:
+          result.permissions
+      }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function deleteOccurrenceController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    if (!req.user) {
+      throw new Error(
+        "Usuário autenticado não disponível."
+      )
+    }
+
+    await deleteReporterOccurrence(
+      req.params.id,
+      req.user.id
+    )
+
+    return res.status(204).send()
   } catch (error) {
     next(error)
   }

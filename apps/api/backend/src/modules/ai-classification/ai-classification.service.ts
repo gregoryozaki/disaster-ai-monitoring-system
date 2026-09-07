@@ -153,7 +153,8 @@ async function persistClassification(input: PersistClassificationInput) {
 
 async function canPersistClassification(
   occurrenceId: string,
-  mode: PreAnalysisMode
+  mode: PreAnalysisMode,
+  expectedUpdatedAt: Date
 ) {
   const occurrence = await prisma.occurrence.findFirst({
     where: {
@@ -165,11 +166,17 @@ async function canPersistClassification(
     },
 
     select: {
-      id: true
+      id: true,
+
+      updatedAt: true
     }
   })
 
-  if (!occurrence) {
+  if (
+    !occurrence ||
+    occurrence.updatedAt.getTime() !==
+      expectedUpdatedAt.getTime()
+  ) {
     return false
   }
 
@@ -210,6 +217,8 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
 
     select: {
       id: true,
+
+      updatedAt: true,
 
       description: true,
 
@@ -301,7 +310,11 @@ export async function preAnalyzeOccurrence(input: PreAnalyzeOccurrenceInput) {
       image
     })
 
-    const canPersist = await canPersistClassification(occurrence.id, mode)
+    const canPersist = await canPersistClassification(
+      occurrence.id,
+      mode,
+      occurrence.updatedAt
+    )
 
     if (!canPersist) {
       return null

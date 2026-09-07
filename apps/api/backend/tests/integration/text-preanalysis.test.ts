@@ -342,4 +342,139 @@ describe("Pré-análise textual sem fotografia", () => {
 
     expect(count).toBe(0)
   })
+
+  it("não deve persistir classificação obsoleta se o cidadão editar o relato durante a inferência", async () => {
+    const citizen = await createAuthenticatedCitizen()
+
+    const createResponse = await citizen.agent
+      .post("/api/v1/occurrences")
+      .send(
+        buildOccurrencePayload({
+          description:
+            "A rua está alagada após uma chuva forte."
+        })
+      )
+
+    expect(createResponse.status).toBe(201)
+
+    const occurrenceId = createResponse.body.data.id
+
+    let releaseResponse: (() => void) | undefined
+
+    const waiting = new Promise<void>((resolve) => {
+      releaseResponse = resolve
+    })
+
+    const fetchMock = vi.fn(async () => {
+      await waiting
+
+      return new Response(
+        JSON.stringify({
+          resultStatus: "AVAILABLE",
+
+          predictedCobradeCode: "1.2.3.0.0",
+
+          confidence: 0.86,
+
+          visualConfidence: null,
+
+          textConfidence: 0.86,
+
+          ambiguous: false,
+
+          ambiguityReason: null,
+
+          explanationSimple:
+            "Resultado baseado no texto anterior à edição.",
+
+          model: {
+            modelType: "TEXTUAL",
+
+            name: "mock-delayed-edit",
+
+            version: "test-v1",
+
+            syntheticData: true
+          },
+
+          signals: {
+            textUsed: true,
+
+            imageReceived: false,
+
+            imageUsed: false,
+
+            textLabel: "COBRADE_1_2_3_0_0",
+
+            visualResultStatus: "UNAVAILABLE"
+          }
+        }),
+
+        {
+          status: 200,
+
+          headers: {
+            "content-type": "application/json"
+          }
+        }
+      )
+    })
+
+    vi.stubGlobal("fetch", fetchMock)
+
+    const analysisPromise = preAnalyzeOccurrence({
+      occurrenceId,
+
+      mode: "TEXT_ONLY"
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    /*
+     * Garantimos que updatedAt será diferente
+     * daquele lido no início da pré-análise.
+     */
+    await new Promise((resolve) => {
+      setTimeout(resolve, 10)
+    })
+
+    await prisma.occurrence.update({
+      where: {
+        id: occurrenceId
+      },
+
+      data: {
+        description:
+          "O relato foi corrigido pelo cidadão enquanto a análise estava em andamento."
+      }
+    })
+
+    releaseResponse?.()
+
+    const result = await analysisPromise
+
+    expect(result).toBeNull()
+
+    const classificationCount =
+      await prisma.aIClassification.count({
+        where: {
+          occurrenceId
+        }
+      })
+
+    expect(classificationCount).toBe(0)
+
+    const stored = await prisma.occurrence.findUniqueOrThrow({
+      where: {
+        id: occurrenceId
+      }
+    })
+
+    expect(stored.description).toBe(
+      "O relato foi corrigido pelo cidadão enquanto a análise estava em andamento."
+    )
+  })
+
 })

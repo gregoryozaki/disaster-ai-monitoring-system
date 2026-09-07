@@ -360,4 +360,74 @@ describe("Mídia de ocorrências", () => {
 
     expect(contentResponse.body.equals(testPngBuffer)).toBe(true)
   })
+
+  it("não deve permitir adicionar mídia inicial depois da intervenção do gestor, mesmo após voltar para UNDER_REVIEW", async () => {
+    const { citizen, occurrenceId } = await createOccurrenceForCitizen()
+
+    const manager = await createAuthenticatedManager()
+
+    const requestResponse = await manager.agent
+      .post(`/api/v1/manager/occurrences/${occurrenceId}/validations`)
+      .send({
+        decision: "REQUEST_MORE_INFO",
+
+        informationRequestMessage:
+          "Envie mais detalhes sobre o local da ocorrência."
+      })
+
+    expect(requestResponse.status).toBe(201)
+
+    expect(requestResponse.body.data.occurrence.status).toBe(
+      "NEEDS_MORE_INFO"
+    )
+
+    const requestId =
+      requestResponse.body.data.informationRequest.id
+
+    const complementResponse = await citizen.agent
+      .post(
+        `/api/v1/occurrences/${occurrenceId}/information-requests/${requestId}/complements`
+      )
+      .field(
+        "text",
+        "A situação continua no mesmo local e seguem os detalhes solicitados."
+      )
+
+    expect(complementResponse.status).toBe(201)
+
+    const occurrence = await prisma.occurrence.findUniqueOrThrow({
+      where: {
+        id: occurrenceId
+      }
+    })
+
+    /*
+     * O status volta para UNDER_REVIEW,
+     * mas já houve intervenção do gestor.
+     */
+    expect(occurrence.status).toBe("UNDER_REVIEW")
+
+    const mediaResponse = await uploadInitialPhoto(
+      citizen,
+      occurrenceId
+    )
+
+    expect(mediaResponse.status).toBe(409)
+
+    expect(mediaResponse.body).toMatchObject({
+      error: {
+        code: "OCCURRENCE_LOCKED"
+      }
+    })
+
+    const mediaCount = await prisma.occurrenceMedia.count({
+      where: {
+        occurrenceId,
+        origin: "INITIAL"
+      }
+    })
+
+    expect(mediaCount).toBe(0)
+  })
+
 })

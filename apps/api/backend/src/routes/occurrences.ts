@@ -1,8 +1,14 @@
 import { Router } from "express"
 
-import { authenticate, authorize } from "../middlewares/auth.js"
+import {
+  authenticate,
+  authorize
+} from "../middlewares/auth.js"
 
-import { validateBody, validateParams } from "../middlewares/validate.js"
+import {
+  validateBody,
+  validateParams
+} from "../middlewares/validate.js"
 
 import {
   answerInformationRequestController,
@@ -18,11 +24,16 @@ import { uploadSinglePhoto } from "../modules/media/media.middleware.js"
 
 import {
   createOccurrenceController,
+  deleteOccurrenceController,
   getOccurrenceController,
-  listOccurrencesController
+  listOccurrencesController,
+  updateOccurrenceController
 } from "../modules/occurrences/occurrence.controller.js"
 
-import { createOccurrenceSchema } from "../modules/occurrences/occurrence.schema.js"
+import {
+  createOccurrenceSchema,
+  updateOccurrenceSchema
+} from "../modules/occurrences/occurrence.schema.js"
 
 import { syncOccurrenceController } from "../modules/occurrences/occurrence-sync.controller.js"
 
@@ -49,9 +60,8 @@ router.post(
 )
 
 /*
- * Registro criado anteriormente
- * no IndexedDB e sincronizado
- * quando a conectividade retorna.
+ * Registro criado anteriormente no IndexedDB
+ * e sincronizado quando a conectividade retorna.
  */
 router.post(
   "/sync",
@@ -59,37 +69,69 @@ router.post(
   syncOccurrenceController
 )
 
-router.get("/", listOccurrencesController)
+router.get(
+  "/",
+  listOccurrencesController
+)
 
 router.get(
   "/:id/media",
-  validateParams(occurrenceIdParamsSchema),
+  validateParams(
+    occurrenceIdParamsSchema
+  ),
   listCitizenOccurrenceMediaController
 )
 
 router.post(
   "/:id/media",
-  validateParams(occurrenceIdParamsSchema),
+  validateParams(
+    occurrenceIdParamsSchema
+  ),
   uploadSinglePhoto,
   uploadInitialPhotoController
 )
 
 router.get(
   "/:id/information-requests",
-  validateParams(occurrenceIdParamsSchema),
+  validateParams(
+    occurrenceIdParamsSchema
+  ),
   listInformationRequestsController
 )
 
 router.post(
   "/:id/information-requests/:requestId/complements",
-  validateParams(informationRequestParamsSchema),
+  validateParams(
+    informationRequestParamsSchema
+  ),
   uploadSinglePhoto,
   answerInformationRequestController
 )
 
+router.patch(
+  "/:id",
+  validateParams(
+    occurrenceIdParamsSchema
+  ),
+  validateBody(
+    updateOccurrenceSchema
+  ),
+  updateOccurrenceController
+)
+
+router.delete(
+  "/:id",
+  validateParams(
+    occurrenceIdParamsSchema
+  ),
+  deleteOccurrenceController
+)
+
 router.get(
   "/:id",
-  validateParams(occurrenceIdParamsSchema),
+  validateParams(
+    occurrenceIdParamsSchema
+  ),
   getOccurrenceController
 )
 

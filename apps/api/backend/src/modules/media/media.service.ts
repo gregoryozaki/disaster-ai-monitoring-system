@@ -43,7 +43,14 @@ export async function uploadInitialPhoto(
     select: {
       id: true,
 
-      status: true
+      status: true,
+
+      _count: {
+        select: {
+          validations: true,
+          informationRequests: true
+        }
+      }
     }
   })
 
@@ -55,11 +62,15 @@ export async function uploadInitialPhoto(
     )
   }
 
-  if (occurrence.status !== "UNDER_REVIEW") {
+  if (
+    occurrence.status !== "UNDER_REVIEW" ||
+    occurrence._count.validations > 0 ||
+    occurrence._count.informationRequests > 0
+  ) {
     throw new HttpError(
       409,
-      "Não é possível adicionar mídia inicial neste estado da ocorrência.",
-      "INVALID_OCCURRENCE_STATE"
+      "Não é possível alterar a evidência inicial depois que a análise do gestor começou.",
+      "OCCURRENCE_LOCKED"
     )
   }
 
