@@ -27,11 +27,15 @@ import {
 
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 
+import { MobileConfirmDialog } from "@/components/mobile-confirm-dialog"
+
 import { ProtectedCitizen } from "@/components/protected-citizen"
 
 import { ShellHeader } from "@/components/shell-header"
 
 import { type LocationSource, type UrgencyLevel } from "@/lib/api"
+
+import { urgencyLabels } from "@/lib/labels"
 
 import { saveOfflineOccurrence } from "@/lib/offline-db"
 
@@ -79,6 +83,8 @@ export default function ReportPage() {
 
   const galleryInputRef = useRef<HTMLInputElement | null>(null)
 
+  const submissionIdentityRef = useRef<SubmissionIdentity | null>(null)
+
   const [description, setDescription] = useState("")
 
   const [urgency, setUrgency] = useState<UrgencyLevel>("MEDIUM")
@@ -101,9 +107,9 @@ export default function ReportPage() {
 
   const [submitting, setSubmitting] = useState(false)
 
-  const [message, setMessage] = useState<string | null>(null)
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
-  const submissionIdentityRef = useRef<SubmissionIdentity | null>(null)
+  const [message, setMessage] = useState<string | null>(null)
 
   const descriptionValid = description.trim().length >= 12
 
@@ -159,9 +165,9 @@ export default function ReportPage() {
     setAccuracy(undefined)
 
     /*
-     * Não reutilizamos silenciosamente
-     * uma coordenada manual como se
-     * tivesse vindo do aparelho.
+     * Uma coordenada escolhida manualmente
+     * não pode ser reutilizada silenciosamente
+     * como se tivesse vindo do aparelho.
      */
     if (mode === "AUTO") {
       setLatitude(null)
@@ -268,9 +274,7 @@ export default function ReportPage() {
     setPhoto(file)
   }
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-
+  function validateBeforeConfirmation() {
     setMessage(null)
 
     if (!descriptionValid) {
@@ -278,32 +282,60 @@ export default function ReportPage() {
         "Conte um pouco mais sobre o que está acontecendo. Use pelo menos 12 caracteres."
       )
 
-      return
+      return false
     }
 
     if (!locationValid) {
       setMessage("Precisamos saber onde a ocorrência está acontecendo.")
 
-      return
+      return false
     }
 
     if (latitude === null || longitude === null) {
-      return
+      return false
     }
 
     if (photo && !ALLOWED_PHOTO_TYPES.has(photo.type)) {
       setMessage("Esse formato de imagem não é aceito.")
 
-      return
+      return false
     }
 
     if (photo && photo.size > MAX_PHOTO_BYTES) {
       setMessage("A imagem é muito grande. Escolha uma foto de até 10 MB.")
 
+      return false
+    }
+
+    return true
+  }
+
+  function requestSubmission(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    if (submitting || !validateBeforeConfirmation()) {
+      return
+    }
+
+    setConfirmOpen(true)
+  }
+
+  async function confirmSubmission() {
+    if (submitting || !validateBeforeConfirmation()) {
+      setConfirmOpen(false)
+
+      return
+    }
+
+    if (latitude === null || longitude === null) {
+      setConfirmOpen(false)
+
       return
     }
 
     setSubmitting(true)
+
+    setMessage(null)
 
     const identity = getSubmissionIdentity()
 
@@ -351,7 +383,9 @@ export default function ReportPage() {
 
       savedLocally = true
 
-      if (!online || !navigator.onLine) {
+      const currentlyOnline = online && navigator.onLine
+
+      if (!currentlyOnline) {
         submissionIdentityRef.current = null
 
         router.push("/history")
@@ -375,6 +409,11 @@ export default function ReportPage() {
 
       router.push("/history")
     } catch (error) {
+      /*
+       * Se já conseguimos persistir o registro
+       * localmente, ele continua seguro na fila.
+       * O usuário segue para o Histórico.
+       */
       if (savedLocally) {
         submissionIdentityRef.current = null
 
@@ -382,6 +421,8 @@ export default function ReportPage() {
 
         return
       }
+
+      setConfirmOpen(false)
 
       setMessage(
         error instanceof Error
@@ -401,7 +442,7 @@ export default function ReportPage() {
           subtitle="Conte o que está acontecendo"
         />
 
-        <form onSubmit={submit} className="p-4">
+        <form onSubmit={requestSubmission} className="p-4">
           {online ? (
             <section className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
               <div className="flex gap-2">
@@ -701,17 +742,83 @@ export default function ReportPage() {
               <WifiOff className="h-5 w-5" />
             )}
 
-            {submitting
-              ? online
-                ? "Enviando ocorrência..."
-                : "Salvando ocorrência..."
-              : online
-                ? "Registrar ocorrência"
-                : "Salvar ocorrência"}
+            {online ? "Revisar ocorrência" : "Revisar registro"}
           </button>
         </form>
 
         <MobileBottomNav />
+
+        <MobileConfirmDialog
+          open={confirmOpen}
+          title="Registrar esta ocorrência?"
+          description="Confira as informações antes de confirmar o registro."
+          confirmLabel={online ? "Registrar ocorrência" : "Salvar ocorrência"}
+          submitting={submitting}
+          onClose={() => setConfirmOpen(false)}
+          onConfirm={() => void confirmSubmission()}
+        >
+          <div className="space-y-3">
+            <div className="rounded-xl bg-slate-50 p-3">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Descrição
+              </p>
+
+              <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-slate-800">
+                {description.trim()}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-xl bg-slate-50 p-3">
+                <p className="text-xs text-slate-500">Urgência</p>
+
+                <p className="mt-1 text-sm font-semibold text-slate-800">
+                  {urgencyLabels[urgency]}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-slate-50 p-3">
+                <p className="text-xs text-slate-500">Pessoas em risco</p>
+
+                <p className="mt-1 text-sm font-semibold text-slate-800">
+                  {humanRisk ? "Sim" : "Não"}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-xl bg-slate-50 p-3">
+                <p className="text-xs text-slate-500">Foto</p>
+
+                <p className="mt-1 text-sm font-semibold text-slate-800">
+                  {photo ? "Adicionada" : "Não adicionada"}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-slate-50 p-3">
+                <p className="text-xs text-slate-500">Local</p>
+
+                <p className="mt-1 text-sm font-semibold text-slate-800">
+                  {locationMode === "AUTO"
+                    ? "Localização do aparelho"
+                    : "Escolhido no mapa"}
+                </p>
+              </div>
+            </div>
+
+            <div
+              className={`rounded-xl border p-3 text-xs leading-relaxed ${
+                online
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+                  : "border-amber-200 bg-amber-50 text-amber-900"
+              }`}
+            >
+              {online
+                ? "Ao confirmar, o registro será salvo e o sistema tentará enviá-lo imediatamente."
+                : "Você está sem internet. Ao confirmar, o registro ficará salvo neste aparelho e será enviado quando a conexão voltar."}
+            </div>
+          </div>
+        </MobileConfirmDialog>
       </main>
     </ProtectedCitizen>
   )
