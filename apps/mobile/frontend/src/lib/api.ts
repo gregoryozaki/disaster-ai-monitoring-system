@@ -60,6 +60,36 @@ export interface ApiOccurrence {
   updatedAt: string
 }
 
+export interface OccurrencePermissions {
+  canEdit: boolean
+
+  canDelete: boolean
+}
+
+export interface OccurrenceDetailResponse {
+  data: ApiOccurrence
+
+  meta: {
+    permissions: OccurrencePermissions
+  }
+}
+
+export interface UpdateOccurrencePayload {
+  description?: string
+
+  urgency?: UrgencyLevel
+
+  humanRisk?: boolean
+
+  latitude?: number
+
+  longitude?: number
+
+  locationSource?: LocationSource
+
+  locationAccuracyM?: number | null
+}
+
 export interface ApiPublicOccurrence {
   id: string
 
@@ -405,9 +435,26 @@ export const api = {
   },
 
   getOccurrence(occurrenceId: string) {
-    return requestJson<{
-      data: ApiOccurrence
-    }>(`/api/v1/occurrences/${occurrenceId}`)
+    return requestJson<OccurrenceDetailResponse>(
+      `/api/v1/occurrences/${occurrenceId}`
+    )
+  },
+
+  updateOccurrence(occurrenceId: string, payload: UpdateOccurrencePayload) {
+    return requestJson<OccurrenceDetailResponse>(
+      `/api/v1/occurrences/${occurrenceId}`,
+      {
+        method: "PATCH",
+
+        body: JSON.stringify(payload)
+      }
+    )
+  },
+
+  deleteOccurrence(occurrenceId: string) {
+    return requestJson<void>(`/api/v1/occurrences/${occurrenceId}`, {
+      method: "DELETE"
+    })
   },
 
   createOccurrence(payload: {
@@ -471,6 +518,20 @@ export const api = {
       data: ApiMedia
     }>(`/api/v1/occurrences/${occurrenceId}/media`, {
       method: "POST",
+
+      body: form
+    })
+  },
+
+  replaceInitialPhoto(occurrenceId: string, file: File) {
+    const form = new FormData()
+
+    form.append("file", file)
+
+    return requestJson<{
+      data: ApiMedia
+    }>(`/api/v1/occurrences/${occurrenceId}/media/primary`, {
+      method: "PUT",
 
       body: form
     })

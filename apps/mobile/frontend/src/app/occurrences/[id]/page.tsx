@@ -4,6 +4,7 @@ import Link from "next/link"
 
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -11,7 +12,7 @@ import {
   type FormEvent
 } from "react"
 
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 import {
   AlertTriangle,
@@ -21,6 +22,7 @@ import {
   CheckCircle2,
   ImagePlus,
   Info,
+  Pencil,
   Send,
   ShieldCheck,
   Trash2,
@@ -33,19 +35,26 @@ import { StatusBadge } from "@/components/badges"
 
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 
+import { MobileConfirmDialog } from "@/components/mobile-confirm-dialog"
+
+import { OccurrenceEditForm } from "@/components/occurrence-edit-form"
+
 import { ProtectedCitizen } from "@/components/protected-citizen"
 
 import {
+  ApiError,
   api,
   isApiNetworkError,
   type ApiInformationRequest,
   type ApiMedia,
-  type ApiOccurrence
+  type ApiOccurrence,
+  type OccurrencePermissions,
+  type UpdateOccurrencePayload
 } from "@/lib/api"
 
-import { urgencyLabels } from "@/lib/labels"
+import { deleteOfflineOccurrence } from "@/lib/offline-db"
 
-import { useEffect } from "react"
+import { urgencyLabels } from "@/lib/labels"
 
 const MAX_PHOTO_BYTES = 10 * 1024 * 1024
 
@@ -89,6 +98,8 @@ export default function CitizenOccurrenceDetailPage() {
     id: string
   }>()
 
+  const router = useRouter()
+
   const occurrenceId = params.id
 
   const cameraInputRef = useRef<HTMLInputElement | null>(null)
@@ -97,11 +108,25 @@ export default function CitizenOccurrenceDetailPage() {
 
   const [occurrence, setOccurrence] = useState<ApiOccurrence | null>(null)
 
+  const [permissions, setPermissions] = useState<OccurrencePermissions>({
+    canEdit: false,
+
+    canDelete: false
+  })
+
   const [media, setMedia] = useState<ApiMedia[]>([])
 
   const [requests, setRequests] = useState<ApiInformationRequest[]>([])
 
   const [loading, setLoading] = useState(true)
+
+  const [editing, setEditing] = useState(false)
+
+  const [savingEdit, setSavingEdit] = useState(false)
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+
+  const [deleting, setDeleting] = useState(false)
 
   const [message, setMessage] = useState<string | null>(null)
 
@@ -129,6 +154,8 @@ export default function CitizenOccurrenceDetailPage() {
         ])
 
       setOccurrence(occurrenceResponse.data)
+
+      setPermissions(occurrenceResponse.meta.permissions)
 
       setMedia(mediaResponse.data)
 
@@ -162,6 +189,15 @@ export default function CitizenOccurrenceDetailPage() {
           new Date(left.createdAt).getTime() -
           new Date(right.createdAt).getTime()
       ),
+    [media]
+  )
+
+  const primaryInitialImage = useMemo(
+    () =>
+      media.find(
+        (item) =>
+          item.type === "IMAGE" && item.origin === "INITIAL" && item.isPrimary
+      ) ?? null,
     [media]
   )
 
@@ -205,6 +241,155 @@ export default function CitizenOccurrenceDetailPage() {
     }
 
     setComplementPhoto(file)
+  }
+
+  async function saveEdit(
+    payload: UpdateOccurrencePayload,
+    photo: File | null
+  ) {
+    if (!occurrence) {
+      return
+    }
+
+    setSavingEdit(true)
+
+    setMessage(null)
+
+    setSuccessMessage(null)
+
+    let occurrenceDataSaved = false
+
+    try {
+      const initialSource = occurrence.location.source ?? "MANUAL"
+
+      const initialAccuracy = occurrence.location.accuracyM ?? null
+
+      const fieldsChanged =
+        payload.description !== (occurrence.description ?? "") ||
+        payload.urgency !== occurrence.urgency ||
+        payload.humanRisk !== occurrence.humanRisk ||
+        payload.latitude !== occurrence.location.latitude ||
+        payload.longitude !== occurrence.location.longitude ||
+        payload.locationSource !== initialSource ||
+        (payload.locationAccuracyM ?? null) !== initialAccuracy
+
+      if (fieldsChanged) {
+        await api.updateOccurrence(occurrenceId, payload)
+
+        occurrenceDataSaved = true
+      }
+
+      if (photo) {
+        if (primaryInitialImage) {
+          await api.replaceInitialPhoto(occurrenceId, photo)
+        } else {
+          await api.uploadInitialPhoto(occurrenceId, photo)
+        }
+      }
+
+      setEditing(false)
+
+      await load()
+
+      setSuccessMessage(
+        photo
+          ? primaryInitialImage
+            ? "As alterações foram salvas e a foto foi substituída."
+            : "As alterações foram salvas e a foto foi adicionada."
+          : "As alterações foram salvas."
+      )
+    } catch (error) {
+      setEditing(false)
+
+      await load().catch(() => undefined)
+
+      if (error instanceof ApiError && error.code === "OCCURRENCE_LOCKED") {
+        setMessage(
+          occurrenceDataSaved
+            ? "O relato foi salvo, mas a foto não pôde ser alterada porque a análise do gestor começou."
+            : "Esta ocorrência começou a ser analisada e não pode mais ser alterada."
+        )
+
+        return
+      }
+
+      if (occurrenceDataSaved && photo) {
+        setMessage(
+          isApiNetworkError(error)
+            ? "O relato foi salvo, mas não foi possível enviar a nova foto porque a conexão foi interrompida."
+            : `O relato foi salvo, mas a foto não pôde ser atualizada: ${
+                error instanceof Error ? error.message : "erro inesperado."
+              }`
+        )
+
+        return
+      }
+
+      setMessage(
+        isApiNetworkError(error)
+          ? "Você precisa estar conectado para editar uma ocorrência já enviada."
+          : error instanceof Error
+            ? error.message
+            : "Não foi possível salvar as alterações."
+      )
+    } finally {
+      setSavingEdit(false)
+    }
+  }
+
+  async function removeOccurrence() {
+    if (!occurrence) {
+      return
+    }
+
+    setDeleting(true)
+
+    setMessage(null)
+
+    try {
+      await api.deleteOccurrence(occurrence.id)
+
+      /*
+       * Pode existir temporariamente
+       * uma cópia da fila offline
+       * reconciliada com esta ocorrência.
+       *
+       * Depois do cancelamento no servidor
+       * ela não deve tentar sincronizar
+       * novamente.
+       */
+      if (occurrence.clientLocalId) {
+        await deleteOfflineOccurrence(occurrence.clientLocalId).catch(
+          () => undefined
+        )
+      }
+
+      router.replace("/history")
+    } catch (error) {
+      if (error instanceof ApiError && error.code === "OCCURRENCE_LOCKED") {
+        setDeleteDialogOpen(false)
+
+        await load()
+
+        setMessage(
+          "Esta ocorrência começou a ser analisada e não pode mais ser cancelada."
+        )
+
+        return
+      }
+
+      setMessage(
+        isApiNetworkError(error)
+          ? "Você precisa estar conectado para cancelar uma ocorrência já enviada."
+          : error instanceof Error
+            ? error.message
+            : "Não foi possível cancelar esta ocorrência."
+      )
+
+      setDeleteDialogOpen(false)
+    } finally {
+      setDeleting(false)
+    }
   }
 
   async function submitComplement(event: FormEvent<HTMLFormElement>) {
@@ -280,7 +465,7 @@ export default function CitizenOccurrenceDetailPage() {
               <ArrowLeft className="h-5 w-5" />
             </Link>
 
-            <div className="min-w-0">
+            <div>
               <h1 className="font-semibold text-slate-900">Sua ocorrência</h1>
 
               <p className="text-xs text-slate-500">
@@ -498,7 +683,19 @@ export default function CitizenOccurrenceDetailPage() {
                     {orderedMedia.map((item, index) => (
                       <div key={item.id}>
                         <AuthenticatedMediaImage
-                          src={item.contentUrl}
+                          /*
+                           * createdAt muda quando
+                           * a foto principal é
+                           * substituída.
+                           *
+                           * O parâmetro evita que
+                           * uma imagem antiga fique
+                           * presa no cache do
+                           * navegador.
+                           */
+                          src={`${item.contentUrl}?v=${encodeURIComponent(
+                            item.createdAt
+                          )}`}
                           alt={
                             item.origin === "INITIAL"
                               ? "Foto enviada no registro da ocorrência"
@@ -521,6 +718,85 @@ export default function CitizenOccurrenceDetailPage() {
                         )}
                       </div>
                     ))}
+                  </div>
+                </article>
+              )}
+
+              {editing ? (
+                <article className="rounded-xl border border-emerald-200 bg-white p-4 shadow-sm">
+                  <div className="mb-4">
+                    <h2 className="font-semibold text-slate-900">
+                      Editar ocorrência
+                    </h2>
+
+                    <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                      Você pode corrigir o relato e a foto enquanto a análise do
+                      gestor ainda não começou.
+                    </p>
+                  </div>
+
+                  <OccurrenceEditForm
+                    initialDescription={occurrence.description ?? ""}
+                    initialUrgency={occurrence.urgency}
+                    initialHumanRisk={occurrence.humanRisk}
+                    initialLocation={occurrence.location}
+                    hasCurrentPhoto={Boolean(primaryInitialImage)}
+                    submitting={savingEdit}
+                    onSubmit={saveEdit}
+                    onCancel={() => setEditing(false)}
+                  />
+                </article>
+              ) : permissions.canEdit || permissions.canDelete ? (
+                <article className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <h2 className="font-semibold text-slate-900">
+                    Alterar registro
+                  </h2>
+
+                  <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                    Enquanto a análise ainda não começou, você pode corrigir o
+                    relato, atualizar a foto ou cancelar este registro.
+                  </p>
+
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    {permissions.canEdit && (
+                      <button
+                        type="button"
+                        onClick={() => setEditing(true)}
+                        className="flex items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-white px-3 py-3 text-sm font-semibold text-emerald-700"
+                      >
+                        <Pencil className="h-4 w-4" />
+                        Editar
+                      </button>
+                    )}
+
+                    {permissions.canDelete && (
+                      <button
+                        type="button"
+                        onClick={() => setDeleteDialogOpen(true)}
+                        className="flex items-center justify-center gap-2 rounded-xl border border-red-300 bg-white px-3 py-3 text-sm font-semibold text-red-700"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Cancelar
+                      </button>
+                    )}
+                  </div>
+                </article>
+              ) : (
+                <article className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex gap-3">
+                    <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-slate-600" />
+
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        Relato original protegido
+                      </p>
+
+                      <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                        Esta ocorrência já entrou no fluxo de análise ou já
+                        recebeu uma decisão. O relato e a foto originais não
+                        podem mais ser alterados ou cancelados.
+                      </p>
+                    </div>
                   </div>
                 </article>
               )}
@@ -584,6 +860,23 @@ export default function CitizenOccurrenceDetailPage() {
         </section>
 
         <MobileBottomNav />
+
+        <MobileConfirmDialog
+          open={deleteDialogOpen}
+          title="Cancelar esta ocorrência?"
+          description="Ela será retirada do seu acompanhamento ativo. Essa ação não poderá ser desfeita pelo aplicativo."
+          confirmLabel="Cancelar ocorrência"
+          submitting={deleting}
+          danger
+          onClose={() => setDeleteDialogOpen(false)}
+          onConfirm={() => void removeOccurrence()}
+        >
+          <p className="rounded-xl border border-red-200 bg-red-50 p-3 text-xs leading-relaxed text-red-800">
+            Cancele somente se o registro realmente não deve mais ser
+            considerado. Se a equipe já tiver iniciado a análise, o sistema
+            bloqueará esta ação.
+          </p>
+        </MobileConfirmDialog>
       </main>
     </ProtectedCitizen>
   )

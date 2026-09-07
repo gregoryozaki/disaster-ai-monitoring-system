@@ -58,7 +58,9 @@ export function MobileBottomNav() {
       icon: History,
 
       active:
-        pathname.startsWith("/history") || pathname.startsWith("/occurrences"),
+        pathname.startsWith("/history") ||
+        pathname.startsWith("/occurrences") ||
+        pathname.startsWith("/offline-occurrences"),
 
       protected: true
     },
