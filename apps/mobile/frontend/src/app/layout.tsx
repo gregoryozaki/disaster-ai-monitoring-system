@@ -15,6 +15,10 @@ export const metadata: Metadata = {
 
   applicationName: "Kamara",
 
+  other: {
+    "mobile-web-app-capable": "yes"
+  },
+
   manifest: "/manifest.webmanifest",
 
   icons: {

@@ -8,17 +8,24 @@ const password = process.env.KAMARA_ADMIN_PASSWORD
 
 const name = process.env.KAMARA_ADMIN_NAME?.trim() || "Administrador Kamara"
 
+import { newPasswordSchema } from "../security/password-policy.js"
+
 async function main() {
   if (!email) {
     throw new Error("KAMARA_ADMIN_EMAIL é obrigatória.")
   }
 
-  if (!password || password.length < 12) {
+  const passwordResult = newPasswordSchema.safeParse(password)
+
+  if (!passwordResult.success) {
     throw new Error(
-      "KAMARA_ADMIN_PASSWORD deve possuir pelo menos 12 caracteres."
+      `KAMARA_ADMIN_PASSWORD não atende à política de senha: ${passwordResult.error.issues
+        .map((issue) => issue.message)
+        .join(" ")}`
     )
   }
 
+  const validatedPassword = passwordResult.data
   const existingUser = await prisma.user.findUnique({
     where: {
       email
@@ -33,7 +40,7 @@ async function main() {
       )
     }
 
-    const passwordHash = await bcrypt.hash(password, 12)
+    const passwordHash = await bcrypt.hash(validatedPassword, 12)
 
     const admin = await prisma.user.update({
       where: {
@@ -69,7 +76,7 @@ async function main() {
     )
   }
 
-  const passwordHash = await bcrypt.hash(password, 12)
+  const passwordHash = await bcrypt.hash(validatedPassword, 12)
 
   const admin = await prisma.user.create({
     data: {

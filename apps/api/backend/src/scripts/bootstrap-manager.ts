@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs"
 
 import { env } from "../config/env.js"
 import { prisma } from "../prisma/client.js"
+import { newPasswordSchema } from "../security/password-policy.js"
 
 const email = process.env.KAMARA_MANAGER_EMAIL?.trim().toLowerCase()
 
@@ -20,11 +21,17 @@ async function main() {
     throw new Error("KAMARA_MANAGER_EMAIL é obrigatória.")
   }
 
-  if (!password || password.length < 8) {
+  const passwordResult = newPasswordSchema.safeParse(password)
+
+  if (!passwordResult.success) {
     throw new Error(
-      "KAMARA_MANAGER_PASSWORD deve possuir pelo menos 8 caracteres."
+      `KAMARA_MANAGER_PASSWORD não atende à política de senha: ${passwordResult.error.issues
+        .map((issue) => issue.message)
+        .join(" ")}`
     )
   }
+
+  const validatedPassword = passwordResult.data
 
   const existingUser = await prisma.user.findUnique({
     where: {
@@ -32,7 +39,7 @@ async function main() {
     }
   })
 
-  const passwordHash = await bcrypt.hash(password, 12)
+  const passwordHash = await bcrypt.hash(validatedPassword, 12)
 
   if (!existingUser) {
     const manager = await prisma.user.create({

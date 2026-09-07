@@ -2,7 +2,7 @@ const CACHE_PREFIX = "kamara-pwa-shell"
 
 const LEGACY_CACHE_PREFIXES = ["mboi-pwa-shell"]
 
-const CACHE_VERSION = "v4"
+const CACHE_VERSION = "v5"
 
 const CACHE_NAME = `${CACHE_PREFIX}-${CACHE_VERSION}`
 
@@ -224,6 +224,12 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (url.pathname === "/sw.js") {
+    return
+  }
+
+  if (url.pathname === "/kamara-logo.png") {
+    event.respondWith(networkFirst(request))
+
     return
   }
 
