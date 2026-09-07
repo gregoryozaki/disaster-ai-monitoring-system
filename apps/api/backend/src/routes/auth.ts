@@ -87,6 +87,14 @@ const resetPasswordSchema = z
   })
   .strict()
 
+const changePasswordSchema = z
+  .object({
+    currentPassword: loginPasswordSchema,
+
+    newPassword: newPasswordSchema
+  })
+  .strict()
+
 function defaultClientForRole(role: UserRole): SessionClient | null {
   if (role === "CITIZEN") {
     return "CITIZEN_PWA"
@@ -299,6 +307,136 @@ router.get(
 
       session: req.authSession
     })
+  }
+)
+
+router.post(
+  "/password/change",
+
+  authenticate,
+
+  validateBody(changePasswordSchema),
+
+  async (req, res, next) => {
+    try {
+      if (!req.user || !req.authSession) {
+        throw new HttpError(401, "Autenticação obrigatória.", "AUTH_REQUIRED")
+      }
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: req.user.id
+        },
+
+        select: {
+          id: true,
+
+          passwordHash: true,
+
+          status: true
+        }
+      })
+
+      if (!user || user.status !== "ACTIVE") {
+        throw new HttpError(401, "Sessão inválida.", "INVALID_SESSION")
+      }
+
+      const currentPasswordValid = await bcrypt.compare(
+        req.body.currentPassword,
+        user.passwordHash
+      )
+
+      if (!currentPasswordValid) {
+        throw new HttpError(
+          401,
+          "A senha atual está incorreta.",
+          "INVALID_CURRENT_PASSWORD"
+        )
+      }
+
+      const samePassword = await bcrypt.compare(
+        req.body.newPassword,
+        user.passwordHash
+      )
+
+      if (samePassword) {
+        throw new HttpError(
+          422,
+          "A nova senha deve ser diferente da senha atual.",
+          "PASSWORD_UNCHANGED"
+        )
+      }
+
+      const nextPasswordHash = await bcrypt.hash(req.body.newPassword, 12)
+
+      const now = new Date()
+
+      await prisma.$transaction(async (tx) => {
+        await tx.user.update({
+          where: {
+            id: user.id
+          },
+
+          data: {
+            passwordHash: nextPasswordHash
+          }
+        })
+
+        await tx.userSession.updateMany({
+          where: {
+            userId: user.id,
+
+            id: {
+              not: req.authSession!.id
+            },
+
+            revokedAt: null
+          },
+
+          data: {
+            revokedAt: now,
+
+            revokedReason: "PASSWORD_CHANGED"
+          }
+        })
+
+        await tx.passwordResetToken.updateMany({
+          where: {
+            userId: user.id,
+
+            usedAt: null
+          },
+
+          data: {
+            usedAt: now
+          }
+        })
+
+        await tx.auditLog.create({
+          data: {
+            actorUserId: user.id,
+
+            action: "USER_PASSWORD_CHANGED",
+
+            entityType: "USER",
+
+            entityId: user.id,
+
+            metadata: {
+              retainedSessionId: req.authSession!.id
+            }
+          }
+        })
+      })
+
+      return res.json({
+        data: {
+          message: "Senha alterada com sucesso."
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 )
 

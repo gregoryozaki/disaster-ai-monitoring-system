@@ -394,6 +394,22 @@ export const api = {
     })
   },
 
+  changePassword(payload: {
+    currentPassword: string
+
+    newPassword: string
+  }) {
+    return requestJson<{
+      data: {
+        message: string
+      }
+    }>("/api/v1/auth/password/change", {
+      method: "POST",
+
+      body: JSON.stringify(payload)
+    })
+  },
+
   listPublicOccurrences(filters?: {
     latitude: number
 
