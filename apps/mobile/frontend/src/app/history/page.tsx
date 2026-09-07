@@ -6,16 +6,19 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 
 import {
   AlertTriangle,
-  ArrowLeft,
+  ChevronRight,
   CloudUpload,
   Image as ImageIcon,
   RefreshCw,
-  Send,
   Wifi,
   WifiOff
 } from "lucide-react"
 
 import { StatusBadge } from "@/components/badges"
+
+import { MobileBottomNav } from "@/components/mobile-bottom-nav"
+
+import { ProtectedCitizen } from "@/components/protected-citizen"
 
 import {
   api,
@@ -46,14 +49,14 @@ type Notice = {
 
 function offlineStatusLabel(status: OfflineOccurrenceRecord["syncStatus"]) {
   if (status === "SYNCING") {
-    return "Sincronizando"
+    return "Enviando"
   }
 
   if (status === "ERROR") {
-    return "Erro"
+    return "Erro no envio"
   }
 
-  return "Pendente"
+  return "Aguardando envio"
 }
 
 function offlineStatusClasses(status: OfflineOccurrenceRecord["syncStatus"]) {
@@ -66,6 +69,14 @@ function offlineStatusClasses(status: OfflineOccurrenceRecord["syncStatus"]) {
   }
 
   return "bg-amber-100 text-amber-800"
+}
+
+function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+
+    timeStyle: "short"
+  }).format(new Date(value))
 }
 
 export default function HistoryPage() {
@@ -115,12 +126,6 @@ export default function HistoryPage() {
 
     setRequests(Object.fromEntries(requestPairs))
 
-    /*
-     * Uma resposta efetiva da API
-     * é evidência melhor de
-     * conectividade do que apenas
-     * navigator.onLine.
-     */
     setOnline(true)
   }, [])
 
@@ -130,11 +135,6 @@ export default function HistoryPage() {
     setNotice(null)
 
     try {
-      /*
-       * A fila local é carregada
-       * sempre, independentemente
-       * da disponibilidade da API.
-       */
       await loadOffline()
 
       try {
@@ -146,7 +146,7 @@ export default function HistoryPage() {
           setNotice({
             type: "info",
 
-            text: "Sem conexao com o servidor. Os registros armazenados no dispositivo continuam disponiveis e serao sincronizados quando a conexao voltar."
+            text: "Você está sem internet. Seus registros continuam salvos neste aparelho."
           })
 
           return
@@ -161,7 +161,7 @@ export default function HistoryPage() {
         text:
           error instanceof Error
             ? error.message
-            : "Nao foi possivel carregar o historico."
+            : "Não foi possível carregar seu histórico."
       })
     } finally {
       setLoading(false)
@@ -179,18 +179,11 @@ export default function HistoryPage() {
       setNotice({
         type: "info",
 
-        text: "Sem conexao com o servidor. Os registros armazenados no dispositivo continuam disponiveis."
+        text: "Você está sem internet. Seus registros continuam disponíveis neste aparelho."
       })
     }
 
     function handleOnline() {
-      /*
-       * Não marcamos Online apenas
-       * porque o navegador disparou
-       * o evento.
-       *
-       * A API precisa responder.
-       */
       void loadServer()
         .then(() => {
           setOnline(true)
@@ -208,7 +201,7 @@ export default function HistoryPage() {
             text:
               error instanceof Error
                 ? error.message
-                : "Nao foi possivel atualizar os dados do servidor."
+                : "Não foi possível atualizar seus registros."
           })
         })
     }
@@ -239,57 +232,12 @@ export default function HistoryPage() {
     }
   }, [loadOffline])
 
-  async function answerRequest(occurrenceId: string, requestId: string) {
-    if (!online) {
-      setNotice({
-        type: "error",
-
-        text: "Conecte-se a internet para responder ao pedido de complemento."
-      })
-
-      return
-    }
-
-    const text = window.prompt("Resposta ao gestor")
-
-    if (!text?.trim()) {
-      return
-    }
-
-    try {
-      await api.answerInformationRequest(occurrenceId, requestId, {
-        text: text.trim()
-      })
-
-      setNotice({
-        type: "success",
-
-        text: "Complemento enviado ao gestor."
-      })
-
-      await loadServer()
-    } catch (error) {
-      if (isApiNetworkError(error)) {
-        setOnline(false)
-      }
-
-      setNotice({
-        type: "error",
-
-        text:
-          error instanceof Error
-            ? error.message
-            : "Nao foi possivel enviar o complemento."
-      })
-    }
-  }
-
   async function retryOffline(clientLocalId: string) {
     if (!online) {
       setNotice({
         type: "info",
 
-        text: "Sem conexao com o servidor. A ocorrencia continua salva no dispositivo."
+        text: "Você está sem internet. A ocorrência continua salva neste aparelho."
       })
 
       return
@@ -314,7 +262,7 @@ export default function HistoryPage() {
         setNotice({
           type: "success",
 
-          text: "Ocorrencia sincronizada com sucesso."
+          text: "Ocorrência enviada com sucesso."
         })
 
         await Promise.all([loadOffline(), loadServer()])
@@ -329,7 +277,10 @@ export default function HistoryPage() {
       setNotice({
         type: result.status === "ERROR" ? "error" : "info",
 
-        text: result.error ?? "A ocorrencia continua aguardando sincronizacao."
+        text:
+          result.status === "ERROR"
+            ? "Não foi possível concluir o envio. Tente novamente."
+            : "Sua ocorrência continua salva e será enviada quando possível."
       })
 
       await loadOffline()
@@ -344,7 +295,7 @@ export default function HistoryPage() {
         text:
           error instanceof Error
             ? error.message
-            : "Nao foi possivel sincronizar a ocorrencia."
+            : "Não foi possível enviar a ocorrência."
       })
 
       await loadOffline().catch(() => undefined)
@@ -364,7 +315,7 @@ export default function HistoryPage() {
       setNotice({
         type: "info",
 
-        text: "Sem conexao com o servidor. As ocorrencias continuam armazenadas no dispositivo."
+        text: "Você está sem internet. Seus registros continuam salvos neste aparelho."
       })
 
       return
@@ -394,8 +345,8 @@ export default function HistoryPage() {
 
         text:
           pending > 0
-            ? `${synchronized} ocorrencia(s) sincronizada(s); ${pending} ainda aguardam nova tentativa.`
-            : `${synchronized} ocorrencia(s) sincronizada(s).`
+            ? `${synchronized} ocorrência(s) enviada(s). ${pending} ainda aguardam uma nova tentativa.`
+            : `${synchronized} ocorrência(s) enviada(s).`
       })
 
       await Promise.all([
@@ -414,7 +365,7 @@ export default function HistoryPage() {
         text:
           error instanceof Error
             ? error.message
-            : "Nao foi possivel processar a fila de sincronizacao."
+            : "Não foi possível enviar os registros agora."
       })
     } finally {
       setSyncingAll(false)
@@ -427,7 +378,7 @@ export default function HistoryPage() {
     }
 
     const confirmed = window.confirm(
-      "A ocorrencia ja foi recebida pelo servidor, mas a foto nao foi sincronizada. Deseja descartar apenas a foto pendente e concluir a sincronizacao do relato?"
+      "A ocorrência já foi recebida, mas a foto ainda não foi enviada. Deseja continuar sem essa foto?"
     )
 
     if (!confirmed) {
@@ -451,7 +402,7 @@ export default function HistoryPage() {
         text:
           error instanceof Error
             ? error.message
-            : "Nao foi possivel atualizar o registro local."
+            : "Não foi possível atualizar esse registro."
       })
     }
   }
@@ -472,286 +423,349 @@ export default function HistoryPage() {
     [occurrences, pendingServerIds]
   )
 
+  const orderedServerOccurrences = useMemo(() => {
+    return [...visibleServerOccurrences].sort((left, right) => {
+      const leftNeedsInfo =
+        left.status === "NEEDS_MORE_INFO" &&
+        Boolean(requests[left.id]?.some((request) => request.status === "OPEN"))
+
+      const rightNeedsInfo =
+        right.status === "NEEDS_MORE_INFO" &&
+        Boolean(
+          requests[right.id]?.some((request) => request.status === "OPEN")
+        )
+
+      if (leftNeedsInfo !== rightNeedsInfo) {
+        return leftNeedsInfo ? -1 : 1
+      }
+
+      return (
+        new Date(right.reportedAt).getTime() -
+        new Date(left.reportedAt).getTime()
+      )
+    })
+  }, [visibleServerOccurrences, requests])
+
   return (
-    <main className="mx-auto min-h-screen max-w-md bg-slate-50">
-      <header className="border-b border-slate-200 bg-white px-4 py-3">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Voltar
-        </Link>
+    <ProtectedCitizen nextPath="/history">
+      <main className="mx-auto min-h-screen max-w-md bg-slate-50 pb-24">
+        <header className="border-b border-slate-200 bg-white px-4 py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h1 className="text-xl font-semibold text-slate-900">
+                Minhas ocorrências
+              </h1>
 
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <div>
-            <h1 className="text-xl font-semibold text-slate-900">
-              Meu acompanhamento
-            </h1>
+              <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                {online ? (
+                  <>
+                    <Wifi className="h-3.5 w-3.5 text-emerald-600" />
 
-            <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
-              {online ? (
-                <>
-                  <Wifi className="h-3.5 w-3.5 text-emerald-600" />
-                  Online
-                </>
-              ) : (
-                <>
-                  <WifiOff className="h-3.5 w-3.5 text-amber-600" />
-                  Offline
-                </>
-              )}
-            </div>
-          </div>
+                    <span>Atualizado</span>
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="h-3.5 w-3.5 text-amber-600" />
 
-          <button
-            onClick={() => void load()}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700"
-          >
-            Atualizar
-          </button>
-        </div>
-      </header>
-
-      <section className="space-y-3 p-4">
-        {notice && (
-          <p
-            className={`rounded-lg p-3 text-sm ${
-              notice.type === "error"
-                ? "bg-red-50 text-red-700"
-                : notice.type === "success"
-                  ? "bg-emerald-50 text-emerald-800"
-                  : "bg-blue-50 text-blue-800"
-            }`}
-          >
-            {notice.text}
-          </p>
-        )}
-
-        {loading && (
-          <p className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
-            Carregando historico...
-          </p>
-        )}
-
-        {offlineOccurrences.length > 0 && (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-amber-950">
-                  Pendencias de sincronizacao
-                </p>
-
-                <p className="text-xs text-amber-800">
-                  {offlineOccurrences.length} registro(s) ainda possuem dados
-                  locais.
-                </p>
+                    <span>Sem internet</span>
+                  </>
+                )}
               </div>
-
-              <button
-                disabled={!online || syncingAll}
-                onClick={() => void syncAll()}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-700 px-3 py-2 text-xs font-semibold text-white disabled:bg-slate-300"
-              >
-                <CloudUpload className="h-4 w-4" />
-
-                {syncingAll ? "Enviando..." : "Sincronizar"}
-              </button>
             </div>
+
+            <button
+              type="button"
+              onClick={() => void load()}
+              disabled={loading}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 disabled:opacity-50"
+            >
+              <RefreshCw
+                className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              />
+              Atualizar
+            </button>
           </div>
-        )}
+        </header>
 
-        {offlineOccurrences.map((occurrence) => {
-          const syncing =
-            syncingIds.has(occurrence.clientLocalId) ||
-            occurrence.syncStatus === "SYNCING"
-
-          return (
-            <article
-              key={occurrence.clientLocalId}
-              className={`rounded-lg border p-4 shadow-sm ${
-                occurrence.syncStatus === "ERROR"
-                  ? "border-red-200 bg-red-50"
-                  : "border-amber-200 bg-amber-50"
+        <section className="space-y-3 p-4">
+          {notice && (
+            <p
+              className={`rounded-xl border p-3 text-sm ${
+                notice.type === "error"
+                  ? "border-red-200 bg-red-50 text-red-700"
+                  : notice.type === "success"
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                    : "border-blue-200 bg-blue-50 text-blue-800"
               }`}
             >
-              <div className="mb-3 flex items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-sm font-semibold text-slate-900">
-                    {occurrence.serverOccurrenceId
-                      ? "Registro recebido; sincronizacao incompleta"
-                      : "Registro salvo no dispositivo"}
-                  </h2>
-
-                  <p className="mt-1 text-xs text-slate-600">
-                    {new Date(occurrence.reportedAt).toLocaleString("pt-BR")}
-                  </p>
-                </div>
-
-                <span
-                  className={`rounded-full px-2.5 py-1 text-xs font-semibold ${offlineStatusClasses(
-                    syncing ? "SYNCING" : occurrence.syncStatus
-                  )}`}
-                >
-                  {syncing
-                    ? "Sincronizando"
-                    : offlineStatusLabel(occurrence.syncStatus)}
-                </span>
-              </div>
-
-              <p className="text-sm leading-relaxed text-slate-700">
-                {occurrence.description}
-              </p>
-
-              <dl className="mt-3 grid grid-cols-2 gap-3 text-xs text-slate-600">
-                <div>
-                  <dt className="font-medium text-slate-500">Urgencia</dt>
-
-                  <dd>{urgencyLabels[occurrence.urgency]}</dd>
-                </div>
-
-                <div>
-                  <dt className="font-medium text-slate-500">Risco humano</dt>
-
-                  <dd>{occurrence.humanRisk ? "Sim" : "Nao"}</dd>
-                </div>
-
-                <div>
-                  <dt className="font-medium text-slate-500">Localizacao</dt>
-
-                  <dd>
-                    {occurrence.latitude}, {occurrence.longitude}
-                  </dd>
-                </div>
-
-                <div>
-                  <dt className="font-medium text-slate-500">Tentativas</dt>
-
-                  <dd>{occurrence.attemptCount}</dd>
-                </div>
-              </dl>
-
-              {occurrence.photo && (
-                <div className="mt-3 flex items-center gap-2 rounded-lg bg-white/70 p-2 text-xs text-slate-600">
-                  <ImageIcon className="h-4 w-4" />
-
-                  <span className="min-w-0 truncate">
-                    Foto armazenada: {occurrence.photo.name}
-                  </span>
-                </div>
-              )}
-
-              {occurrence.serverOccurrenceId && (
-                <p className="mt-3 rounded-lg bg-blue-50 p-2 text-xs text-blue-800">
-                  O relato ja possui identificador no servidor. A pendencia
-                  restante sera reconciliada sem criar outra ocorrencia.
-                </p>
-              )}
-
-              {occurrence.lastError && (
-                <div className="mt-3 flex gap-2 rounded-lg bg-red-100 p-3 text-xs text-red-800">
-                  <AlertTriangle className="h-4 w-4 shrink-0" />
-
-                  <span>{occurrence.lastError}</span>
-                </div>
-              )}
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  disabled={!online || syncing}
-                  onClick={() => void retryOffline(occurrence.clientLocalId)}
-                  className="inline-flex items-center gap-2 rounded-lg bg-amber-700 px-3 py-2 text-xs font-semibold text-white disabled:bg-slate-300"
-                >
-                  <RefreshCw
-                    className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`}
-                  />
-                  Tentar novamente
-                </button>
-
-                {occurrence.syncStatus === "ERROR" &&
-                  occurrence.photo &&
-                  occurrence.serverOccurrenceId && (
-                    <button
-                      disabled={!online || syncing}
-                      onClick={() => void discardPendingPhoto(occurrence)}
-                      className="rounded-lg border border-red-300 bg-white px-3 py-2 text-xs font-semibold text-red-700 disabled:text-slate-400"
-                    >
-                      Descartar foto pendente
-                    </button>
-                  )}
-              </div>
-            </article>
-          )
-        })}
-
-        {visibleServerOccurrences.map((occurrence) => {
-          const openRequest = requests[occurrence.id]?.find(
-            (item) => item.status === "OPEN"
-          )
-
-          return (
-            <article
-              key={occurrence.id}
-              className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
-            >
-              <div className="mb-3 flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
-                  <RefreshCw className="h-5 w-5" />
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex items-center justify-between gap-2">
-                    <h2 className="text-sm font-semibold text-slate-900">
-                      Ocorrencia enviada
-                    </h2>
-
-                    <StatusBadge status={occurrence.status} />
-                  </div>
-
-                  <p className="line-clamp-2 text-xs text-slate-600">
-                    {occurrence.description}
-                  </p>
-                </div>
-              </div>
-
-              <dl className="grid grid-cols-2 gap-2 text-xs text-slate-600">
-                <div>
-                  <dt className="font-medium text-slate-500">Urgencia</dt>
-
-                  <dd>{urgencyLabels[occurrence.urgency]}</dd>
-                </div>
-
-                <div>
-                  <dt className="font-medium text-slate-500">Risco humano</dt>
-
-                  <dd>{occurrence.humanRisk ? "Sim" : "Nao"}</dd>
-                </div>
-              </dl>
-
-              {openRequest && (
-                <button
-                  disabled={!online}
-                  onClick={() =>
-                    void answerRequest(occurrence.id, openRequest.id)
-                  }
-                  className="mt-3 inline-flex items-center gap-2 rounded-lg bg-orange-600 px-3 py-2 text-xs font-semibold text-white disabled:bg-slate-300"
-                >
-                  <Send className="h-4 w-4" />
-                  Enviar complemento
-                </button>
-              )}
-            </article>
-          )
-        })}
-
-        {!loading &&
-          !visibleServerOccurrences.length &&
-          !offlineOccurrences.length && (
-            <p className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
-              Nenhuma ocorrencia no historico.
+              {notice.text}
             </p>
           )}
-      </section>
-    </main>
+
+          {loading && (
+            <p className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+              Carregando suas ocorrências...
+            </p>
+          )}
+
+          {offlineOccurrences.length > 0 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-amber-950">
+                    Registros aguardando envio
+                  </p>
+
+                  <p className="mt-1 text-xs text-amber-800">
+                    {offlineOccurrences.length} registro(s) ainda precisam ser
+                    enviados.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={!online || syncingAll}
+                  onClick={() => void syncAll()}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-amber-700 px-3 py-2 text-xs font-semibold text-white disabled:bg-slate-300"
+                >
+                  <CloudUpload className="h-4 w-4" />
+
+                  {syncingAll ? "Enviando..." : "Enviar agora"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {offlineOccurrences.map((occurrence) => {
+            const syncing =
+              syncingIds.has(occurrence.clientLocalId) ||
+              occurrence.syncStatus === "SYNCING"
+
+            return (
+              <article
+                key={occurrence.clientLocalId}
+                className={`rounded-xl border p-4 shadow-sm ${
+                  occurrence.syncStatus === "ERROR"
+                    ? "border-red-200 bg-red-50"
+                    : "border-amber-200 bg-amber-50"
+                }`}
+              >
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-sm font-semibold text-slate-900">
+                      {occurrence.serverOccurrenceId
+                        ? "Ocorrência aguardando conclusão do envio"
+                        : "Ocorrência salva"}
+                    </h2>
+
+                    <p className="mt-1 text-xs text-slate-600">
+                      {formatDateTime(occurrence.reportedAt)}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${offlineStatusClasses(
+                      syncing ? "SYNCING" : occurrence.syncStatus
+                    )}`}
+                  >
+                    {syncing
+                      ? "Enviando"
+                      : offlineStatusLabel(occurrence.syncStatus)}
+                  </span>
+                </div>
+
+                <p className="text-sm leading-relaxed text-slate-700">
+                  {occurrence.description}
+                </p>
+
+                <dl className="mt-3 grid grid-cols-2 gap-3 text-xs text-slate-600">
+                  <div>
+                    <dt className="font-medium text-slate-500">Urgência</dt>
+
+                    <dd>{urgencyLabels[occurrence.urgency]}</dd>
+                  </div>
+
+                  <div>
+                    <dt className="font-medium text-slate-500">
+                      Pessoas em risco
+                    </dt>
+
+                    <dd>{occurrence.humanRisk ? "Sim" : "Não"}</dd>
+                  </div>
+                </dl>
+
+                {occurrence.photo && (
+                  <div className="mt-3 flex items-center gap-2 rounded-xl bg-white/70 p-2 text-xs text-slate-600">
+                    <ImageIcon className="h-4 w-4 shrink-0" />
+                    Foto adicionada
+                  </div>
+                )}
+
+                {occurrence.lastError && (
+                  <div className="mt-3 flex gap-2 rounded-xl bg-red-100 p-3 text-xs text-red-800">
+                    <AlertTriangle className="h-4 w-4 shrink-0" />
+
+                    <span>
+                      Não foi possível concluir o envio. Tente novamente.
+                    </span>
+                  </div>
+                )}
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={!online || syncing}
+                    onClick={() => void retryOffline(occurrence.clientLocalId)}
+                    className="inline-flex items-center gap-2 rounded-xl bg-amber-700 px-3 py-2 text-xs font-semibold text-white disabled:bg-slate-300"
+                  >
+                    <RefreshCw
+                      className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`}
+                    />
+                    Tentar novamente
+                  </button>
+
+                  {occurrence.serverOccurrenceId && (
+                    <Link
+                      href={`/occurrences/${occurrence.serverOccurrenceId}`}
+                      className="inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700"
+                    >
+                      Ver ocorrência
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  )}
+
+                  {occurrence.syncStatus === "ERROR" &&
+                    occurrence.photo &&
+                    occurrence.serverOccurrenceId && (
+                      <button
+                        type="button"
+                        disabled={!online || syncing}
+                        onClick={() => void discardPendingPhoto(occurrence)}
+                        className="rounded-xl border border-red-300 bg-white px-3 py-2 text-xs font-semibold text-red-700 disabled:text-slate-400"
+                      >
+                        Continuar sem a foto
+                      </button>
+                    )}
+                </div>
+              </article>
+            )
+          })}
+
+          {orderedServerOccurrences.map((occurrence) => {
+            const openRequest = requests[occurrence.id]?.find(
+              (item) => item.status === "OPEN"
+            )
+
+            return (
+              <Link
+                key={occurrence.id}
+                href={`/occurrences/${occurrence.id}`}
+                className={`block rounded-xl border bg-white p-4 shadow-sm transition active:scale-[0.99] ${
+                  openRequest
+                    ? "border-orange-300 ring-1 ring-orange-100"
+                    : "border-slate-200"
+                }`}
+              >
+                <div className="mb-3 flex items-start gap-3">
+                  <div
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                      openRequest
+                        ? "bg-orange-100 text-orange-700"
+                        : "bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    {openRequest ? (
+                      <AlertTriangle className="h-5 w-5" />
+                    ) : (
+                      <RefreshCw className="h-5 w-5" />
+                    )}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex items-start justify-between gap-2">
+                      <h2 className="text-sm font-semibold text-slate-900">
+                        {openRequest
+                          ? "Precisamos de mais informações"
+                          : "Ocorrência registrada"}
+                      </h2>
+
+                      <StatusBadge status={occurrence.status} />
+                    </div>
+
+                    <p className="line-clamp-2 text-xs leading-relaxed text-slate-600">
+                      {occurrence.description}
+                    </p>
+
+                    <p className="mt-2 text-xs text-slate-500">
+                      {formatDateTime(occurrence.reportedAt)}
+                    </p>
+                  </div>
+                </div>
+
+                <dl className="grid grid-cols-2 gap-2 text-xs text-slate-600">
+                  <div>
+                    <dt className="font-medium text-slate-500">Urgência</dt>
+
+                    <dd>{urgencyLabels[occurrence.urgency]}</dd>
+                  </div>
+
+                  <div>
+                    <dt className="font-medium text-slate-500">
+                      Pessoas em risco
+                    </dt>
+
+                    <dd>{occurrence.humanRisk ? "Sim" : "Não"}</dd>
+                  </div>
+                </dl>
+
+                {openRequest && (
+                  <div className="mt-3 rounded-xl border border-orange-200 bg-orange-50 p-3">
+                    <p className="text-xs leading-relaxed text-orange-900">
+                      {openRequest.message}
+                    </p>
+
+                    <div className="mt-3 flex items-center justify-end gap-1 text-xs font-semibold text-orange-700">
+                      Ver pedido e responder
+                      <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </div>
+                )}
+
+                {!openRequest && (
+                  <div className="mt-3 flex items-center justify-end gap-1 text-xs font-semibold text-emerald-700">
+                    Ver detalhes
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
+                )}
+              </Link>
+            )
+          })}
+
+          {!loading &&
+            !orderedServerOccurrences.length &&
+            !offlineOccurrences.length && (
+              <div className="rounded-xl border border-slate-200 bg-white p-5 text-center shadow-sm">
+                <p className="text-sm font-medium text-slate-800">
+                  Você ainda não registrou nenhuma ocorrência.
+                </p>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  Quando você fizer um registro, poderá acompanhar o andamento
+                  por aqui.
+                </p>
+
+                <Link
+                  href="/report"
+                  className="mt-4 inline-flex rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white"
+                >
+                  Registrar ocorrência
+                </Link>
+              </div>
+            )}
+        </section>
+
+        <MobileBottomNav />
+      </main>
+    </ProtectedCitizen>
   )
 }

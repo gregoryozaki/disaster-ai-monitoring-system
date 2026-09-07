@@ -4,6 +4,8 @@ import "leaflet/dist/leaflet.css"
 
 import "./globals.css"
 
+import { CitizenSessionProvider } from "@/components/citizen-session-provider"
+
 import { OfflineSyncListener } from "@/components/offline-sync-listener"
 
 import { PwaServiceWorker } from "@/components/pwa-service-worker"
@@ -11,7 +13,7 @@ import { PwaServiceWorker } from "@/components/pwa-service-worker"
 export const metadata: Metadata = {
   title: "Kamara Cidadão",
 
-  description: "PWA para registro e acompanhamento de ocorrências ambientais.",
+  description: "Aplicativo para acompanhar e informar ocorrências ambientais.",
 
   applicationName: "Kamara",
 
@@ -52,11 +54,13 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        <PwaServiceWorker />
+        <CitizenSessionProvider>
+          <PwaServiceWorker />
 
-        <OfflineSyncListener />
+          <OfflineSyncListener />
 
-        {children}
+          {children}
+        </CitizenSessionProvider>
       </body>
     </html>
   )

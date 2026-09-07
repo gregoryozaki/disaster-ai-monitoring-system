@@ -2,11 +2,18 @@ const CACHE_PREFIX = "kamara-pwa-shell"
 
 const LEGACY_CACHE_PREFIXES = ["mboi-pwa-shell"]
 
-const CACHE_VERSION = "v5"
+const CACHE_VERSION = "v6"
 
 const CACHE_NAME = `${CACHE_PREFIX}-${CACHE_VERSION}`
 
-const SHELL_ROUTES = ["/", "/report", "/history", "/analysis"]
+const SHELL_ROUTES = [
+  "/",
+  "/login",
+  "/register",
+  "/report",
+  "/history",
+  "/profile"
+]
 
 const PUBLIC_ASSETS = ["/manifest.webmanifest", "/kamara-logo.png"]
 

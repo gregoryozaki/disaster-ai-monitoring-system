@@ -2,12 +2,18 @@
 
 import { useEffect } from "react"
 
-import { api } from "@/lib/api"
+import { useCitizenSession } from "@/components/citizen-session-provider"
 
 import { syncAllOfflineOccurrences } from "@/lib/offline-sync"
 
 export function OfflineSyncListener() {
+  const { user, loading } = useCitizenSession()
+
   useEffect(() => {
+    if (loading || !user) {
+      return
+    }
+
     let disposed = false
     let running = false
 
@@ -19,12 +25,6 @@ export function OfflineSyncListener() {
       running = true
 
       try {
-        const session = await api.me()
-
-        if (disposed || session.data.role !== "CITIZEN") {
-          return
-        }
-
         await syncAllOfflineOccurrences()
       } catch {
       } finally {
@@ -47,7 +47,6 @@ export function OfflineSyncListener() {
     }
 
     window.addEventListener("online", handleOnline)
-
     window.addEventListener("focus", handleFocus)
 
     document.addEventListener("visibilitychange", handleVisibilityChange)
@@ -58,12 +57,11 @@ export function OfflineSyncListener() {
       disposed = true
 
       window.removeEventListener("online", handleOnline)
-
       window.removeEventListener("focus", handleFocus)
 
       document.removeEventListener("visibilitychange", handleVisibilityChange)
     }
-  }, [])
+  }, [loading, user])
 
   return null
 }

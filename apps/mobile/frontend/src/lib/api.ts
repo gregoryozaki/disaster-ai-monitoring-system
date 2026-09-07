@@ -203,7 +203,7 @@ export class ApiError extends Error {
 }
 
 export class ApiNetworkError extends Error {
-  constructor(message = "Sem conexao com o servidor.") {
+  constructor(message = "Sem conexão com o servidor.") {
     super(message)
 
     this.name = "ApiNetworkError"
@@ -246,7 +246,7 @@ async function requestJson<T>(
     const body = await response.json().catch(() => null)
 
     throw new ApiError(
-      body?.error?.message ?? "Nao foi possivel concluir a operacao.",
+      body?.error?.message ?? "Não foi possível concluir a operação.",
 
       response.status,
 
@@ -259,6 +259,36 @@ async function requestJson<T>(
   }
 
   return response.json() as Promise<T>
+}
+
+async function requestBlob(path: string): Promise<Blob> {
+  let response: Response
+
+  try {
+    response = await fetch(`${API_URL}${path}`, {
+      credentials: "include",
+
+      headers: {
+        "x-kamara-client": "CITIZEN_PWA"
+      }
+    })
+  } catch {
+    throw new ApiNetworkError()
+  }
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => null)
+
+    throw new ApiError(
+      body?.error?.message ?? "Não foi possível carregar a imagem.",
+
+      response.status,
+
+      body?.error?.code
+    )
+  }
+
+  return response.blob()
 }
 
 export const api = {
@@ -374,6 +404,12 @@ export const api = {
     }>("/api/v1/occurrences")
   },
 
+  getOccurrence(occurrenceId: string) {
+    return requestJson<{
+      data: ApiOccurrence
+    }>(`/api/v1/occurrences/${occurrenceId}`)
+  },
+
   createOccurrence(payload: {
     clientLocalId: string
 
@@ -444,6 +480,10 @@ export const api = {
     return requestJson<{
       data: ApiMedia[]
     }>(`/api/v1/occurrences/${occurrenceId}/media`)
+  },
+
+  getMediaContent(contentUrl: string) {
+    return requestBlob(contentUrl)
   },
 
   listInformationRequests(occurrenceId: string) {

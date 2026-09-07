@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link"
+import dynamic from "next/dynamic"
 
 import {
   useEffect,
@@ -13,35 +13,42 @@ import {
 import { useRouter } from "next/navigation"
 
 import {
-  ArrowLeft,
   Camera,
+  CheckCircle2,
   CloudUpload,
+  ImagePlus,
   LocateFixed,
   MapPin,
   Send,
+  Trash2,
   Wifi,
   WifiOff
 } from "lucide-react"
 
+import { MobileBottomNav } from "@/components/mobile-bottom-nav"
+
+import { ProtectedCitizen } from "@/components/protected-citizen"
+
 import { ShellHeader } from "@/components/shell-header"
 
-import {
-  ApiError,
-  api,
-  isApiNetworkError,
-  type LocationSource,
-  type UrgencyLevel
-} from "@/lib/api"
-
-import {
-  clearCitizenSession,
-  readCitizenSession,
-  saveCitizenSession
-} from "@/lib/local-session"
+import { type LocationSource, type UrgencyLevel } from "@/lib/api"
 
 import { saveOfflineOccurrence } from "@/lib/offline-db"
 
 import { syncOfflineOccurrence } from "@/lib/offline-sync"
+
+const ReportLocationPicker = dynamic(
+  () => import("@/components/report-location-picker"),
+  {
+    ssr: false,
+
+    loading: () => (
+      <div className="flex h-72 items-center justify-center rounded-xl bg-slate-100 text-sm text-slate-500">
+        Carregando mapa...
+      </div>
+    )
+  }
+)
 
 interface SubmissionIdentity {
   clientLocalId: string
@@ -68,6 +75,10 @@ function validLongitude(value: number | null) {
 export default function ReportPage() {
   const router = useRouter()
 
+  const cameraInputRef = useRef<HTMLInputElement | null>(null)
+
+  const galleryInputRef = useRef<HTMLInputElement | null>(null)
+
   const [description, setDescription] = useState("")
 
   const [urgency, setUrgency] = useState<UrgencyLevel>("MEDIUM")
@@ -86,6 +97,8 @@ export default function ReportPage() {
 
   const [online, setOnline] = useState(true)
 
+  const [locating, setLocating] = useState(false)
+
   const [submitting, setSubmitting] = useState(false)
 
   const [message, setMessage] = useState<string | null>(null)
@@ -99,53 +112,13 @@ export default function ReportPage() {
   const valid = descriptionValid && locationValid
 
   useEffect(() => {
-    const localSession = readCitizenSession()
+    setOnline(navigator.onLine)
 
-    void api
-      .me()
-      .then((response) => {
-        if (response.data.role !== "CITIZEN") {
-          clearCitizenSession()
-
-          router.push("/")
-
-          return
-        }
-
-        saveCitizenSession(response.data)
-
-        setOnline(true)
-      })
-      .catch((error) => {
-        if (isApiNetworkError(error) && localSession) {
-          setOnline(false)
-
-          return
-        }
-
-        if (
-          error instanceof ApiError &&
-          (error.status === 401 || error.status === 403)
-        ) {
-          clearCitizenSession()
-        }
-
-        router.push("/")
-      })
-  }, [router])
-
-  useEffect(() => {
     function handleOffline() {
       setOnline(false)
     }
 
     function handleOnline() {
-      /*
-       * A interface marca que existe
-       * conectividade de navegador.
-       * A chamada real à API continua
-       * sendo a validação definitiva.
-       */
       setOnline(true)
     }
 
@@ -175,19 +148,26 @@ export default function ReportPage() {
   }
 
   function selectLocationMode(mode: LocationSource) {
+    setMessage(null)
+
     if (mode === locationMode) {
       return
     }
 
+    setLocationMode(mode)
+
     setAccuracy(undefined)
 
+    /*
+     * Não reutilizamos silenciosamente
+     * uma coordenada manual como se
+     * tivesse vindo do aparelho.
+     */
     if (mode === "AUTO") {
       setLatitude(null)
 
       setLongitude(null)
     }
-
-    setLocationMode(mode)
   }
 
   function captureLocation() {
@@ -195,11 +175,13 @@ export default function ReportPage() {
 
     if (!navigator.geolocation) {
       setMessage(
-        "Geolocalizacao nao disponivel neste navegador. Utilize a localizacao manual."
+        "Este aparelho não conseguiu acessar sua localização. Você pode escolher o local no mapa."
       )
 
       return
     }
+
+    setLocating(true)
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -212,40 +194,50 @@ export default function ReportPage() {
         setLocationMode("AUTO")
 
         setMessage(null)
+
+        setLocating(false)
       },
 
       () => {
+        setLocating(false)
+
         setMessage(
-          "Nao foi possivel obter a localizacao automaticamente. Utilize a opcao manual."
+          "Não foi possível obter sua localização. Tente novamente ou escolha o local no mapa."
         )
       },
 
       {
         enableHighAccuracy: true,
 
-        timeout: 8000
+        maximumAge: 0,
+
+        timeout: 15000
       }
     )
   }
 
-  function changeLatitude(value: string) {
-    if (value === "") {
-      setLatitude(null)
+  function selectManualLocation(nextLatitude: number, nextLongitude: number) {
+    setLocationMode("MANUAL")
 
-      return
-    }
+    setLatitude(nextLatitude)
 
-    setLatitude(Number(value))
+    setLongitude(nextLongitude)
+
+    setAccuracy(undefined)
+
+    setMessage(null)
   }
 
-  function changeLongitude(value: string) {
-    if (value === "") {
-      setLongitude(null)
+  function clearPhoto() {
+    setPhoto(null)
 
-      return
+    if (cameraInputRef.current) {
+      cameraInputRef.current.value = ""
     }
 
-    setLongitude(Number(value))
+    if (galleryInputRef.current) {
+      galleryInputRef.current.value = ""
+    }
   }
 
   function selectPhoto(event: ChangeEvent<HTMLInputElement>) {
@@ -254,27 +246,21 @@ export default function ReportPage() {
     setMessage(null)
 
     if (!file) {
-      setPhoto(null)
-
       return
     }
 
     if (!ALLOWED_PHOTO_TYPES.has(file.type)) {
-      setPhoto(null)
+      clearPhoto()
 
-      event.target.value = ""
-
-      setMessage("Formato de imagem nao suportado. Utilize JPEG, PNG ou WebP.")
+      setMessage("Esse formato de imagem não é aceito. Use JPEG, PNG ou WebP.")
 
       return
     }
 
     if (file.size > MAX_PHOTO_BYTES) {
-      setPhoto(null)
+      clearPhoto()
 
-      event.target.value = ""
-
-      setMessage("A imagem excede o limite de 10 MB.")
+      setMessage("A imagem é muito grande. Escolha uma foto de até 10 MB.")
 
       return
     }
@@ -288,15 +274,15 @@ export default function ReportPage() {
     setMessage(null)
 
     if (!descriptionValid) {
-      setMessage("A descricao deve possuir pelo menos 12 caracteres.")
+      setMessage(
+        "Conte um pouco mais sobre o que está acontecendo. Use pelo menos 12 caracteres."
+      )
 
       return
     }
 
     if (!locationValid) {
-      setMessage(
-        "Informe uma localizacao valida. Use o GPS ou selecione o modo manual."
-      )
+      setMessage("Precisamos saber onde a ocorrência está acontecendo.")
 
       return
     }
@@ -306,13 +292,13 @@ export default function ReportPage() {
     }
 
     if (photo && !ALLOWED_PHOTO_TYPES.has(photo.type)) {
-      setMessage("Formato de imagem nao suportado.")
+      setMessage("Esse formato de imagem não é aceito.")
 
       return
     }
 
     if (photo && photo.size > MAX_PHOTO_BYTES) {
-      setMessage("A imagem excede o limite de 10 MB.")
+      setMessage("A imagem é muito grande. Escolha uma foto de até 10 MB.")
 
       return
     }
@@ -380,7 +366,7 @@ export default function ReportPage() {
       if (result.status === "SYNCED" && result.occurrenceId) {
         submissionIdentityRef.current = null
 
-        router.push(`/analysis?occurrenceId=${result.occurrenceId}`)
+        router.push(`/occurrences/${result.occurrenceId}`)
 
         return
       }
@@ -400,7 +386,7 @@ export default function ReportPage() {
       setMessage(
         error instanceof Error
           ? error.message
-          : "Nao foi possivel salvar a ocorrencia no dispositivo."
+          : "Não foi possível salvar sua ocorrência."
       )
     } finally {
       setSubmitting(false)
@@ -408,275 +394,325 @@ export default function ReportPage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-md bg-white">
-      <ShellHeader
-        title="Registrar ocorrencia"
-        subtitle="Evidencias, localizacao e urgencia"
-      />
+    <ProtectedCitizen nextPath="/report">
+      <main className="mx-auto min-h-screen max-w-md bg-slate-50 pb-24">
+        <ShellHeader
+          title="Registrar ocorrência"
+          subtitle="Conte o que está acontecendo"
+        />
 
-      <form onSubmit={submit} className="p-4">
-        <Link
-          href="/"
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-600"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Voltar
-        </Link>
-
-        <div
-          className={`mb-4 flex items-center gap-3 rounded-lg border p-3 text-sm ${
-            online
-              ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-              : "border-amber-200 bg-amber-50 text-amber-900"
-          }`}
-        >
+        <form onSubmit={submit} className="p-4">
           {online ? (
-            <Wifi className="h-5 w-5 shrink-0" />
+            <section className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+              <div className="flex gap-2">
+                <Wifi className="mt-0.5 h-4 w-4 shrink-0" />
+
+                <div>
+                  <p className="font-medium">Você está online</p>
+
+                  <p className="mt-1 text-xs">
+                    Sua ocorrência será enviada normalmente.
+                  </p>
+                </div>
+              </div>
+            </section>
           ) : (
-            <WifiOff className="h-5 w-5 shrink-0" />
+            <section className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+              <div className="flex gap-2">
+                <WifiOff className="mt-0.5 h-4 w-4 shrink-0" />
+
+                <div>
+                  <p className="font-medium">Sem internet no momento</p>
+
+                  <p className="mt-1 text-xs">
+                    Seu registro ficará salvo neste aparelho e será enviado
+                    quando a conexão voltar.
+                  </p>
+                </div>
+              </div>
+            </section>
           )}
 
-          <div>
-            <p className="font-medium">
-              {online ? "Conexao disponivel" : "Sem conexao"}
+          <section className="mb-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                <Camera className="h-6 w-6" />
+              </div>
+
+              <div>
+                <h2 className="font-semibold text-slate-900">
+                  Foto da ocorrência
+                </h2>
+
+                <p className="text-xs text-slate-500">
+                  A foto é opcional, mas pode ajudar na análise.
+                </p>
+              </div>
+            </div>
+
+            <input
+              ref={cameraInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={selectPhoto}
+              className="hidden"
+            />
+
+            <input
+              ref={galleryInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={selectPhoto}
+              className="hidden"
+            />
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => cameraInputRef.current?.click()}
+                className="flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-3 py-3 text-sm font-semibold text-white"
+              >
+                <Camera className="h-4 w-4" />
+                Tirar foto
+              </button>
+
+              <button
+                type="button"
+                onClick={() => galleryInputRef.current?.click()}
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm font-semibold text-slate-700"
+              >
+                <ImagePlus className="h-4 w-4" />
+                Galeria
+              </button>
+            </div>
+
+            {photo && (
+              <div className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 text-sm font-medium text-emerald-800">
+                    <CheckCircle2 className="h-4 w-4 shrink-0" />
+                    Foto selecionada
+                  </div>
+
+                  <p className="mt-1 truncate text-xs text-slate-500">
+                    {photo.name}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={clearPhoto}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-200"
+                  aria-label="Remover foto"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+
+            <p className="mt-3 text-xs text-slate-500">
+              JPEG, PNG ou WebP. Até 10 MB.
             </p>
+          </section>
 
-            <p className="text-xs">
-              {online
-                ? "O registro sera salvo no dispositivo e sincronizado em seguida."
-                : "O registro sera salvo no dispositivo e enviado automaticamente quando a conexao voltar."}
-            </p>
-          </div>
-        </div>
-
-        <section className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-          <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-              <Camera className="h-6 w-6" />
-            </div>
-
-            <div>
-              <h1 className="font-semibold text-slate-900">Evidencia visual</h1>
-
-              <p className="text-xs text-slate-500">
-                JPEG, PNG ou WebP. Limite de 10 MB.
-              </p>
-            </div>
-          </div>
-
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={selectPhoto}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700"
-          />
-
-          {photo && (
-            <div className="mt-2 rounded-lg bg-white p-2 text-xs text-slate-600">
-              <p className="font-medium">{photo.name}</p>
-
-              <p>{(photo.size / 1024 / 1024).toFixed(2)} MB</p>
-            </div>
-          )}
-        </section>
-
-        <label className="mb-4 block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">
-            Descricao
-          </span>
-
-          <textarea
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            maxLength={500}
-            placeholder="Ex: rua alagada com risco para pedestres, proximo a escola..."
-            className="h-32 w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
-          />
-
-          <span className="mt-1 block text-right text-xs text-slate-500">
-            {description.length}/500
-          </span>
-        </label>
-
-        <div className="mb-4 grid grid-cols-2 gap-3">
-          <label className="block">
+          <label className="mb-4 block">
             <span className="mb-2 block text-sm font-medium text-slate-700">
-              Urgencia
+              O que está acontecendo?
             </span>
 
-            <select
-              value={urgency}
-              onChange={(event) =>
-                setUrgency(event.target.value as UrgencyLevel)
-              }
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-            >
-              <option value="LOW">Baixa</option>
-
-              <option value="MEDIUM">Media</option>
-
-              <option value="HIGH">Alta</option>
-
-              <option value="CRITICAL">Critica</option>
-            </select>
-          </label>
-
-          <label className="flex items-end gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700">
-            <input
-              checked={humanRisk}
-              onChange={(event) => setHumanRisk(event.target.checked)}
-              type="checkbox"
-              className="h-4 w-4"
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              maxLength={500}
+              placeholder="Ex.: A rua está alagada e a água está subindo perto das casas..."
+              className="h-32 w-full resize-none rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
             />
-            Ha vitimas/risco humano
-          </label>
-        </div>
 
-        <section className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-          <div className="mb-3 flex items-center justify-between gap-2 text-sm font-medium text-emerald-900">
-            <span className="inline-flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              Localizacao
+            <span className="mt-1 block text-right text-xs text-slate-500">
+              {description.length}
+              /500
             </span>
+          </label>
 
-            <button
-              type="button"
-              onClick={captureLocation}
-              className="inline-flex items-center gap-1 rounded-lg bg-white px-2 py-1 text-xs font-semibold text-emerald-800"
-            >
-              <LocateFixed className="h-3.5 w-3.5" />
-              GPS
-            </button>
+          <div className="mb-4 grid grid-cols-2 gap-3">
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-slate-700">
+                Urgência
+              </span>
+
+              <select
+                value={urgency}
+                onChange={(event) =>
+                  setUrgency(event.target.value as UrgencyLevel)
+                }
+                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm"
+              >
+                <option value="LOW">Baixa</option>
+
+                <option value="MEDIUM">Média</option>
+
+                <option value="HIGH">Alta</option>
+
+                <option value="CRITICAL">Crítica</option>
+              </select>
+            </label>
+
+            <label className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm text-slate-700">
+              <input
+                checked={humanRisk}
+                onChange={(event) => setHumanRisk(event.target.checked)}
+                type="checkbox"
+                className="h-4 w-4"
+              />
+
+              <span>Há pessoas em risco?</span>
+            </label>
           </div>
 
-          <div className="mb-3 grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => selectLocationMode("AUTO")}
-              className={`rounded-lg px-3 py-2 text-sm font-medium ${
-                locationMode === "AUTO"
-                  ? "bg-emerald-700 text-white"
-                  : "bg-white text-slate-700"
-              }`}
-            >
-              Automatica
-            </button>
-
-            <button
-              type="button"
-              onClick={() => selectLocationMode("MANUAL")}
-              className={`rounded-lg px-3 py-2 text-sm font-medium ${
-                locationMode === "MANUAL"
-                  ? "bg-emerald-700 text-white"
-                  : "bg-white text-slate-700"
-              }`}
-            >
-              Manual
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              type="number"
-              step="0.000001"
-              min="-90"
-              max="90"
-              placeholder="Latitude"
-              value={latitude ?? ""}
-              readOnly={locationMode === "AUTO"}
-              onChange={(event) => changeLatitude(event.target.value)}
-              className={`rounded-lg border border-emerald-200 px-3 py-2 text-sm ${
-                locationMode === "AUTO"
-                  ? "bg-slate-100 text-slate-600"
-                  : "bg-white"
-              }`}
-            />
-
-            <input
-              type="number"
-              step="0.000001"
-              min="-180"
-              max="180"
-              placeholder="Longitude"
-              value={longitude ?? ""}
-              readOnly={locationMode === "AUTO"}
-              onChange={(event) => changeLongitude(event.target.value)}
-              className={`rounded-lg border border-emerald-200 px-3 py-2 text-sm ${
-                locationMode === "AUTO"
-                  ? "bg-slate-100 text-slate-600"
-                  : "bg-white"
-              }`}
-            />
-          </div>
-
-          {locationMode === "AUTO" && !locationValid && (
-            <p className="mt-2 text-xs text-emerald-900">
-              Clique em GPS para obter sua localizacao.
-            </p>
-          )}
-
-          {locationMode === "MANUAL" && !locationValid && (
-            <p className="mt-2 text-xs text-emerald-900">
-              Informe latitude e longitude validas.
-            </p>
-          )}
-
-          {locationValid && (
-            <p className="mt-2 text-xs text-emerald-900">
-              Coordenadas: {latitude}, {longitude}
-              {accuracy !== undefined
-                ? ` · precisao aproximada ${accuracy} m`
-                : ""}
-            </p>
-          )}
-        </section>
-
-        <section className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
-          <div className="flex gap-2">
-            <CloudUpload className="mt-0.5 h-4 w-4 shrink-0" />
-
-            <div>
-              <p className="font-medium">
-                Armazenamento local protegido contra falha de rede
-              </p>
-
-              <p className="mt-1 text-xs">
-                O relato e a foto sao gravados no IndexedDB antes da tentativa
-                de envio.
-              </p>
+          <section className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+            <div className="mb-3 flex items-center gap-2 font-medium text-emerald-950">
+              <MapPin className="h-5 w-5" />
+              Local da ocorrência
             </div>
-          </div>
-        </section>
 
-        {message && (
-          <p className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
-            {message}
-          </p>
-        )}
+            <div className="mb-3 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  selectLocationMode("AUTO")
 
-        <button
-          disabled={!valid || submitting}
-          className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-semibold ${
-            valid && !submitting
-              ? "bg-emerald-700 text-white"
-              : "bg-slate-200 text-slate-500"
-          }`}
-        >
-          {online ? (
-            <Send className="h-5 w-5" />
-          ) : (
-            <WifiOff className="h-5 w-5" />
+                  captureLocation()
+                }}
+                className={`rounded-xl px-3 py-2 text-sm font-medium ${
+                  locationMode === "AUTO"
+                    ? "bg-emerald-700 text-white"
+                    : "bg-white text-slate-700"
+                }`}
+              >
+                Minha localização
+              </button>
+
+              <button
+                type="button"
+                onClick={() => selectLocationMode("MANUAL")}
+                className={`rounded-xl px-3 py-2 text-sm font-medium ${
+                  locationMode === "MANUAL"
+                    ? "bg-emerald-700 text-white"
+                    : "bg-white text-slate-700"
+                }`}
+              >
+                Escolher no mapa
+              </button>
+            </div>
+
+            {locationMode === "AUTO" && (
+              <div>
+                <button
+                  type="button"
+                  onClick={captureLocation}
+                  disabled={locating}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-3 py-3 text-sm font-semibold text-emerald-800 shadow-sm disabled:opacity-60"
+                >
+                  <LocateFixed
+                    className={`h-4 w-4 ${locating ? "animate-pulse" : ""}`}
+                  />
+
+                  {locating
+                    ? "Buscando localização..."
+                    : locationValid
+                      ? "Atualizar minha localização"
+                      : "Usar localização do aparelho"}
+                </button>
+
+                {locationValid && (
+                  <div className="mt-3 flex items-center gap-2 rounded-xl bg-white/70 p-3 text-xs font-medium text-emerald-900">
+                    <CheckCircle2 className="h-4 w-4 shrink-0" />
+                    Localização recebida. Confira se o local corresponde ao
+                    ponto da ocorrência.
+                  </div>
+                )}
+
+                {!locationValid && !locating && (
+                  <p className="mt-2 text-xs leading-relaxed text-emerald-900">
+                    Permita o acesso à localização ou escolha o local
+                    manualmente no mapa.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {locationMode === "MANUAL" && (
+              <div>
+                <p className="mb-3 text-xs leading-relaxed text-emerald-900">
+                  Navegue pelo mapa e toque exatamente no ponto onde a
+                  ocorrência está acontecendo.
+                </p>
+
+                <ReportLocationPicker
+                  latitude={latitude}
+                  longitude={longitude}
+                  onChange={selectManualLocation}
+                />
+
+                {locationValid && (
+                  <div className="mt-3 flex items-center gap-2 rounded-xl bg-white/70 p-3 text-xs font-medium text-emerald-900">
+                    <CheckCircle2 className="h-4 w-4 shrink-0" />
+                    Local escolhido no mapa.
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+
+          <section className="mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
+            <div className="flex gap-2">
+              <CloudUpload className="mt-0.5 h-4 w-4 shrink-0" />
+
+              <div>
+                <p className="font-medium">Seu registro fica protegido</p>
+
+                <p className="mt-1 text-xs">
+                  Se a internet cair durante o envio, você não precisará
+                  preencher tudo novamente.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {message && (
+            <p className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+              {message}
+            </p>
           )}
 
-          {submitting
-            ? online
-              ? "Salvando e enviando..."
-              : "Salvando no dispositivo..."
-            : online
-              ? "Registrar ocorrencia"
-              : "Salvar para sincronizar"}
-        </button>
-      </form>
-    </main>
+          <button
+            type="submit"
+            disabled={!valid || submitting}
+            className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold ${
+              valid && !submitting
+                ? "bg-emerald-700 text-white"
+                : "bg-slate-200 text-slate-500"
+            }`}
+          >
+            {online ? (
+              <Send className="h-5 w-5" />
+            ) : (
+              <WifiOff className="h-5 w-5" />
+            )}
+
+            {submitting
+              ? online
+                ? "Enviando ocorrência..."
+                : "Salvando ocorrência..."
+              : online
+                ? "Registrar ocorrência"
+                : "Salvar ocorrência"}
+          </button>
+        </form>
+
+        <MobileBottomNav />
+      </main>
+    </ProtectedCitizen>
   )
 }

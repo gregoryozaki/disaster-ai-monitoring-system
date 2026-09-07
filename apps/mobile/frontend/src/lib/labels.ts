@@ -1,26 +1,26 @@
-import type { OccurrenceStatus, RiskLevel } from '@kamara/shared-types';
+import type { OccurrenceStatus, RiskLevel } from "@kamara/shared-types"
 
-import type { UrgencyLevel } from './api';
+import type { UrgencyLevel } from "./api"
 
 export const statusLabels: Record<OccurrenceStatus, string> = {
-  DRAFT: 'Rascunho',
-  PENDING_SYNC: 'Aguardando sincronizacao',
-  SYNCED: 'Sincronizada',
-  UNDER_REVIEW: 'Em analise',
-  NEEDS_MORE_INFO: 'Complemento solicitado',
-  CONFIRMED: 'Confirmada',
-  REJECTED: 'Rejeitada',
-};
+  DRAFT: "Rascunho",
+  PENDING_SYNC: "Aguardando envio",
+  SYNCED: "Enviada",
+  UNDER_REVIEW: "Em análise",
+  NEEDS_MORE_INFO: "Precisamos de mais informações",
+  CONFIRMED: "Confirmada",
+  REJECTED: "Não confirmada"
+}
 
 export const urgencyLabels: Record<UrgencyLevel, string> = {
-  LOW: 'Baixa',
-  MEDIUM: 'Media',
-  HIGH: 'Alta',
-  CRITICAL: 'Critica',
-};
+  LOW: "Baixa",
+  MEDIUM: "Média",
+  HIGH: "Alta",
+  CRITICAL: "Crítica"
+}
 
 export const riskLabels: Record<RiskLevel, string> = {
-  LOW: 'Baixo',
-  MEDIUM: 'Medio',
-  HIGH: 'Alto',
-};
+  LOW: "Baixo",
+  MEDIUM: "Médio",
+  HIGH: "Alto"
+}
