@@ -28,6 +28,7 @@ async function createOccurrenceForCitizen() {
 
   return {
     citizen,
+
     occurrenceId: createResponse.body.data.id
   }
 }
@@ -36,15 +37,13 @@ async function uploadInitialPhoto(
   citizen: Awaited<ReturnType<typeof createAuthenticatedCitizen>>,
   occurrenceId: string
 ) {
-  const response = await citizen.agent
+  return citizen.agent
     .post(`/api/v1/occurrences/${occurrenceId}/media`)
     .attach("file", testPngBuffer, {
       filename: "evidencia.png",
 
       contentType: "image/png"
     })
-
-  return response
 }
 
 describe("Mídia de ocorrências", () => {
@@ -57,11 +56,17 @@ describe("Mídia de ocorrências", () => {
 
     expect(response.body.data).toMatchObject({
       occurrenceId,
+
       complementId: null,
+
       type: "IMAGE",
+
       origin: "INITIAL",
+
       mimeType: "image/png",
+
       sha256: testPngSha256,
+
       isPrimary: true
     })
 
@@ -71,11 +76,6 @@ describe("Mídia de ocorrências", () => {
       `/api/v1/media/${response.body.data.id}/content`
     )
 
-    /*
-     * storageRef é detalhe interno.
-     * A API não deve expor o caminho
-     * físico do objeto no MinIO.
-     */
     expect(response.body.data).not.toHaveProperty("storageRef")
 
     const media = await prisma.occurrenceMedia.findUniqueOrThrow({
@@ -120,11 +120,17 @@ describe("Mídia de ocorrências", () => {
 
     expect(listResponse.body.data[0]).toMatchObject({
       id: mediaId,
+
       occurrenceId,
+
       type: "IMAGE",
+
       origin: "INITIAL",
+
       mimeType: "image/png",
+
       sha256: testPngSha256,
+
       isPrimary: true
     })
 
@@ -173,7 +179,9 @@ describe("Mídia de ocorrências", () => {
     const mediaCount = await prisma.occurrenceMedia.count({
       where: {
         occurrenceId,
+
         type: "IMAGE",
+
         isPrimary: true
       }
     })
@@ -377,12 +385,9 @@ describe("Mídia de ocorrências", () => {
 
     expect(requestResponse.status).toBe(201)
 
-    expect(requestResponse.body.data.occurrence.status).toBe(
-      "NEEDS_MORE_INFO"
-    )
+    expect(requestResponse.body.data.occurrence.status).toBe("NEEDS_MORE_INFO")
 
-    const requestId =
-      requestResponse.body.data.informationRequest.id
+    const requestId = requestResponse.body.data.informationRequest.id
 
     const complementResponse = await citizen.agent
       .post(
@@ -401,16 +406,9 @@ describe("Mídia de ocorrências", () => {
       }
     })
 
-    /*
-     * O status volta para UNDER_REVIEW,
-     * mas já houve intervenção do gestor.
-     */
     expect(occurrence.status).toBe("UNDER_REVIEW")
 
-    const mediaResponse = await uploadInitialPhoto(
-      citizen,
-      occurrenceId
-    )
+    const mediaResponse = await uploadInitialPhoto(citizen, occurrenceId)
 
     expect(mediaResponse.status).toBe(409)
 
@@ -423,6 +421,7 @@ describe("Mídia de ocorrências", () => {
     const mediaCount = await prisma.occurrenceMedia.count({
       where: {
         occurrenceId,
+
         origin: "INITIAL"
       }
     })
@@ -430,4 +429,175 @@ describe("Mídia de ocorrências", () => {
     expect(mediaCount).toBe(0)
   })
 
+  it("deve permitir substituir a foto principal antes da intervenção do gestor", async () => {
+    const { citizen, occurrenceId } = await createOccurrenceForCitizen()
+
+    const firstResponse = await uploadInitialPhoto(citizen, occurrenceId)
+
+    expect(firstResponse.status).toBe(201)
+
+    const mediaId = firstResponse.body.data.id
+
+    const before = await prisma.occurrenceMedia.findUniqueOrThrow({
+      where: {
+        id: mediaId
+      }
+    })
+
+    const occurrenceBefore = await prisma.occurrence.findUniqueOrThrow({
+      where: {
+        id: occurrenceId
+      }
+    })
+
+    await new Promise((resolve) => setTimeout(resolve, 10))
+
+    const response = await citizen.agent
+      .put(`/api/v1/occurrences/${occurrenceId}/media/primary`)
+      .attach("file", testPngBuffer, {
+        filename: "evidencia-substituida.png",
+
+        contentType: "image/png"
+      })
+
+    expect(response.status).toBe(200)
+
+    expect(response.body.data.id).toBe(mediaId)
+
+    expect(response.body.data).toMatchObject({
+      occurrenceId,
+
+      complementId: null,
+
+      type: "IMAGE",
+
+      origin: "INITIAL",
+
+      mimeType: "image/png",
+
+      sha256: testPngSha256,
+
+      isPrimary: true
+    })
+
+    expect(response.body.data).not.toHaveProperty("storageRef")
+
+    const after = await prisma.occurrenceMedia.findUniqueOrThrow({
+      where: {
+        id: mediaId
+      }
+    })
+
+    expect(after.storageRef).not.toBe(before.storageRef)
+
+    expect(after.sha256).toBe(testPngSha256)
+
+    const mediaCount = await prisma.occurrenceMedia.count({
+      where: {
+        occurrenceId,
+
+        type: "IMAGE",
+
+        isPrimary: true
+      }
+    })
+
+    expect(mediaCount).toBe(1)
+
+    const occurrenceAfter = await prisma.occurrence.findUniqueOrThrow({
+      where: {
+        id: occurrenceId
+      }
+    })
+
+    expect(occurrenceAfter.updatedAt.getTime()).toBeGreaterThan(
+      occurrenceBefore.updatedAt.getTime()
+    )
+
+    const audit = await prisma.auditLog.findFirst({
+      where: {
+        actorUserId: citizen.user.id,
+
+        entityId: mediaId,
+
+        action: "CITIZEN_PRIMARY_PHOTO_REPLACED"
+      }
+    })
+
+    expect(audit).not.toBeNull()
+  })
+
+  it("não deve permitir substituir a foto depois da intervenção do gestor", async () => {
+    const { citizen, occurrenceId } = await createOccurrenceForCitizen()
+
+    const uploadResponse = await uploadInitialPhoto(citizen, occurrenceId)
+
+    expect(uploadResponse.status).toBe(201)
+
+    const mediaId = uploadResponse.body.data.id
+
+    const before = await prisma.occurrenceMedia.findUniqueOrThrow({
+      where: {
+        id: mediaId
+      }
+    })
+
+    const manager = await createAuthenticatedManager()
+
+    const requestResponse = await manager.agent
+      .post(`/api/v1/manager/occurrences/${occurrenceId}/validations`)
+      .send({
+        decision: "REQUEST_MORE_INFO",
+
+        informationRequestMessage: "Envie mais informações sobre a ocorrência."
+      })
+
+    expect(requestResponse.status).toBe(201)
+
+    expect(requestResponse.body.data.occurrence.status).toBe("NEEDS_MORE_INFO")
+
+    const requestId = requestResponse.body.data.informationRequest.id
+
+    const complementResponse = await citizen.agent
+      .post(
+        `/api/v1/occurrences/${occurrenceId}/information-requests/${requestId}/complements`
+      )
+      .field("text", "Estas são as informações adicionais solicitadas.")
+
+    expect(complementResponse.status).toBe(201)
+
+    const occurrence = await prisma.occurrence.findUniqueOrThrow({
+      where: {
+        id: occurrenceId
+      }
+    })
+
+    expect(occurrence.status).toBe("UNDER_REVIEW")
+
+    const response = await citizen.agent
+      .put(`/api/v1/occurrences/${occurrenceId}/media/primary`)
+      .attach("file", testPngBuffer, {
+        filename: "tentativa-substituicao.png",
+
+        contentType: "image/png"
+      })
+
+    expect(response.status).toBe(409)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "OCCURRENCE_LOCKED"
+      }
+    })
+
+    const after = await prisma.occurrenceMedia.findUniqueOrThrow({
+      where: {
+        id: mediaId
+      }
+    })
+
+    expect(after.storageRef).toBe(before.storageRef)
+
+    expect(after.sha256).toBe(before.sha256)
+  })
 })

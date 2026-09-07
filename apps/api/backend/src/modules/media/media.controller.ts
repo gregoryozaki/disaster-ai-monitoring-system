@@ -8,6 +8,7 @@ import {
   getMediaContent,
   listCitizenOccurrenceMedia,
   listManagerOccurrenceMedia,
+  replaceInitialPhoto,
   uploadInitialPhoto
 } from "./media.service.js"
 
@@ -28,6 +29,34 @@ export async function uploadInitialPhotoController(
     const media = await uploadInitialPhoto(req.params.id, req.user.id, req.file)
 
     return res.status(201).json({
+      data: toMediaDto(media)
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function replaceInitialPhotoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    if (!req.user) {
+      throw new Error("Usuário autenticado não disponível.")
+    }
+
+    if (!req.file) {
+      throw new HttpError(400, "Nenhuma imagem foi enviada.", "MEDIA_REQUIRED")
+    }
+
+    const media = await replaceInitialPhoto(
+      req.params.id,
+      req.user.id,
+      req.file
+    )
+
+    return res.json({
       data: toMediaDto(media)
     })
   } catch (error) {
@@ -83,6 +112,7 @@ export async function getMediaContentController(
 
     const result = await getMediaContent(req.params.mediaId, {
       id: req.user.id,
+
       role: req.user.role
     })
 

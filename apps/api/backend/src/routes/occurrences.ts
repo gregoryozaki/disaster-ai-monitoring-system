@@ -1,14 +1,8 @@
 import { Router } from "express"
 
-import {
-  authenticate,
-  authorize
-} from "../middlewares/auth.js"
+import { authenticate, authorize } from "../middlewares/auth.js"
 
-import {
-  validateBody,
-  validateParams
-} from "../middlewares/validate.js"
+import { validateBody, validateParams } from "../middlewares/validate.js"
 
 import {
   answerInformationRequestController,
@@ -17,6 +11,7 @@ import {
 
 import {
   listCitizenOccurrenceMediaController,
+  replaceInitialPhotoController,
   uploadInitialPhotoController
 } from "../modules/media/media.controller.js"
 
@@ -50,88 +45,69 @@ router.use(authenticate)
 
 router.use(authorize("CITIZEN"))
 
-/*
- * Registro online normal.
- */
 router.post(
   "/",
   validateBody(createOccurrenceSchema),
   createOccurrenceController
 )
 
-/*
- * Registro criado anteriormente no IndexedDB
- * e sincronizado quando a conectividade retorna.
- */
 router.post(
   "/sync",
   validateBody(syncOccurrenceSchema),
   syncOccurrenceController
 )
 
-router.get(
-  "/",
-  listOccurrencesController
-)
+router.get("/", listOccurrencesController)
 
 router.get(
   "/:id/media",
-  validateParams(
-    occurrenceIdParamsSchema
-  ),
+  validateParams(occurrenceIdParamsSchema),
   listCitizenOccurrenceMediaController
 )
 
 router.post(
   "/:id/media",
-  validateParams(
-    occurrenceIdParamsSchema
-  ),
+  validateParams(occurrenceIdParamsSchema),
   uploadSinglePhoto,
   uploadInitialPhotoController
 )
 
+router.put(
+  "/:id/media/primary",
+  validateParams(occurrenceIdParamsSchema),
+  uploadSinglePhoto,
+  replaceInitialPhotoController
+)
+
 router.get(
   "/:id/information-requests",
-  validateParams(
-    occurrenceIdParamsSchema
-  ),
+  validateParams(occurrenceIdParamsSchema),
   listInformationRequestsController
 )
 
 router.post(
   "/:id/information-requests/:requestId/complements",
-  validateParams(
-    informationRequestParamsSchema
-  ),
+  validateParams(informationRequestParamsSchema),
   uploadSinglePhoto,
   answerInformationRequestController
 )
 
 router.patch(
   "/:id",
-  validateParams(
-    occurrenceIdParamsSchema
-  ),
-  validateBody(
-    updateOccurrenceSchema
-  ),
+  validateParams(occurrenceIdParamsSchema),
+  validateBody(updateOccurrenceSchema),
   updateOccurrenceController
 )
 
 router.delete(
   "/:id",
-  validateParams(
-    occurrenceIdParamsSchema
-  ),
+  validateParams(occurrenceIdParamsSchema),
   deleteOccurrenceController
 )
 
 router.get(
   "/:id",
-  validateParams(
-    occurrenceIdParamsSchema
-  ),
+  validateParams(occurrenceIdParamsSchema),
   getOccurrenceController
 )
 
