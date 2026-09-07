@@ -66,11 +66,17 @@ export default function LoginPage() {
         return
       }
 
-      saveCitizenSession(response.data)
+      saveCitizenSession(response.data, response.agreement)
 
       await refresh()
 
       setPassword("")
+
+      if (response.agreement?.required !== false) {
+        router.replace(`/agreements?next=${encodeURIComponent(nextPath)}`)
+
+        return
+      }
 
       router.replace(nextPath)
     } catch (error) {

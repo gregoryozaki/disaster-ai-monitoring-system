@@ -8,6 +8,7 @@ import { useCitizenSession } from "@/components/citizen-session-provider"
 
 interface ProtectedCitizenProps {
   children: ReactNode
+
   nextPath: string
 }
 
@@ -17,18 +18,30 @@ export function ProtectedCitizen({
 }: ProtectedCitizenProps) {
   const router = useRouter()
 
-  const { user, loading } = useCitizenSession()
+  const { user, agreementRequired, loading } = useCitizenSession()
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace(`/login?next=${encodeURIComponent(nextPath)}`)
+    if (loading) {
+      return
     }
-  }, [loading, nextPath, router, user])
 
-  if (loading || !user) {
+    if (!user) {
+      router.replace(`/login?next=${encodeURIComponent(nextPath)}`)
+
+      return
+    }
+
+    if (agreementRequired) {
+      router.replace(`/agreements?next=${encodeURIComponent(nextPath)}`)
+    }
+  }, [agreementRequired, loading, nextPath, router, user])
+
+  if (loading || !user || agreementRequired) {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-slate-50 px-6">
-        <p className="text-sm text-slate-500">Carregando...</p>
+      <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-slate-50 px-6 dark:bg-slate-950">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Carregando...
+        </p>
       </main>
     )
   }

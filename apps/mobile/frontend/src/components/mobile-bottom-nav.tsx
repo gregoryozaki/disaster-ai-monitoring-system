@@ -23,9 +23,21 @@ interface NavigationItem {
 export function MobileBottomNav() {
   const pathname = usePathname()
 
-  const { user, loading } = useCitizenSession()
+  const { user, agreementRequired, loading } = useCitizenSession()
 
   const authenticated = Boolean(user)
+
+  function protectedHref(destination: string) {
+    if (!authenticated) {
+      return `/login?next=${encodeURIComponent(destination)}`
+    }
+
+    if (agreementRequired) {
+      return `/agreements?next=${encodeURIComponent(destination)}`
+    }
+
+    return destination
+  }
 
   const items: NavigationItem[] = [
     {
@@ -39,7 +51,7 @@ export function MobileBottomNav() {
     },
 
     {
-      href: authenticated ? "/report" : "/login?next=%2Freport",
+      href: protectedHref("/report"),
 
       label: "Registrar",
 
@@ -51,7 +63,7 @@ export function MobileBottomNav() {
     },
 
     {
-      href: authenticated ? "/history" : "/login?next=%2Fhistory",
+      href: protectedHref("/history"),
 
       label: "Histórico",
 
@@ -66,7 +78,7 @@ export function MobileBottomNav() {
     },
 
     {
-      href: authenticated ? "/profile" : "/login",
+      href: authenticated ? protectedHref("/profile") : "/login",
 
       label: authenticated ? "Perfil" : "Entrar",
 
@@ -76,8 +88,11 @@ export function MobileBottomNav() {
         pathname.startsWith("/profile") ||
         pathname.startsWith("/login") ||
         pathname.startsWith("/register") ||
+        pathname.startsWith("/agreements") ||
         pathname.startsWith("/terms") ||
-        pathname.startsWith("/manual")
+        pathname.startsWith("/manual"),
+
+      protected: authenticated
     }
   ]
 

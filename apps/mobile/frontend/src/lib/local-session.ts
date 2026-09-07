@@ -1,28 +1,68 @@
-import type { ApiUser } from "./api"
+import {
+  CURRENT_PRIVACY_VERSION,
+  CURRENT_RESPONSIBLE_USE_VERSION,
+  CURRENT_TERMS_VERSION
+} from "@kamara/shared-types"
 
-const STORAGE_KEY = "kamara:citizen-session:v1"
+import type { ApiCitizenAgreementStatus, ApiUser } from "./api"
 
-interface StoredCitizenSession {
+const STORAGE_KEY = "kamara:citizen-session:v2"
+
+const LEGACY_STORAGE_KEY = "kamara:citizen-session:v1"
+
+export interface StoredCitizenSession {
   user: ApiUser
+
+  agreement: ApiCitizenAgreementStatus
 
   validatedAt: string
 }
 
-/*
- * Este registro NÃO substitui
- * autenticação.
- *
- * A autenticação real continua
- * dependendo do cookie HttpOnly
- * validado pelo backend.
- *
- * Esse dado serve somente para que
- * a PWA saiba que este navegador
- * possuía uma sessão de cidadão
- * validada anteriormente quando
- * estiver sem acesso à API.
- */
-export function saveCitizenSession(user: ApiUser) {
+export function createRequiredCitizenAgreementStatus(): ApiCitizenAgreementStatus {
+  return {
+    required: true,
+
+    termsVersion: CURRENT_TERMS_VERSION,
+
+    privacyVersion: CURRENT_PRIVACY_VERSION,
+
+    responsibleUseVersion: CURRENT_RESPONSIBLE_USE_VERSION,
+
+    acceptedAt: null
+  }
+}
+
+function normalizeAgreement(
+  agreement: ApiCitizenAgreementStatus | null | undefined
+): ApiCitizenAgreementStatus {
+  const versionsAreCurrent =
+    agreement?.termsVersion === CURRENT_TERMS_VERSION &&
+    agreement?.privacyVersion === CURRENT_PRIVACY_VERSION &&
+    agreement?.responsibleUseVersion === CURRENT_RESPONSIBLE_USE_VERSION
+
+  if (!versionsAreCurrent) {
+    return createRequiredCitizenAgreementStatus()
+  }
+
+  if (
+    agreement.required === false &&
+    typeof agreement.acceptedAt === "string" &&
+    agreement.acceptedAt
+  ) {
+    return {
+      ...agreement,
+
+      required: false
+    }
+  }
+
+  return createRequiredCitizenAgreementStatus()
+}
+
+export function saveCitizenSession(
+  user: ApiUser,
+  agreement?: ApiCitizenAgreementStatus | null
+) {
   if (typeof window === "undefined" || user.role !== "CITIZEN") {
     return
   }
@@ -30,15 +70,23 @@ export function saveCitizenSession(user: ApiUser) {
   const value: StoredCitizenSession = {
     user,
 
+    agreement: normalizeAgreement(agreement),
+
     validatedAt: new Date().toISOString()
   }
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
+
+  localStorage.removeItem(LEGACY_STORAGE_KEY)
 }
 
-export function readCitizenSession(): ApiUser | null {
+export function readCitizenSession(): StoredCitizenSession | null {
   if (typeof window === "undefined") {
     return null
+  }
+
+  if (localStorage.getItem(LEGACY_STORAGE_KEY)) {
+    localStorage.removeItem(LEGACY_STORAGE_KEY)
   }
 
   const raw = localStorage.getItem(STORAGE_KEY)
@@ -56,14 +104,24 @@ export function readCitizenSession(): ApiUser | null {
       !user ||
       typeof user.id !== "string" ||
       typeof user.email !== "string" ||
-      user.role !== "CITIZEN"
+      user.role !== "CITIZEN" ||
+      user.status !== "ACTIVE"
     ) {
       clearCitizenSession()
 
       return null
     }
 
-    return user
+    return {
+      user,
+
+      agreement: normalizeAgreement(parsed.agreement),
+
+      validatedAt:
+        typeof parsed.validatedAt === "string"
+          ? parsed.validatedAt
+          : new Date(0).toISOString()
+    }
   } catch {
     clearCitizenSession()
 
@@ -77,4 +135,6 @@ export function clearCitizenSession() {
   }
 
   localStorage.removeItem(STORAGE_KEY)
+
+  localStorage.removeItem(LEGACY_STORAGE_KEY)
 }

@@ -1,6 +1,10 @@
 import { Router } from "express"
 
-import { authenticate, authorize } from "../middlewares/auth.js"
+import {
+  authenticate,
+  authorize,
+  requireCurrentCitizenAgreement
+} from "../middlewares/auth.js"
 
 import { validateBody, validateParams } from "../middlewares/validate.js"
 
@@ -44,6 +48,8 @@ const router = Router()
 router.use(authenticate)
 
 router.use(authorize("CITIZEN"))
+
+router.use(requireCurrentCitizenAgreement)
 
 router.post(
   "/",

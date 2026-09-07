@@ -7,14 +7,15 @@ import { useCitizenSession } from "@/components/citizen-session-provider"
 import { syncAllOfflineOccurrences } from "@/lib/offline-sync"
 
 export function OfflineSyncListener() {
-  const { user, loading } = useCitizenSession()
+  const { user, agreementRequired, loading } = useCitizenSession()
 
   useEffect(() => {
-    if (loading || !user) {
+    if (loading || !user || agreementRequired) {
       return
     }
 
     let disposed = false
+
     let running = false
 
     async function syncIfPossible() {
@@ -47,6 +48,7 @@ export function OfflineSyncListener() {
     }
 
     window.addEventListener("online", handleOnline)
+
     window.addEventListener("focus", handleFocus)
 
     document.addEventListener("visibilitychange", handleVisibilityChange)
@@ -57,11 +59,12 @@ export function OfflineSyncListener() {
       disposed = true
 
       window.removeEventListener("online", handleOnline)
+
       window.removeEventListener("focus", handleFocus)
 
       document.removeEventListener("visibilitychange", handleVisibilityChange)
     }
-  }, [loading, user])
+  }, [agreementRequired, loading, user])
 
   return null
 }

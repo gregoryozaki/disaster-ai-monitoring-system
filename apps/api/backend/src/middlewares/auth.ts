@@ -1,8 +1,4 @@
-import type {
-  NextFunction,
-  Request,
-  Response
-} from "express"
+import type { NextFunction, Request, Response } from "express"
 
 import type {
   SessionClient,
@@ -13,6 +9,8 @@ import type {
 import { HttpError } from "../lib/http-error.js"
 
 import { loadActiveSession } from "../modules/auth-sessions/auth-session.service.js"
+
+import { getCurrentCitizenAgreementStatus } from "../modules/user-agreements/user-agreement.service.js"
 
 export interface AuthenticatedUser {
   id: string
@@ -57,31 +55,47 @@ export async function authenticate(
 }
 
 export function authorize(...roles: UserRole[]) {
-  return (
-    req: Request,
-    _res: Response,
-    next: NextFunction
-  ) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     if (!req.user) {
       return next(
-        new HttpError(
-          401,
-          "Autenticação obrigatória.",
-          "AUTH_REQUIRED"
-        )
+        new HttpError(401, "Autenticação obrigatória.", "AUTH_REQUIRED")
       )
     }
 
     if (!roles.includes(req.user.role)) {
-      return next(
-        new HttpError(
-          403,
-          "Permissão insuficiente.",
-          "FORBIDDEN"
-        )
+      return next(new HttpError(403, "Permissão insuficiente.", "FORBIDDEN"))
+    }
+
+    return next()
+  }
+}
+
+export async function requireCurrentCitizenAgreement(
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) {
+  try {
+    if (!req.user) {
+      throw new HttpError(401, "Autenticação obrigatória.", "AUTH_REQUIRED")
+    }
+
+    if (req.user.role !== "CITIZEN") {
+      return next()
+    }
+
+    const agreement = await getCurrentCitizenAgreementStatus(req.user.id)
+
+    if (agreement.required) {
+      throw new HttpError(
+        428,
+        "É necessário aceitar os documentos vigentes para continuar.",
+        "CURRENT_AGREEMENT_REQUIRED"
       )
     }
 
     return next()
+  } catch (error) {
+    return next(error)
   }
 }

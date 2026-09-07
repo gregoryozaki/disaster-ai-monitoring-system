@@ -20,6 +20,18 @@ export interface ApiUser {
   status: "INVITED" | "ACTIVE" | "INACTIVE"
 }
 
+export interface ApiCitizenAgreementStatus {
+  required: boolean
+
+  termsVersion: string
+
+  privacyVersion: string
+
+  responsibleUseVersion: string
+
+  acceptedAt: string | null
+}
+
 export interface ApiCategory {
   id: string
 
@@ -351,6 +363,8 @@ export const api = {
   }) {
     return requestJson<{
       data: ApiUser
+
+      agreement: ApiCitizenAgreementStatus | null
     }>("/api/v1/auth/login", {
       method: "POST",
 
@@ -367,7 +381,33 @@ export const api = {
   me() {
     return requestJson<{
       data: ApiUser
+
+      agreement: ApiCitizenAgreementStatus | null
     }>("/api/v1/auth/me")
+  },
+
+  acceptCurrentAgreement(payload: CitizenRegistrationAgreement) {
+    return requestJson<{
+      data: {
+        id: string
+
+        termsVersion: string
+
+        privacyVersion: string
+
+        responsibleUseVersion: string
+
+        acceptedAt: string
+      }
+
+      meta: {
+        created: boolean
+      }
+    }>("/api/v1/auth/agreements/current", {
+      method: "POST",
+
+      body: JSON.stringify(payload)
+    })
   },
 
   requestPasswordReset(payload: { email: string }) {

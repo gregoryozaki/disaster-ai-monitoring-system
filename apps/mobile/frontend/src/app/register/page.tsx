@@ -110,7 +110,7 @@ export default function RegisterPage() {
         password
       })
 
-      saveCitizenSession(loginResponse.data)
+      saveCitizenSession(loginResponse.data, loginResponse.agreement)
 
       await refresh()
 

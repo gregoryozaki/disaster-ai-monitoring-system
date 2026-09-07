@@ -10,16 +10,27 @@ import {
   type ReactNode
 } from "react"
 
-import { ApiError, api, isApiNetworkError, type ApiUser } from "@/lib/api"
+import {
+  ApiError,
+  api,
+  isApiNetworkError,
+  type ApiCitizenAgreementStatus,
+  type ApiUser
+} from "@/lib/api"
 
 import {
   clearCitizenSession,
+  createRequiredCitizenAgreementStatus,
   readCitizenSession,
   saveCitizenSession
 } from "@/lib/local-session"
 
 interface CitizenSessionContextValue {
   user: ApiUser | null
+
+  agreement: ApiCitizenAgreementStatus | null
+
+  agreementRequired: boolean
 
   loading: boolean
 
@@ -36,6 +47,10 @@ const CitizenSessionContext = createContext<CitizenSessionContextValue | null>(
 
 export function CitizenSessionProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<ApiUser | null>(null)
+
+  const [agreement, setAgreement] = useState<ApiCitizenAgreementStatus | null>(
+    null
+  )
 
   const [loading, setLoading] = useState(true)
 
@@ -59,15 +74,24 @@ export function CitizenSessionProvider({ children }: { children: ReactNode }) {
 
         setUser(null)
 
+        setAgreement(null)
+
         return
       }
 
-      saveCitizenSession(response.data)
+      const currentAgreement =
+        response.agreement ?? createRequiredCitizenAgreementStatus()
+
+      saveCitizenSession(response.data, currentAgreement)
 
       setUser(response.data)
+
+      setAgreement(currentAgreement)
     } catch (error) {
       if (isApiNetworkError(error) && localSession) {
-        setUser(localSession)
+        setUser(localSession.user)
+
+        setAgreement(localSession.agreement)
 
         setOffline(true)
 
@@ -82,6 +106,8 @@ export function CitizenSessionProvider({ children }: { children: ReactNode }) {
       }
 
       setUser(null)
+
+      setAgreement(null)
     } finally {
       setLoading(false)
     }
@@ -98,18 +124,30 @@ export function CitizenSessionProvider({ children }: { children: ReactNode }) {
 
     setUser(null)
 
+    setAgreement(null)
+
     setOffline(false)
   }, [])
+
+  const agreementRequired = Boolean(user) && agreement?.required !== false
 
   const value = useMemo<CitizenSessionContextValue>(
     () => ({
       user,
+
+      agreement,
+
+      agreementRequired,
+
       loading,
+
       offline,
+
       refresh,
+
       logout
     }),
-    [user, loading, offline, refresh, logout]
+    [user, agreement, agreementRequired, loading, offline, refresh, logout]
   )
 
   return (

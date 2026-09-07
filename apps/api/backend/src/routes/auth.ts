@@ -16,7 +16,12 @@ import type { SessionClient, UserRole } from "../generated/prisma/enums.js"
 
 import { HttpError } from "../lib/http-error.js"
 
-import { authenticate } from "../middlewares/auth.js"
+import { authenticate, authorize } from "../middlewares/auth.js"
+
+import {
+  acceptCurrentCitizenAgreement,
+  getCurrentCitizenAgreementStatus
+} from "../modules/user-agreements/user-agreement.service.js"
 
 import { validateBody } from "../middlewares/validate.js"
 
@@ -272,6 +277,11 @@ router.post(
         )
       }
 
+      const agreement =
+        user.role === "CITIZEN"
+          ? await getCurrentCitizenAgreementStatus(user.id)
+          : null
+
       const { token, session, policy } = await createAuthSession(
         user.id,
         client
@@ -308,7 +318,9 @@ router.post(
           idleExpiresAt: session.idleExpiresAt,
 
           absoluteExpiresAt: session.absoluteExpiresAt
-        }
+        },
+
+        agreement
       })
     } catch (error) {
       next(error)
@@ -361,12 +373,63 @@ router.get(
 
   authenticate,
 
-  (req, res) => {
-    return res.json({
-      data: req.user,
+  async (req, res, next) => {
+    try {
+      if (!req.user) {
+        throw new HttpError(401, "Autenticação obrigatória.", "AUTH_REQUIRED")
+      }
 
-      session: req.authSession
-    })
+      const agreement =
+        req.user.role === "CITIZEN"
+          ? await getCurrentCitizenAgreementStatus(req.user.id)
+          : null
+
+      return res.json({
+        data: req.user,
+
+        session: req.authSession,
+
+        agreement
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+router.post(
+  "/agreements/current",
+
+  authenticate,
+
+  authorize("CITIZEN"),
+
+  validateBody(registrationAgreementSchema),
+
+  async (req, res, next) => {
+    try {
+      const result = await acceptCurrentCitizenAgreement(req.user!.id)
+
+      return res.json({
+        data: {
+          id: result.agreement.id,
+
+          termsVersion: result.agreement.termsVersion,
+
+          privacyVersion: result.agreement.privacyVersion,
+
+          responsibleUseVersion: result.agreement.responsibleUseVersion,
+
+          acceptedAt: result.agreement.acceptedAt
+        },
+
+        meta: {
+          created: result.created
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 )
 
