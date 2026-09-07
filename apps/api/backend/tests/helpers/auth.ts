@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs"
 
 import request from "supertest"
 
+import { CURRENT_CITIZEN_REGISTRATION_AGREEMENT } from "@kamara/shared-types"
+
 import { app } from "../../src/app.js"
 
 import { prisma } from "../../src/prisma/client.js"
@@ -21,26 +23,23 @@ const CLIENT_HEADER = "x-kamara-client"
 export async function createAuthenticatedCitizen(
   options: TestUserOptions = {}
 ) {
-  const name =
-    options.name ?? "Cidadão Teste"
+  const name = options.name ?? "Cidadão Teste"
 
-  const email =
-    options.email ??
-    `citizen-${randomUUID()}@test.local`
+  const email = options.email ?? `citizen-${randomUUID()}@test.local`
 
-  const password =
-    options.password ??
-    "CidadaoTeste123!"
+  const password = options.password ?? "CidadaoTeste123!"
 
   const agent = request.agent(app)
 
-  const registerResponse = await agent
-    .post("/api/v1/auth/register")
-    .send({
-      name,
-      email,
-      password
-    })
+  const registerResponse = await agent.post("/api/v1/auth/register").send({
+    name,
+
+    email,
+
+    password,
+
+    agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
+  })
 
   if (registerResponse.status !== 201) {
     throw new Error(
@@ -52,12 +51,10 @@ export async function createAuthenticatedCitizen(
 
   const loginResponse = await agent
     .post("/api/v1/auth/login")
-    .set(
-      CLIENT_HEADER,
-      "CITIZEN_PWA"
-    )
+    .set(CLIENT_HEADER, "CITIZEN_PWA")
     .send({
       email,
+
       password
     })
 
@@ -76,6 +73,7 @@ export async function createAuthenticatedCitizen(
 
     credentials: {
       email,
+
       password
     }
   }
@@ -84,21 +82,13 @@ export async function createAuthenticatedCitizen(
 export async function createAuthenticatedManager(
   options: TestUserOptions = {}
 ) {
-  const name =
-    options.name ?? "Gestor Teste"
+  const name = options.name ?? "Gestor Teste"
 
-  const email =
-    options.email ??
-    `manager-${randomUUID()}@test.local`
+  const email = options.email ?? `manager-${randomUUID()}@test.local`
 
-  const password =
-    options.password ??
-    "ManagerTeste123!"
+  const password = options.password ?? "ManagerTeste123!"
 
-  const passwordHash = await bcrypt.hash(
-    password,
-    12
-  )
+  const passwordHash = await bcrypt.hash(password, 12)
 
   const user = await prisma.user.create({
     data: {
@@ -118,12 +108,10 @@ export async function createAuthenticatedManager(
 
   const loginResponse = await agent
     .post("/api/v1/auth/login")
-    .set(
-      CLIENT_HEADER,
-      "DASHBOARD"
-    )
+    .set(CLIENT_HEADER, "DASHBOARD")
     .send({
       email,
+
       password
     })
 
@@ -142,30 +130,20 @@ export async function createAuthenticatedManager(
 
     credentials: {
       email,
+
       password
     }
   }
 }
 
-export async function createAuthenticatedAdmin(
-  options: TestUserOptions = {}
-) {
-  const name =
-    options.name ??
-    "Administrador Teste"
+export async function createAuthenticatedAdmin(options: TestUserOptions = {}) {
+  const name = options.name ?? "Administrador Teste"
 
-  const email =
-    options.email ??
-    `admin-${randomUUID()}@test.local`
+  const email = options.email ?? `admin-${randomUUID()}@test.local`
 
-  const password =
-    options.password ??
-    "AdministradorTeste123!"
+  const password = options.password ?? "AdministradorTeste123!"
 
-  const passwordHash = await bcrypt.hash(
-    password,
-    12
-  )
+  const passwordHash = await bcrypt.hash(password, 12)
 
   const user = await prisma.user.create({
     data: {
@@ -185,12 +163,10 @@ export async function createAuthenticatedAdmin(
 
   const loginResponse = await agent
     .post("/api/v1/auth/login")
-    .set(
-      CLIENT_HEADER,
-      "DASHBOARD"
-    )
+    .set(CLIENT_HEADER, "DASHBOARD")
     .send({
       email,
+
       password
     })
 
@@ -209,6 +185,7 @@ export async function createAuthenticatedAdmin(
 
     credentials: {
       email,
+
       password
     }
   }

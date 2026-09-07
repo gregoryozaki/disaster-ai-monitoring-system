@@ -6,6 +6,8 @@ import request from "supertest"
 
 import { describe, expect, it } from "vitest"
 
+import { CURRENT_CITIZEN_REGISTRATION_AGREEMENT } from "@kamara/shared-types"
+
 import { app } from "../../src/app.js"
 
 import { prisma } from "../../src/prisma/client.js"
@@ -15,23 +17,36 @@ function sha256(value: string) {
 }
 
 describe("Autenticação", () => {
-  it("deve registrar um novo cidadão", async () => {
+  it("deve registrar um novo cidadão e persistir o aceite versionado", async () => {
+    const beforeRegistration = Date.now()
+
     const response = await request(app).post("/api/v1/auth/register").send({
       name: "Cidadão Teste",
+
       email: "cidadao@test.local",
-      password: "CidadaoTeste123!"
+
+      password: "CidadaoTeste123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
+
+    const afterRegistration = Date.now()
 
     expect(response.status).toBe(201)
 
     expect(response.body.data).toMatchObject({
       name: "Cidadão Teste",
+
       email: "cidadao@test.local",
+
       role: "CITIZEN",
+
       status: "ACTIVE"
     })
 
     expect(response.body.data).not.toHaveProperty("passwordHash")
+
+    expect(response.body.data).not.toHaveProperty("agreement")
 
     const storedUser = await prisma.user.findUnique({
       where: {
@@ -53,13 +68,175 @@ describe("Autenticação", () => {
     )
 
     expect(passwordMatches).toBe(true)
+
+    const agreement = await prisma.userAgreement.findFirst({
+      where: {
+        userId: storedUser!.id
+      }
+    })
+
+    expect(agreement).not.toBeNull()
+
+    expect(agreement).toMatchObject({
+      userId: storedUser!.id,
+
+      termsVersion: CURRENT_CITIZEN_REGISTRATION_AGREEMENT.termsVersion,
+
+      privacyVersion: CURRENT_CITIZEN_REGISTRATION_AGREEMENT.privacyVersion,
+
+      responsibleUseVersion:
+        CURRENT_CITIZEN_REGISTRATION_AGREEMENT.responsibleUseVersion
+    })
+
+    expect(agreement!.acceptedAt).toBeInstanceOf(Date)
+
+    expect(agreement!.acceptedAt.getTime()).toBeGreaterThanOrEqual(
+      beforeRegistration - 1_000
+    )
+
+    expect(agreement!.acceptedAt.getTime()).toBeLessThanOrEqual(
+      afterRegistration + 1_000
+    )
+
+    const audit = await prisma.auditLog.findFirst({
+      where: {
+        actorUserId: storedUser!.id,
+
+        action: "USER_AGREEMENT_ACCEPTED",
+
+        entityType: "USER_AGREEMENT",
+
+        entityId: agreement!.id
+      }
+    })
+
+    expect(audit).not.toBeNull()
+
+    expect(audit?.metadata).toMatchObject({
+      termsVersion: CURRENT_CITIZEN_REGISTRATION_AGREEMENT.termsVersion,
+
+      privacyVersion: CURRENT_CITIZEN_REGISTRATION_AGREEMENT.privacyVersion,
+
+      responsibleUseVersion:
+        CURRENT_CITIZEN_REGISTRATION_AGREEMENT.responsibleUseVersion
+    })
+  })
+
+  it("não deve permitir cadastro sem aceite dos documentos vigentes", async () => {
+    const response = await request(app).post("/api/v1/auth/register").send({
+      name: "Sem Aceite",
+
+      email: "sem-aceite@test.local",
+
+      password: "SemAceiteTeste123!"
+    })
+
+    expect(response.status).toBe(422)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "VALIDATION_ERROR"
+      }
+    })
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: "sem-aceite@test.local"
+      }
+    })
+
+    expect(user).toBeNull()
+
+    const agreements = await prisma.userAgreement.count()
+
+    expect(agreements).toBe(0)
+  })
+
+  it("não deve permitir cadastro com aceite incompleto", async () => {
+    const response = await request(app)
+      .post("/api/v1/auth/register")
+      .send({
+        name: "Aceite Incompleto",
+
+        email: "aceite-incompleto@test.local",
+
+        password: "AceiteIncompleto123!",
+
+        agreement: {
+          termsAccepted: true,
+
+          privacyAccepted: true,
+
+          termsVersion: CURRENT_CITIZEN_REGISTRATION_AGREEMENT.termsVersion,
+
+          privacyVersion: CURRENT_CITIZEN_REGISTRATION_AGREEMENT.privacyVersion,
+
+          responsibleUseVersion:
+            CURRENT_CITIZEN_REGISTRATION_AGREEMENT.responsibleUseVersion
+        }
+      })
+
+    expect(response.status).toBe(422)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "VALIDATION_ERROR"
+      }
+    })
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: "aceite-incompleto@test.local"
+      }
+    })
+
+    expect(user).toBeNull()
+  })
+
+  it("não deve permitir cadastro com versão de termos diferente da vigente", async () => {
+    const response = await request(app)
+      .post("/api/v1/auth/register")
+      .send({
+        name: "Versão Antiga",
+
+        email: "versao-antiga@test.local",
+
+        password: "VersaoAntigaTeste123!",
+
+        agreement: {
+          ...CURRENT_CITIZEN_REGISTRATION_AGREEMENT,
+
+          termsVersion: "2026-09-06.1"
+        }
+      })
+
+    expect(response.status).toBe(422)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "VALIDATION_ERROR"
+      }
+    })
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: "versao-antiga@test.local"
+      }
+    })
+
+    expect(user).toBeNull()
   })
 
   it("não deve permitir que o cadastro público escolha role", async () => {
     const response = await request(app).post("/api/v1/auth/register").send({
       name: "Tentativa Gestor",
+
       email: "gestor-falso@test.local",
+
       password: "SenhaTeste123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT,
+
       role: "MANAGER"
     })
 
@@ -79,8 +256,13 @@ describe("Autenticação", () => {
   it("não deve permitir que o cadastro público escolha status", async () => {
     const response = await request(app).post("/api/v1/auth/register").send({
       name: "Status Indevido",
+
       email: "status-falso@test.local",
+
       password: "SenhaTeste123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT,
+
       status: "INACTIVE"
     })
 
@@ -100,12 +282,17 @@ describe("Autenticação", () => {
   it("deve autenticar um cidadão e criar cookie de sessão", async () => {
     await request(app).post("/api/v1/auth/register").send({
       name: "Cidadão Login",
+
       email: "login@test.local",
-      password: "LoginTeste123!"
+
+      password: "LoginTeste123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const response = await request(app).post("/api/v1/auth/login").send({
       email: "login@test.local",
+
       password: "LoginTeste123!"
     })
 
@@ -113,7 +300,9 @@ describe("Autenticação", () => {
 
     expect(response.body.data).toMatchObject({
       email: "login@test.local",
+
       role: "CITIZEN",
+
       status: "ACTIVE"
     })
 
@@ -126,6 +315,7 @@ describe("Autenticação", () => {
       : String(cookies)
 
     expect(cookieHeader).toContain("kamara_citizen_session=")
+
     expect(cookieHeader).toContain("HttpOnly")
   })
 
@@ -134,12 +324,17 @@ describe("Autenticação", () => {
 
     await agent.post("/api/v1/auth/register").send({
       name: "Cidadão Me",
+
       email: "me@test.local",
-      password: "UsuarioMe123!"
+
+      password: "UsuarioMe123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const loginResponse = await agent.post("/api/v1/auth/login").send({
       email: "me@test.local",
+
       password: "UsuarioMe123!"
     })
 
@@ -151,8 +346,11 @@ describe("Autenticação", () => {
 
     expect(meResponse.body.data).toMatchObject({
       name: "Cidadão Me",
+
       email: "me@test.local",
+
       role: "CITIZEN",
+
       status: "ACTIVE"
     })
   })
@@ -172,12 +370,17 @@ describe("Autenticação", () => {
   it("deve rejeitar login com senha incorreta", async () => {
     await request(app).post("/api/v1/auth/register").send({
       name: "Cidadão Senha",
+
       email: "senha@test.local",
-      password: "SenhaCorreta123!"
+
+      password: "SenhaCorreta123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const response = await request(app).post("/api/v1/auth/login").send({
       email: "senha@test.local",
+
       password: "SenhaErrada123!"
     })
 
@@ -189,8 +392,12 @@ describe("Autenticação", () => {
   it("deve normalizar o email cadastrado", async () => {
     const response = await request(app).post("/api/v1/auth/register").send({
       name: "Email Teste",
+
       email: "  EMAIL.TESTE@TEST.LOCAL  ",
-      password: "EmailTeste123!"
+
+      password: "EmailTeste123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     expect(response.status).toBe(201)
@@ -209,8 +416,12 @@ describe("Autenticação", () => {
   it("deve criar token de redefinição armazenando somente seu hash", async () => {
     await request(app).post("/api/v1/auth/register").send({
       name: "Cidadão Recuperação",
+
       email: "recuperacao@test.local",
-      password: "SenhaOriginal123!"
+
+      password: "SenhaOriginal123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const response = await request(app)
@@ -332,7 +543,9 @@ describe("Autenticação", () => {
 
       email: "multiplos-tokens@test.local",
 
-      password: "SenhaTokens123!"
+      password: "SenhaTokens123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const firstRequest = await request(app)
@@ -408,7 +621,9 @@ describe("Autenticação", () => {
 
       email: "nova-senha@test.local",
 
-      password: "SenhaAntiga123!"
+      password: "SenhaAntiga123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const forgotResponse = await request(app)
@@ -506,7 +721,9 @@ describe("Autenticação", () => {
 
       email: "token-expirado@test.local",
 
-      password: "SenhaExpirada123!"
+      password: "SenhaExpirada123!",
+
+      agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
     })
 
     const forgotResponse = await request(app)

@@ -60,3 +60,5 @@ export interface RiskPredictionSummary {
 }
 
 export * from './password-policy';
+
+export * from './legal-agreements';

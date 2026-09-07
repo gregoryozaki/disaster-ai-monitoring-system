@@ -1,4 +1,8 @@
-import type { OccurrenceStatus, RiskLevel } from "@kamara/shared-types"
+import type {
+  CitizenRegistrationAgreement,
+  OccurrenceStatus,
+  RiskLevel
+} from "@kamara/shared-types"
 
 export type UrgencyLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL"
 
@@ -328,6 +332,8 @@ export const api = {
     email: string
 
     password: string
+
+    agreement: CitizenRegistrationAgreement
   }) {
     return requestJson<{
       data: ApiUser

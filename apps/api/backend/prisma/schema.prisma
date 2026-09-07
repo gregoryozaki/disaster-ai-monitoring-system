@@ -151,6 +151,7 @@ model User {
   invitesAccepted      ManagerInvite[]        @relation("InviteAcceptedBy")
   passwordResetTokens  PasswordResetToken[]
   sessions             UserSession[]
+  agreements           UserAgreement[]
   thresholdsCreated    ConfidenceThreshold[]  @relation("ThresholdCreator")
   auditLogs            AuditLog[]             @relation("AuditActor")
   exportJobs           ExportJob[]            @relation("ExportRequester")
@@ -209,6 +210,21 @@ model UserSession {
   @@index([idleExpiresAt])
   @@index([absoluteExpiresAt])
   @@map("user_sessions")
+}
+
+model UserAgreement {
+  id                    String   @id @default(uuid()) @db.Uuid
+  userId                String   @db.Uuid
+  termsVersion          String
+  privacyVersion        String
+  responsibleUseVersion String
+  acceptedAt            DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, termsVersion, privacyVersion, responsibleUseVersion])
+  @@index([userId, acceptedAt])
+  @@map("user_agreements")
 }
 
 model DisasterCategory {

@@ -4,6 +4,12 @@ import { Router } from "express"
 
 import { z } from "zod"
 
+import {
+  CURRENT_PRIVACY_VERSION,
+  CURRENT_RESPONSIBLE_USE_VERSION,
+  CURRENT_TERMS_VERSION
+} from "../config/legal-agreements.js"
+
 import { env } from "../config/env.js"
 
 import type { SessionClient, UserRole } from "../generated/prisma/enums.js"
@@ -55,6 +61,22 @@ const emailSchema = z
 
 const loginPasswordSchema = z.string().min(1).max(128)
 
+const registrationAgreementSchema = z
+  .object({
+    termsAccepted: z.literal(true),
+
+    privacyAccepted: z.literal(true),
+
+    responsibleUseAccepted: z.literal(true),
+
+    termsVersion: z.literal(CURRENT_TERMS_VERSION),
+
+    privacyVersion: z.literal(CURRENT_PRIVACY_VERSION),
+
+    responsibleUseVersion: z.literal(CURRENT_RESPONSIBLE_USE_VERSION)
+  })
+  .strict()
+
 const credentialsSchema = z
   .object({
     email: emailSchema,
@@ -69,7 +91,9 @@ const registerSchema = z
 
     email: emailSchema,
 
-    password: newPasswordSchema
+    password: newPasswordSchema,
+
+    agreement: registrationAgreementSchema
   })
   .strict()
 
@@ -130,30 +154,66 @@ router.post(
 
       const passwordHash = await bcrypt.hash(req.body.password, 12)
 
-      const user = await prisma.user.create({
-        data: {
-          name: req.body.name ?? null,
+      const user = await prisma.$transaction(async (tx) => {
+        const createdUser = await tx.user.create({
+          data: {
+            name: req.body.name ?? null,
 
-          email: req.body.email,
+            email: req.body.email,
 
-          passwordHash
-        },
+            passwordHash
+          },
 
-        select: {
-          id: true,
+          select: {
+            id: true,
 
-          name: true,
+            name: true,
 
-          email: true,
+            email: true,
 
-          role: true,
+            role: true,
 
-          status: true,
+            status: true,
 
-          createdAt: true,
+            createdAt: true,
 
-          updatedAt: true
-        }
+            updatedAt: true
+          }
+        })
+
+        const agreement = await tx.userAgreement.create({
+          data: {
+            userId: createdUser.id,
+
+            termsVersion: req.body.agreement.termsVersion,
+
+            privacyVersion: req.body.agreement.privacyVersion,
+
+            responsibleUseVersion: req.body.agreement.responsibleUseVersion
+          }
+        })
+
+        await tx.auditLog.create({
+          data: {
+            actorUserId: createdUser.id,
+
+            action: "USER_AGREEMENT_ACCEPTED",
+
+            entityType: "USER_AGREEMENT",
+
+            entityId: agreement.id,
+
+            metadata: {
+              termsVersion: agreement.termsVersion,
+
+              privacyVersion: agreement.privacyVersion,
+
+              responsibleUseVersion: agreement.responsibleUseVersion
+            }
+          }
+        })
+
+        return createdUser
       })
 
       return res.status(201).json({

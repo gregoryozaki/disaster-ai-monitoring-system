@@ -6,6 +6,8 @@ import request from "supertest"
 
 import { describe, expect, it } from "vitest"
 
+import { CURRENT_CITIZEN_REGISTRATION_AGREEMENT } from "@kamara/shared-types"
+
 import { app } from "../../src/app.js"
 
 import { prisma } from "../../src/prisma/client.js"
@@ -33,15 +35,21 @@ async function createCitizen(password = STRONG_PASSWORD) {
 
   const response = await request(app).post("/api/v1/auth/register").send({
     name: "Cidadão Sessão",
+
     email,
-    password
+
+    password,
+
+    agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
   })
 
   expect(response.status).toBe(201)
 
   return {
     user: response.body.data,
+
     email,
+
     password
   }
 }
@@ -67,7 +75,9 @@ async function createManager(password = STRONG_PASSWORD) {
 
   return {
     user,
+
     email,
+
     password
   }
 }
@@ -81,6 +91,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -106,7 +117,9 @@ describe("Sessões persistentes", () => {
 
     expect(session).toMatchObject({
       userId: citizen.user.id,
+
       client: CITIZEN_CLIENT,
+
       revokedAt: null
     })
 
@@ -125,6 +138,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -148,7 +162,9 @@ describe("Sessões persistentes", () => {
 
     expect(session).toMatchObject({
       userId: manager.user.id,
+
       client: DASHBOARD_CLIENT,
+
       revokedAt: null
     })
 
@@ -167,6 +183,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -191,6 +208,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -219,6 +237,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -229,6 +248,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -242,6 +262,7 @@ describe("Sessões persistentes", () => {
 
     expect(citizenMe.body.data).toMatchObject({
       id: citizen.user.id,
+
       role: "CITIZEN"
     })
 
@@ -255,6 +276,7 @@ describe("Sessões persistentes", () => {
 
     expect(managerMe.body.data).toMatchObject({
       id: manager.user.id,
+
       role: "MANAGER"
     })
 
@@ -285,6 +307,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -293,6 +316,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -349,6 +373,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -357,6 +382,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -411,6 +437,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -447,6 +474,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -491,6 +519,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, DASHBOARD_CLIENT)
       .send({
         email: manager.email,
+
         password: manager.password
       })
 
@@ -539,6 +568,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -547,6 +577,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -582,6 +613,7 @@ describe("Sessões persistentes", () => {
       .post("/api/v1/auth/password/reset")
       .send({
         token: resetToken,
+
         password: newPassword
       })
 
@@ -620,6 +652,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: citizen.password
       })
 
@@ -630,6 +663,7 @@ describe("Sessões persistentes", () => {
       .set(CLIENT_HEADER, CITIZEN_CLIENT)
       .send({
         email: citizen.email,
+
         password: newPassword
       })
 
@@ -656,7 +690,9 @@ describe("Política de senha", () => {
 
         email: `weak-${randomUUID()}@test.local`,
 
-        password
+        password,
+
+        agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
       })
 
     expect(response.status).toBe(422)
@@ -672,7 +708,9 @@ describe("Política de senha", () => {
 
         email: `strong-${randomUUID()}@test.local`,
 
-        password: STRONG_PASSWORD
+        password: STRONG_PASSWORD,
+
+        agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
       })
 
     expect(response.status).toBe(201)
@@ -710,7 +748,9 @@ describe("Política de senha", () => {
       .send({
         email: `anonymous-${randomUUID()}@test.local`,
 
-        password: STRONG_PASSWORD
+        password: STRONG_PASSWORD,
+
+        agreement: CURRENT_CITIZEN_REGISTRATION_AGREEMENT
       })
 
     expect(response.status).toBe(201)
@@ -721,272 +761,267 @@ describe("Política de senha", () => {
   })
 })
 
-it("deve permitir alterar a senha mantendo a sessão atual ativa", async () => {
-  const citizen = await createCitizen()
+describe("Alteração autenticada de senha", () => {
+  it("deve permitir alterar a senha mantendo a sessão atual ativa", async () => {
+    const citizen = await createCitizen()
 
-  const agent = request.agent(app)
+    const agent = request.agent(app)
 
-  const loginResponse = await agent
-    .post("/api/v1/auth/login")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      email: citizen.email,
+    const loginResponse = await agent
+      .post("/api/v1/auth/login")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        email: citizen.email,
 
-      password: citizen.password
+        password: citizen.password
+      })
+
+    expect(loginResponse.status).toBe(200)
+
+    const response = await agent
+      .post("/api/v1/auth/password/change")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        currentPassword: citizen.password,
+
+        newPassword: "NovaSenhaForte@2026"
+      })
+
+    expect(response.status).toBe(200)
+
+    expect(response.body).toMatchObject({
+      data: {
+        message: "Senha alterada com sucesso."
+      }
     })
 
-  expect(loginResponse.status).toBe(200)
+    const meResponse = await agent
+      .get("/api/v1/auth/me")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
 
-  const response = await agent
-    .post("/api/v1/auth/password/change")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      currentPassword: citizen.password,
+    expect(meResponse.status).toBe(200)
 
-      newPassword: "NovaSenhaForte@2026"
+    expect(meResponse.body.data.id).toBe(citizen.user.id)
+
+    const storedUser = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: citizen.user.id
+      }
     })
 
-  expect(response.status).toBe(200)
+    expect(
+      await bcrypt.compare("NovaSenhaForte@2026", storedUser.passwordHash)
+    ).toBe(true)
 
-  expect(response.body).toMatchObject({
-    data: {
-      message: "Senha alterada com sucesso."
-    }
-  })
+    expect(
+      await bcrypt.compare(citizen.password, storedUser.passwordHash)
+    ).toBe(false)
 
-  const meResponse = await agent
-    .get("/api/v1/auth/me")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-
-  expect(meResponse.status).toBe(200)
-
-  expect(meResponse.body.data.id).toBe(citizen.user.id)
-
-  const storedUser = await prisma.user.findUniqueOrThrow({
-    where: {
-      id: citizen.user.id
-    }
-  })
-
-  expect(
-    await bcrypt.compare("NovaSenhaForte@2026", storedUser.passwordHash)
-  ).toBe(true)
-
-  expect(await bcrypt.compare(citizen.password, storedUser.passwordHash)).toBe(
-    false
-  )
-
-  const currentSession = await prisma.userSession.findUniqueOrThrow({
-    where: {
-      id: loginResponse.body.session.id
-    }
-  })
-
-  expect(currentSession.revokedAt).toBeNull()
-
-  const audit = await prisma.auditLog.findFirst({
-    where: {
-      actorUserId: citizen.user.id,
-
-      action: "USER_PASSWORD_CHANGED",
-
-      entityType: "USER",
-
-      entityId: citizen.user.id
-    }
-  })
-
-  expect(audit).not.toBeNull()
-})
-
-it("não deve permitir alterar a senha quando a senha atual estiver incorreta", async () => {
-  const citizen = await createCitizen()
-
-  const agent = request.agent(app)
-
-  const loginResponse = await agent
-    .post("/api/v1/auth/login")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      email: citizen.email,
-
-      password: citizen.password
+    const currentSession = await prisma.userSession.findUniqueOrThrow({
+      where: {
+        id: loginResponse.body.session.id
+      }
     })
 
-  expect(loginResponse.status).toBe(200)
+    expect(currentSession.revokedAt).toBeNull()
 
-  const response = await agent
-    .post("/api/v1/auth/password/change")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      currentPassword: "SenhaAtualErrada@123",
+    const audit = await prisma.auditLog.findFirst({
+      where: {
+        actorUserId: citizen.user.id,
 
-      newPassword: "NovaSenhaForte@2026"
+        action: "USER_PASSWORD_CHANGED",
+
+        entityType: "USER",
+
+        entityId: citizen.user.id
+      }
     })
 
-  expect(response.status).toBe(401)
-
-  expect(response.body).toMatchObject({
-    error: {
-      code: "INVALID_CURRENT_PASSWORD"
-    }
+    expect(audit).not.toBeNull()
   })
 
-  const storedUser = await prisma.user.findUniqueOrThrow({
-    where: {
-      id: citizen.user.id
-    }
-  })
+  it("não deve permitir alterar a senha quando a senha atual estiver incorreta", async () => {
+    const citizen = await createCitizen()
 
-  expect(await bcrypt.compare(citizen.password, storedUser.passwordHash)).toBe(
-    true
-  )
-})
+    const agent = request.agent(app)
 
-it("não deve permitir reutilizar a senha atual", async () => {
-  const citizen = await createCitizen()
+    const loginResponse = await agent
+      .post("/api/v1/auth/login")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        email: citizen.email,
 
-  const agent = request.agent(app)
+        password: citizen.password
+      })
 
-  const loginResponse = await agent
-    .post("/api/v1/auth/login")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      email: citizen.email,
+    expect(loginResponse.status).toBe(200)
 
-      password: citizen.password
+    const response = await agent
+      .post("/api/v1/auth/password/change")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        currentPassword: "SenhaAtualErrada@123",
+
+        newPassword: "NovaSenhaForte@2026"
+      })
+
+    expect(response.status).toBe(401)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "INVALID_CURRENT_PASSWORD"
+      }
     })
 
-  expect(loginResponse.status).toBe(200)
-
-  const response = await agent
-    .post("/api/v1/auth/password/change")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      currentPassword: citizen.password,
-
-      newPassword: citizen.password
+    const storedUser = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: citizen.user.id
+      }
     })
 
-  expect(response.status).toBe(422)
-
-  expect(response.body).toMatchObject({
-    error: {
-      code: "PASSWORD_UNCHANGED"
-    }
+    expect(
+      await bcrypt.compare(citizen.password, storedUser.passwordHash)
+    ).toBe(true)
   })
 
-  const storedUser = await prisma.user.findUniqueOrThrow({
-    where: {
-      id: citizen.user.id
-    }
-  })
+  it("não deve permitir reutilizar a senha atual", async () => {
+    const citizen = await createCitizen()
 
-  expect(await bcrypt.compare(citizen.password, storedUser.passwordHash)).toBe(
-    true
-  )
-})
+    const agent = request.agent(app)
 
-it("deve revogar outras sessões depois da alteração de senha", async () => {
-  const citizen = await createCitizen()
+    const loginResponse = await agent
+      .post("/api/v1/auth/login")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        email: citizen.email,
 
-  const firstAgent = request.agent(app)
+        password: citizen.password
+      })
 
-  const secondAgent = request.agent(app)
+    expect(loginResponse.status).toBe(200)
 
-  const firstLogin = await firstAgent
-    .post("/api/v1/auth/login")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      email: citizen.email,
+    const response = await agent
+      .post("/api/v1/auth/password/change")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        currentPassword: citizen.password,
 
-      password: citizen.password
+        newPassword: citizen.password
+      })
+
+    expect(response.status).toBe(422)
+
+    expect(response.body).toMatchObject({
+      error: {
+        code: "PASSWORD_UNCHANGED"
+      }
     })
 
-  const secondLogin = await secondAgent
-    .post("/api/v1/auth/login")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      email: citizen.email,
-
-      password: citizen.password
+    const storedUser = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: citizen.user.id
+      }
     })
 
-  expect(firstLogin.status).toBe(200)
-
-  expect(secondLogin.status).toBe(200)
-
-  const activeBefore = await prisma.userSession.count({
-    where: {
-      userId: citizen.user.id,
-
-      revokedAt: null
-    }
+    expect(
+      await bcrypt.compare(citizen.password, storedUser.passwordHash)
+    ).toBe(true)
   })
 
-  expect(activeBefore).toBe(2)
+  it("deve revogar outras sessões depois da alteração de senha", async () => {
+    const citizen = await createCitizen()
 
-  const changeResponse = await firstAgent
-    .post("/api/v1/auth/password/change")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
-    .send({
-      currentPassword: citizen.password,
+    const firstAgent = request.agent(app)
 
-      newPassword: "NovaSenhaForte@2026"
+    const secondAgent = request.agent(app)
+
+    const firstLogin = await firstAgent
+      .post("/api/v1/auth/login")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        email: citizen.email,
+
+        password: citizen.password
+      })
+
+    const secondLogin = await secondAgent
+      .post("/api/v1/auth/login")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        email: citizen.email,
+
+        password: citizen.password
+      })
+
+    expect(firstLogin.status).toBe(200)
+
+    expect(secondLogin.status).toBe(200)
+
+    const activeBefore = await prisma.userSession.count({
+      where: {
+        userId: citizen.user.id,
+
+        revokedAt: null
+      }
     })
 
-  expect(changeResponse.status).toBe(200)
+    expect(activeBefore).toBe(2)
 
-  /*
-   * A sessão que efetuou a alteração
-   * continua autenticada.
-   */
-  const firstMe = await firstAgent
-    .get("/api/v1/auth/me")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
+    const changeResponse = await firstAgent
+      .post("/api/v1/auth/password/change")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+      .send({
+        currentPassword: citizen.password,
 
-  expect(firstMe.status).toBe(200)
+        newPassword: "NovaSenhaForte@2026"
+      })
 
-  /*
-   * A outra sessão foi revogada.
-   */
-  const secondMe = await secondAgent
-    .get("/api/v1/auth/me")
-    .set(CLIENT_HEADER, CITIZEN_CLIENT)
+    expect(changeResponse.status).toBe(200)
 
-  expect(secondMe.status).toBe(401)
+    const firstMe = await firstAgent
+      .get("/api/v1/auth/me")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
 
-  expect(secondMe.body).toMatchObject({
-    error: {
-      code: "INVALID_SESSION"
-    }
+    expect(firstMe.status).toBe(200)
+
+    const secondMe = await secondAgent
+      .get("/api/v1/auth/me")
+      .set(CLIENT_HEADER, CITIZEN_CLIENT)
+
+    expect(secondMe.status).toBe(401)
+
+    expect(secondMe.body).toMatchObject({
+      error: {
+        code: "INVALID_SESSION"
+      }
+    })
+
+    const firstSession = await prisma.userSession.findUniqueOrThrow({
+      where: {
+        id: firstLogin.body.session.id
+      }
+    })
+
+    const secondSession = await prisma.userSession.findUniqueOrThrow({
+      where: {
+        id: secondLogin.body.session.id
+      }
+    })
+
+    expect(firstSession.revokedAt).toBeNull()
+
+    expect(secondSession.revokedAt).not.toBeNull()
+
+    expect(secondSession.revokedReason).toBe("PASSWORD_CHANGED")
+
+    const activeAfter = await prisma.userSession.count({
+      where: {
+        userId: citizen.user.id,
+
+        revokedAt: null
+      }
+    })
+
+    expect(activeAfter).toBe(1)
   })
-
-  const firstSession = await prisma.userSession.findUniqueOrThrow({
-    where: {
-      id: firstLogin.body.session.id
-    }
-  })
-
-  const secondSession = await prisma.userSession.findUniqueOrThrow({
-    where: {
-      id: secondLogin.body.session.id
-    }
-  })
-
-  expect(firstSession.revokedAt).toBeNull()
-
-  expect(secondSession.revokedAt).not.toBeNull()
-
-  expect(secondSession.revokedReason).toBe("PASSWORD_CHANGED")
-
-  const activeAfter = await prisma.userSession.count({
-    where: {
-      userId: citizen.user.id,
-
-      revokedAt: null
-    }
-  })
-
-  expect(activeAfter).toBe(1)
 })
