@@ -35,6 +35,13 @@ const envSchema = z.object({
 
   AI_SERVICE_TIMEOUT_MS: z.coerce.number().int().positive().default(5000),
 
+    // Chave compartilhada com o serviço de IA (header X-Internal-Api-Key).
+  // Deve ser igual a KAMARA_AI_SERVICE_API_KEY no serviço de IA.
+  AI_SERVICE_API_KEY: z
+    .string()
+    .min(16, "AI_SERVICE_API_KEY deve possuir pelo menos 16 caracteres")
+    .optional(),
+    
   AI_PREANALYSIS_ENABLED: z
     .enum(["true", "false"])
     .default("false")

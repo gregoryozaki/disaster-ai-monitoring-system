@@ -165,6 +165,12 @@ export class AIServiceUnavailableError extends Error {
   }
 }
 
+function internalAuthHeaders(): Record<string, string> {
+  return env.AI_SERVICE_API_KEY
+    ? { "x-internal-api-key": env.AI_SERVICE_API_KEY }
+    : {}
+}
+
 function createAbortSignal(): AbortSignal {
   return AbortSignal.timeout(env.AI_SERVICE_TIMEOUT_MS)
 }
@@ -188,6 +194,7 @@ export class HttpAIService implements AIService {
         method: "GET",
 
         headers: {
+          ...internalAuthHeaders(),
           accept: "application/json"
         },
 
@@ -246,6 +253,7 @@ export class HttpAIService implements AIService {
         method: "POST",
 
         headers: {
+          ...internalAuthHeaders(),
           accept: "application/json"
         },
 
@@ -286,6 +294,7 @@ export class HttpAIService implements AIService {
         method: "POST",
 
         headers: {
+          ...internalAuthHeaders(),
           accept: "application/json",
 
           "content-type": "application/json"

@@ -9,8 +9,9 @@ services:
       POSTGRES_PASSWORD: kamara_dev
       POSTGRES_DB: kamara
 
+    # Só acessível pela própria máquina, não pela rede local.
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -38,8 +39,8 @@ services:
       MINIO_ROOT_PASSWORD: kamara_minio_dev
 
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
 
     volumes:
       - minio_data:/data
@@ -54,10 +55,13 @@ services:
     environment:
       KAMARA_VISUAL_MODEL_DIR: /models/visual
       KAMARA_NLP_MODEL_DIR: /models/nlp
+      KAMARA_AI_SERVICE_API_KEY: ${AI_SERVICE_API_KEY:-kamara_dev_internal_key_troque}
       PYTHONUNBUFFERED: "1"
 
+    # A API acessa pela rede interna do Docker. A porta fica só em 127.0.0.1
+    # para rodar a API fora do Docker (npm run dev:api) durante o desenvolvimento.
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
 
     volumes:
       - ./ml/artifacts/computer-vision/kamara_visual_mobilenet_v3_large_v1:/models/visual:ro
@@ -100,6 +104,7 @@ services:
       STORAGE_FORCE_PATH_STYLE: "true"
 
       AI_SERVICE_URL: "http://ai-service:8000"
+      AI_SERVICE_API_KEY: "${AI_SERVICE_API_KEY:-kamara_dev_internal_key_troque}"
       AI_SERVICE_TIMEOUT_MS: "5000"
       AI_PREANALYSIS_ENABLED: "true"
 
