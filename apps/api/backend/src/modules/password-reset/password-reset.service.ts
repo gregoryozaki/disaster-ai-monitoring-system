@@ -2,11 +2,22 @@ import { createHash, randomBytes } from "node:crypto"
 
 import bcrypt from "bcryptjs"
 
+import { env } from "../../config/env.js"
+
+import { sendMailInBackground } from "../../integrations/mail/smtp-mailer.js"
+
+import {
+  buildAppUrl,
+  passwordResetEmail
+} from "../../integrations/mail/templates.js"
+
 import { HttpError } from "../../lib/http-error.js"
 
 import { prisma } from "../../prisma/client.js"
 
-const RESET_TOKEN_TTL_MS = 30 * 60 * 1000
+const RESET_TOKEN_TTL_MINUTES = 30
+
+const RESET_TOKEN_TTL_MS = RESET_TOKEN_TTL_MINUTES * 60 * 1000
 
 function hashResetToken(token: string) {
   return createHash("sha256").update(token).digest("hex")
@@ -20,6 +31,12 @@ export async function requestPasswordReset(email: string) {
 
     select: {
       id: true,
+
+      name: true,
+
+      email: true,
+
+      role: true,
 
       status: true
     }
@@ -78,6 +95,26 @@ export async function requestPasswordReset(email: string) {
       }
     })
   })
+
+  // Cidadão redefine pelo app; gestor, admin e pesquisador, pelo dashboard.
+  const appUrl =
+    user.role === "CITIZEN" ? env.CITIZEN_APP_URL : env.DASHBOARD_APP_URL
+
+  sendMailInBackground(
+    passwordResetEmail({
+      to: user.email,
+
+      name: user.name,
+
+      resetUrl: buildAppUrl(appUrl, "reset-password", {
+        token: rawToken
+      }),
+
+      expiresInMinutes: RESET_TOKEN_TTL_MINUTES
+    }),
+
+    "redefinição de senha"
+  )
 
   return {
     resetToken: rawToken

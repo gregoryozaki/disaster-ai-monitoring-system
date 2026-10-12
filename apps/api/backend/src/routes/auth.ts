@@ -592,8 +592,7 @@ router.post(
       return res.status(202).json({
         data: {
           message:
-            "Se existir uma conta ativa para este e-mail, uma solicitação de redefinição foi criada.",
-
+                        "Se existir uma conta ativa para este e-mail, uma solicitação de redefinição foi criada e enviamos um link para a sua caixa de entrada.",
           ...(exposeResetTokenInResponse && result.resetToken
             ? {
                 developmentResetToken: result.resetToken

@@ -45,6 +45,17 @@ services:
     volumes:
       - minio_data:/data
 
+  # Caixa de e-mail de desenvolvimento. Os e-mails da API aparecem em
+  # http://localhost:8025 e nunca saem para a internet.
+  mailpit:
+    image: axllent/mailpit:v1.31.4
+    container_name: kamara-mailpit
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:1025:1025"
+
   ai-service:
     build:
       context: ./apps/ai-service/backend
@@ -108,6 +119,12 @@ services:
       AI_SERVICE_TIMEOUT_MS: "5000"
       AI_PREANALYSIS_ENABLED: "true"
 
+      SMTP_HOST: "mailpit"
+      SMTP_PORT: "1025"
+      MAIL_FROM: "Kamara <nao-responda@kamara.local>"
+      CITIZEN_APP_URL: "http://localhost:3001"
+      DASHBOARD_APP_URL: "http://localhost:3002"
+
     ports:
       - "3333:3333"
 
@@ -120,6 +137,9 @@ services:
 
       ai-service:
         condition: service_healthy
+
+      mailpit:
+        condition: service_started
 
   mobile-frontend:
     build:

@@ -7,6 +7,27 @@ const envSchema = z.object({
     .default("development"),
 
   PORT: z.coerce.number().int().positive().default(3333),
+    // E-mail (SMTP). Sem SMTP_HOST, nenhum e-mail é enviado.
+  SMTP_HOST: z.string().min(1).optional(),
+
+  SMTP_PORT: z.coerce.number().int().positive().default(1025),
+
+  SMTP_SECURE: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((value) => value === "true"),
+
+  SMTP_USER: z.string().min(1).optional(),
+
+  SMTP_PASSWORD: z.string().min(1).optional(),
+
+  MAIL_FROM: z.string().min(3).default("Kamara <nao-responda@kamara.local>"),
+
+  // Endereços dos frontends, usados nos links dos e-mails.
+  CITIZEN_APP_URL: z.string().url().default("http://localhost:3001"),
+
+  DASHBOARD_APP_URL: z.string().url().default("http://localhost:3002"),
+  
     // Quantos proxies reversos confiáveis existem na frente da API.
   // 0 = nenhum (API exposta direto): o X-Forwarded-For do cliente é ignorado.
   TRUST_PROXY: z.coerce.number().int().min(0).default(0),
@@ -41,7 +62,7 @@ const envSchema = z.object({
     .string()
     .min(16, "AI_SERVICE_API_KEY deve possuir pelo menos 16 caracteres")
     .optional(),
-    
+
   AI_PREANALYSIS_ENABLED: z
     .enum(["true", "false"])
     .default("false")

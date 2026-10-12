@@ -2,6 +2,15 @@ import { createHash, randomBytes } from "node:crypto"
 
 import bcrypt from "bcryptjs"
 
+import { env } from "../../config/env.js"
+
+import { sendMailInBackground } from "../../integrations/mail/smtp-mailer.js"
+
+import {
+  buildAppUrl,
+  managerInviteEmail
+} from "../../integrations/mail/templates.js"
+
 import { HttpError } from "../../lib/http-error.js"
 
 import { prisma } from "../../prisma/client.js"
@@ -11,7 +20,9 @@ import type {
   CreateManagerInviteInput
 } from "./manager-invite.schema.js"
 
-const MANAGER_INVITE_TTL_MS = 24 * 60 * 60 * 1000
+const MANAGER_INVITE_TTL_HOURS = 24
+
+const MANAGER_INVITE_TTL_MS = MANAGER_INVITE_TTL_HOURS * 60 * 60 * 1000
 
 function hashInviteToken(token: string) {
   return createHash("sha256").update(token).digest("hex")
@@ -158,6 +169,22 @@ export async function createManagerInvite(
         invite
       }
     })
+
+    sendMailInBackground(
+      managerInviteEmail({
+        to: result.invite.email,
+
+        name: result.manager.name ?? input.name,
+
+        acceptUrl: buildAppUrl(env.DASHBOARD_APP_URL, "accept-invite", {
+          token: inviteToken
+        }),
+
+        expiresInHours: MANAGER_INVITE_TTL_HOURS
+      }),
+
+      "convite de gestor"
+    )
 
     return {
       manager: {
