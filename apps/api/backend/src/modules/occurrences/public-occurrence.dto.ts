@@ -3,6 +3,8 @@ import type {
   Occurrence
 } from "../../generated/prisma/client.js"
 
+import { toPublicCoordinate } from "./public-location.js"
+
 type PublicOccurrence = Occurrence & {
   confirmedCategory: DisasterCategory | null
 }
@@ -11,34 +13,21 @@ interface PublicOccurrenceDtoOptions {
   distanceKm?: number | null
 }
 
-const PUBLIC_COORDINATE_DECIMALS = 3
-
-const PUBLIC_DESCRIPTION_MAX_LENGTH = 180
-
-function approximateCoordinate(value: number) {
-  return Number(value.toFixed(PUBLIC_COORDINATE_DECIMALS))
-}
-
-function summarizeDescription(description: string | null) {
-  if (!description) {
-    return null
-  }
-
-  const normalized = description.trim()
-
-  if (normalized.length <= PUBLIC_DESCRIPTION_MAX_LENGTH) {
-    return normalized
-  }
-
-  return normalized.slice(0, PUBLIC_DESCRIPTION_MAX_LENGTH - 3) + "..."
-}
-
 function approximateDistance(distanceKm: number | null | undefined) {
   if (distanceKm === null || distanceKm === undefined) {
     return null
   }
 
-  return Number(distanceKm.toFixed(2))
+  return Number(distanceKm.toFixed(1))
+}
+
+// Só a hora cheia: o minuto exato ajudaria a identificar quem relatou.
+export function approximateReportedAt(reportedAt: Date) {
+  const hour = new Date(reportedAt)
+
+  hour.setUTCMinutes(0, 0, 0)
+
+  return hour
 }
 
 export function toPublicOccurrenceDto(
@@ -46,21 +35,23 @@ export function toPublicOccurrenceDto(
 
   options: PublicOccurrenceDtoOptions = {}
 ) {
+  /*
+   * A descrição é texto livre do cidadão e pode ter nome, endereço ou
+   * telefone. Por isso ela não sai na projeção pública.
+   */
   return {
     id: occurrence.id,
-
-    description: summarizeDescription(occurrence.description),
 
     urgency: occurrence.urgency,
 
     humanRisk: occurrence.humanRisk,
 
-    reportedAt: occurrence.reportedAt,
+    reportedAt: approximateReportedAt(occurrence.reportedAt),
 
     location: {
-      latitude: approximateCoordinate(Number(occurrence.latitude)),
+      latitude: toPublicCoordinate(Number(occurrence.latitude)),
 
-      longitude: approximateCoordinate(Number(occurrence.longitude)),
+      longitude: toPublicCoordinate(Number(occurrence.longitude)),
 
       approximate: true
     },

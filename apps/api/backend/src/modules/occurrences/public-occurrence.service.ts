@@ -7,6 +7,10 @@ import { HttpError } from "../../lib/http-error.js"
 
 import { prisma } from "../../prisma/client.js"
 
+import { toPublicCoordinate } from "./public-location.js"
+
+import { approximateReportedAt } from "./public-occurrence.dto.js"
+
 import {
   DEFAULT_PUBLIC_RADIUS_KM,
   type PublicOccurrenceListQuery
@@ -73,6 +77,34 @@ export function calculateDistanceKm(
   return EARTH_RADIUS_KM * angularDistance
 }
 
+/*
+ * A ordem pública usa só o que é público: distância, hora cheia e id.
+ * Ordenar pelo horário exato mostraria quem relatou primeiro dentro da
+ * mesma hora.
+ */
+function comparePublicItems(
+  left: PublicOccurrenceListItem,
+  right: PublicOccurrenceListItem
+) {
+  if (
+    left.distanceKm !== null &&
+    right.distanceKm !== null &&
+    left.distanceKm !== right.distanceKm
+  ) {
+    return left.distanceKm - right.distanceKm
+  }
+
+  const hourDifference =
+    approximateReportedAt(right.occurrence.reportedAt).getTime() -
+    approximateReportedAt(left.occurrence.reportedAt).getTime()
+
+  if (hourDifference !== 0) {
+    return hourDifference
+  }
+
+  return left.occurrence.id.localeCompare(right.occurrence.id)
+}
+
 export async function listPublicOccurrences(
   query: PublicOccurrenceListQuery
 ): Promise<PublicOccurrenceListResult> {
@@ -83,11 +115,7 @@ export async function listPublicOccurrences(
       deletedAt: null
     },
 
-    include: publicOccurrenceInclude,
-
-    orderBy: {
-      reportedAt: "desc"
-    }
+    include: publicOccurrenceInclude
   })
 
   const hasCenter = query.lat !== undefined && query.lon !== undefined
@@ -106,11 +134,12 @@ export async function listPublicOccurrences(
         }
       }
 
+      // Distância até a posição pública, para não revelar o ponto exato.
       const distanceKm = calculateDistanceKm(
         query.lat!,
         query.lon!,
-        Number(occurrence.latitude),
-        Number(occurrence.longitude)
+        toPublicCoordinate(Number(occurrence.latitude)),
+        toPublicCoordinate(Number(occurrence.longitude))
       )
 
       return {
@@ -124,12 +153,7 @@ export async function listPublicOccurrences(
         radiusKm === null ||
         (item.distanceKm !== null && item.distanceKm <= radiusKm)
     )
-    .sort((left, right) => {
-      if (hasCenter && left.distanceKm !== null && right.distanceKm !== null) {
-        return left.distanceKm - right.distanceKm
-      }
-      return 0
-    })
+    .sort(comparePublicItems)
     .slice(0, query.limit)
 
   return {

@@ -355,7 +355,7 @@ A IA atua como **apoio à triagem e à decisão**, não como autoridade final. A
 
 ### Critérios de aceitação
 
-- Dado que clico em uma ocorrência confirmada, então vejo tipo, localização aproximada, data/hora e descrição resumida.
+- Dado que clico em uma ocorrência confirmada, então vejo tipo, urgência, localização aproximada e hora aproximada do relato. A descrição livre do cidadão não aparece no mapa público, porque pode conter dados pessoais.
 - Dado que a ocorrência possui imagem, então o sistema pode exibir uma miniatura.
 - Dado que a ocorrência foi confirmada, então o sistema deve indicar que houve validação por gestor.
 

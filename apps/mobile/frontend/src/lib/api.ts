@@ -109,8 +109,6 @@ export interface UpdateOccurrencePayload {
 export interface ApiPublicOccurrence {
   id: string
 
-  description: string | null
-
   urgency: UrgencyLevel
 
   humanRisk: boolean

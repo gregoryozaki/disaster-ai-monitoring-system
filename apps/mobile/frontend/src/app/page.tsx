@@ -21,6 +21,8 @@ import {
 
 import { categoryType } from "@/lib/category"
 
+import { approximateHourLabel, urgencyLabels } from "@/lib/labels"
+
 import { useCitizenLocation } from "@/lib/citizen-location"
 
 const PublicMap = dynamic(() => import("@/components/public-map"), {
@@ -321,13 +323,14 @@ export default function CitizenHomePage() {
                     </span>
                   </div>
 
-                  {occurrence.description && (
-                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-600">
-                      {occurrence.description}
-                    </p>
-                  )}
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                    Urgência {urgencyLabels[occurrence.urgency].toLowerCase()}
+                    {occurrence.humanRisk ? ", com risco a pessoas" : ""}
+                  </p>
 
                   <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-500">
+                    <span>{approximateHourLabel(occurrence.reportedAt)}</span>
+
                     {occurrence.distanceKm !== null && (
                       <span>{occurrence.distanceKm} km de você</span>
                     )}

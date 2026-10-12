@@ -17,6 +17,8 @@ import { categoryColor } from "@/components/category-icon"
 
 import { categoryType } from "@/lib/category"
 
+import { approximateHourLabel, urgencyLabels } from "@/lib/labels"
+
 export interface PublicMapPosition {
   latitude: number
 
@@ -172,7 +174,12 @@ export default function PublicMap({
                     {occurrence.category?.name ?? "Ocorrência confirmada"}
                   </strong>
 
-                  {occurrence.description && <p>{occurrence.description}</p>}
+                  <p>
+                    Urgência {urgencyLabels[occurrence.urgency].toLowerCase()}
+                    {occurrence.humanRisk ? ", com risco a pessoas" : ""}.
+                  </p>
+
+                  <p>{approximateHourLabel(occurrence.reportedAt)}</p>
 
                   {occurrence.distanceKm !== null && (
                     <p>
