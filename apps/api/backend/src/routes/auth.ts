@@ -48,6 +48,10 @@ import { newPasswordSchema } from "../security/password-policy.js"
 
 const router = Router()
 
+const exposeResetTokenInResponse =
+  env.NODE_ENV === "test" ||
+  (env.NODE_ENV === "development" && env.EXPOSE_DEV_RESET_TOKEN)
+
 const cookieBaseOptions = {
   httpOnly: true,
 
@@ -577,7 +581,7 @@ router.post(
           message:
             "Se existir uma conta ativa para este e-mail, uma solicitação de redefinição foi criada.",
 
-          ...(env.NODE_ENV !== "production" && result.resetToken
+          ...(exposeResetTokenInResponse && result.resetToken
             ? {
                 developmentResetToken: result.resetToken
               }

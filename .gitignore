@@ -63,3 +63,5 @@ ml/*.zip
 docker-compose.override.yml
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+export_projeto.py

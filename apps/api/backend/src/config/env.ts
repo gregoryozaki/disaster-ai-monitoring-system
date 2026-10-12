@@ -35,6 +35,11 @@ const envSchema = z.object({
   AI_PREANALYSIS_ENABLED: z
     .enum(["true", "false"])
     .default("false")
+    .transform((value) => value === "true"),
+
+  EXPOSE_DEV_RESET_TOKEN: z
+    .enum(["true", "false"])
+    .default("false")
     .transform((value) => value === "true")
 })
 
