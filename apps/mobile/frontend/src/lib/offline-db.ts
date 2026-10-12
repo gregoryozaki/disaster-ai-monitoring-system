@@ -1,5 +1,7 @@
 import type { LocationSource, UrgencyLevel } from "./api"
 
+import { readCitizenSession } from "./local-session"
+
 export type OfflineSyncStatus = "PENDING_SYNC" | "SYNCING" | "ERROR"
 
 export interface OfflinePhoto {
@@ -14,6 +16,9 @@ export interface OfflinePhoto {
 
 export interface OfflineOccurrenceRecord {
   clientLocalId: string
+
+  // Cidadão que salvou o registro. Cada pessoa só vê e envia os próprios.
+  ownerUserId: string
 
   idempotencyKey: string
 
@@ -52,6 +57,7 @@ export interface OfflineOccurrenceRecord {
 
 export type NewOfflineOccurrence = Omit<
   OfflineOccurrenceRecord,
+  | "ownerUserId"
   | "syncStatus"
   | "attemptCount"
   | "lastAttemptAt"
@@ -65,9 +71,29 @@ export const OFFLINE_QUEUE_CHANGED_EVENT = "kamara:offline-queue-changed"
 
 const DB_NAME = "kamara-offline"
 
-const DB_VERSION = 1
+const DB_VERSION = 2
 
 const STORE_NAME = "occurrences"
+
+const OWNER_INDEX = "ownerUserId"
+
+/*
+ * O dono dos registros é o cidadão da sessão salva neste aparelho
+ * (a mesma que o PWA usa quando está sem internet).
+ */
+function currentOwnerId(): string | null {
+  return readCitizenSession()?.user.id ?? null
+}
+
+function requireOwnerId(): string {
+  const ownerUserId = currentOwnerId()
+
+  if (!ownerUserId) {
+    throw new Error("Entre na sua conta para salvar ocorrências offline.")
+  }
+
+  return ownerUserId
+}
 
 function notifyQueueChanged() {
   if (typeof window === "undefined") {
@@ -110,24 +136,44 @@ function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION)
 
-    request.onupgradeneeded = () => {
+    request.onupgradeneeded = (event) => {
       const database = request.result
 
-      if (database.objectStoreNames.contains(STORE_NAME)) {
+      const upgradeTransaction = request.transaction
+
+      if (!upgradeTransaction) {
         return
       }
 
-      const store = database.createObjectStore(STORE_NAME, {
-        keyPath: "clientLocalId"
-      })
+      if (!database.objectStoreNames.contains(STORE_NAME)) {
+        const created = database.createObjectStore(STORE_NAME, {
+          keyPath: "clientLocalId"
+        })
 
-      store.createIndex("syncStatus", "syncStatus", {
-        unique: false
-      })
+        created.createIndex("syncStatus", "syncStatus", {
+          unique: false
+        })
 
-      store.createIndex("createdAt", "createdAt", {
-        unique: false
-      })
+        created.createIndex("createdAt", "createdAt", {
+          unique: false
+        })
+      }
+
+      const store = upgradeTransaction.objectStore(STORE_NAME)
+
+      if (event.oldVersion < 2) {
+        /*
+         * Registros da versão 1 não sabem de quem são. Não dá para
+         * atribuí-los com segurança a ninguém, então são apagados.
+         */
+        store.clear()
+      }
+
+      if (!store.indexNames.contains(OWNER_INDEX)) {
+        store.createIndex(OWNER_INDEX, "ownerUserId", {
+          unique: false
+        })
+      }
     }
 
     request.onsuccess = () => resolve(request.result)
@@ -144,6 +190,8 @@ export async function saveOfflineOccurrence(
 
   const record: OfflineOccurrenceRecord = {
     ...input,
+
+    ownerUserId: requireOwnerId(),
 
     syncStatus: "PENDING_SYNC",
 
@@ -180,6 +228,12 @@ export async function saveOfflineOccurrence(
 export async function getOfflineOccurrence(
   clientLocalId: string
 ): Promise<OfflineOccurrenceRecord | null> {
+  const ownerUserId = currentOwnerId()
+
+  if (!ownerUserId) {
+    return null
+  }
+
   const database = await openDatabase()
 
   try {
@@ -191,7 +245,7 @@ export async function getOfflineOccurrence(
       request
     )
 
-    return result ?? null
+    return result?.ownerUserId === ownerUserId ? result : null
   } finally {
     database.close()
   }
@@ -200,12 +254,21 @@ export async function getOfflineOccurrence(
 export async function listOfflineOccurrences(): Promise<
   OfflineOccurrenceRecord[]
 > {
+  const ownerUserId = currentOwnerId()
+
+  if (!ownerUserId) {
+    return []
+  }
+
   const database = await openDatabase()
 
   try {
     const transaction = database.transaction(STORE_NAME, "readonly")
 
-    const request = transaction.objectStore(STORE_NAME).getAll()
+    const request = transaction
+      .objectStore(STORE_NAME)
+      .index(OWNER_INDEX)
+      .getAll(ownerUserId)
 
     const records = await requestToPromise<OfflineOccurrenceRecord[]>(request)
 
@@ -219,33 +282,57 @@ export async function listOfflineOccurrences(): Promise<
 
 export async function updateOfflineOccurrence(
   clientLocalId: string,
-  patch: Partial<Omit<OfflineOccurrenceRecord, "clientLocalId">>
+  patch: Partial<Omit<OfflineOccurrenceRecord, "clientLocalId" | "ownerUserId">>
 ): Promise<OfflineOccurrenceRecord> {
-  const current = await getOfflineOccurrence(clientLocalId)
+  const ownerUserId = currentOwnerId()
 
-  if (!current) {
+  if (!ownerUserId) {
     throw new Error("Ocorrência offline não encontrada.")
-  }
-
-  const updated: OfflineOccurrenceRecord = {
-    ...current,
-    ...patch,
-
-    clientLocalId,
-
-    updatedAt: new Date().toISOString()
   }
 
   const database = await openDatabase()
 
+  let updated = null as OfflineOccurrenceRecord | null
+
   try {
     const transaction = database.transaction(STORE_NAME, "readwrite")
 
-    transaction.objectStore(STORE_NAME).put(updated)
+    const store = transaction.objectStore(STORE_NAME)
+
+    const request = store.get(clientLocalId)
+
+    /*
+     * Lê e grava na mesma transação. Assim uma atualização não recria um
+     * registro que o logout acabou de apagar.
+     */
+    request.onsuccess = () => {
+      const current = request.result as OfflineOccurrenceRecord | undefined
+
+      if (current?.ownerUserId !== ownerUserId) {
+        return
+      }
+
+      updated = {
+        ...current,
+        ...patch,
+
+        clientLocalId,
+
+        ownerUserId,
+
+        updatedAt: new Date().toISOString()
+      }
+
+      store.put(updated)
+    }
 
     await transactionToPromise(transaction)
   } finally {
     database.close()
+  }
+
+  if (!updated) {
+    throw new Error("Ocorrência offline não encontrada.")
   }
 
   notifyQueueChanged()
@@ -256,12 +343,63 @@ export async function updateOfflineOccurrence(
 export async function deleteOfflineOccurrence(
   clientLocalId: string
 ): Promise<void> {
+  const ownerUserId = currentOwnerId()
+
+  if (!ownerUserId) {
+    return
+  }
+
   const database = await openDatabase()
 
   try {
     const transaction = database.transaction(STORE_NAME, "readwrite")
 
-    transaction.objectStore(STORE_NAME).delete(clientLocalId)
+    const store = transaction.objectStore(STORE_NAME)
+
+    const request = store.get(clientLocalId)
+
+    // Só apaga se o registro for de quem está logado.
+    request.onsuccess = () => {
+      const record = request.result as OfflineOccurrenceRecord | undefined
+
+      if (record?.ownerUserId === ownerUserId) {
+        store.delete(clientLocalId)
+      }
+    }
+
+    await transactionToPromise(transaction)
+  } finally {
+    database.close()
+  }
+
+  notifyQueueChanged()
+}
+
+/*
+ * Chamado no logout, antes de apagar a sessão local. Remove do aparelho
+ * todos os registros offline de quem está saindo, inclusive as fotos.
+ */
+export async function clearOfflineOccurrencesOfCurrentUser(): Promise<void> {
+  const ownerUserId = currentOwnerId()
+
+  if (!ownerUserId) {
+    return
+  }
+
+  const database = await openDatabase()
+
+  try {
+    const transaction = database.transaction(STORE_NAME, "readwrite")
+
+    const store = transaction.objectStore(STORE_NAME)
+
+    const request = store.index(OWNER_INDEX).getAllKeys(ownerUserId)
+
+    request.onsuccess = () => {
+      for (const key of request.result) {
+        store.delete(key)
+      }
+    }
 
     await transactionToPromise(transaction)
   } finally {

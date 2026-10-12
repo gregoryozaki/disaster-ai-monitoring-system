@@ -10,6 +10,8 @@ const STORAGE_KEY = "kamara:citizen-session:v2"
 
 const LEGACY_STORAGE_KEY = "kamara:citizen-session:v1"
 
+const PENDING_SERVER_LOGOUT_KEY = "kamara:citizen-pending-server-logout"
+
 export interface StoredCitizenSession {
   user: ApiUser
 
@@ -78,6 +80,9 @@ export function saveCitizenSession(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
 
   localStorage.removeItem(LEGACY_STORAGE_KEY)
+
+  // Uma sessão nova substitui o cookie antigo neste aparelho.
+  localStorage.removeItem(PENDING_SERVER_LOGOUT_KEY)
 }
 
 export function readCitizenSession(): StoredCitizenSession | null {
@@ -137,4 +142,33 @@ export function clearCitizenSession() {
   localStorage.removeItem(STORAGE_KEY)
 
   localStorage.removeItem(LEGACY_STORAGE_KEY)
+}
+
+/*
+ * Quando alguém sai da conta sem internet, o servidor não fica sabendo e o
+ * cookie de sessão continua valendo. Esta marca faz o PWA encerrar essa
+ * sessão no servidor assim que houver conexão, antes de usar o cookie.
+ */
+export function markPendingServerLogout() {
+  if (typeof window === "undefined") {
+    return
+  }
+
+  localStorage.setItem(PENDING_SERVER_LOGOUT_KEY, new Date().toISOString())
+}
+
+export function hasPendingServerLogout(): boolean {
+  if (typeof window === "undefined") {
+    return false
+  }
+
+  return localStorage.getItem(PENDING_SERVER_LOGOUT_KEY) !== null
+}
+
+export function clearPendingServerLogout() {
+  if (typeof window === "undefined") {
+    return
+  }
+
+  localStorage.removeItem(PENDING_SERVER_LOGOUT_KEY)
 }

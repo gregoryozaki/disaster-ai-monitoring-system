@@ -40,12 +40,17 @@ import { useCitizenSession } from "@/components/citizen-session-provider"
 
 import { useTheme } from "@/components/theme-provider"
 
+import { useLogoutWithOfflineCheck } from "@/components/use-logout-with-offline-check"
+
 import { ApiError, api, isApiNetworkError } from "@/lib/api"
 
 export default function ProfilePage() {
   const router = useRouter()
 
-  const { user, loading, offline, logout } = useCitizenSession()
+  const { user, loading, offline } = useCitizenSession()
+
+  const { requestLogout, loggingOut, confirmDialog } =
+    useLogoutWithOfflineCheck()
 
   const { theme, setTheme } = useTheme()
 
@@ -178,12 +183,6 @@ export default function ProfilePage() {
     } finally {
       setChangingPassword(false)
     }
-  }
-
-  async function handleLogout() {
-    await logout()
-
-    router.replace("/")
   }
 
   return (
@@ -462,13 +461,16 @@ export default function ProfilePage() {
 
         <button
           type="button"
-          onClick={() => void handleLogout()}
+          onClick={() => void requestLogout()}
+          disabled={loggingOut}
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-3 font-semibold text-red-700 dark:border-red-900 dark:bg-slate-900 dark:text-red-300"
         >
           <LogOut className="h-5 w-5" />
           Sair da conta
         </button>
       </section>
+
+      {confirmDialog}
 
       <MobileBottomNav />
     </main>

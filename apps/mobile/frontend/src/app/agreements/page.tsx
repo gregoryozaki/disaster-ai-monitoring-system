@@ -14,6 +14,8 @@ import { ShellHeader } from "@/components/shell-header"
 
 import { useCitizenSession } from "@/components/citizen-session-provider"
 
+import { useLogoutWithOfflineCheck } from "@/components/use-logout-with-offline-check"
+
 import { api } from "@/lib/api"
 
 function safeNextPath(value: string | null) {
@@ -32,15 +34,11 @@ function safeNextPath(value: string | null) {
 export default function AgreementsPage() {
   const router = useRouter()
 
-  const {
-    user,
-    agreement,
-    agreementRequired,
-    loading,
-    offline,
-    refresh,
-    logout
-  } = useCitizenSession()
+  const { user, agreement, agreementRequired, loading, offline, refresh } =
+    useCitizenSession()
+
+  const { requestLogout, loggingOut, confirmDialog } =
+    useLogoutWithOfflineCheck()
 
   const [nextPath, setNextPath] = useState("/")
 
@@ -113,12 +111,6 @@ export default function AgreementsPage() {
     } finally {
       setSubmitting(false)
     }
-  }
-
-  async function leaveAccount() {
-    await logout()
-
-    router.replace("/")
   }
 
   if (loading || (!agreementRequired && user)) {
@@ -269,14 +261,16 @@ export default function AgreementsPage() {
 
           <button
             type="button"
-            onClick={() => void leaveAccount()}
-            disabled={submitting}
+            onClick={() => void requestLogout()}
+            disabled={submitting || loggingOut}
             className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-600 dark:border-slate-700 dark:text-slate-300"
           >
             Sair da conta
           </button>
         </form>
       </section>
+
+      {confirmDialog}
     </main>
   )
 }

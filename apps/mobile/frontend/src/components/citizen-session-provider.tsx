@@ -19,6 +19,11 @@ import {
 } from "@/lib/api"
 
 import {
+  finishPendingServerLogout,
+  logoutFromDevice
+} from "@/lib/citizen-logout"
+
+import {
   clearCitizenSession,
   createRequiredCitizenAgreementStatus,
   readCitizenSession,
@@ -64,6 +69,17 @@ export function CitizenSessionProvider({ children }: { children: ReactNode }) {
     const localSession = readCitizenSession()
 
     try {
+      // Nunca reaproveita o cookie de quem saiu da conta sem internet.
+      if (await finishPendingServerLogout()) {
+        clearCitizenSession()
+
+        setUser(null)
+
+        setAgreement(null)
+
+        return
+      }
+
       const response = await api.me()
 
       if (
@@ -118,9 +134,7 @@ export function CitizenSessionProvider({ children }: { children: ReactNode }) {
   }, [refresh])
 
   const logout = useCallback(async () => {
-    await api.logout().catch(() => undefined)
-
-    clearCitizenSession()
+    await logoutFromDevice()
 
     setUser(null)
 
