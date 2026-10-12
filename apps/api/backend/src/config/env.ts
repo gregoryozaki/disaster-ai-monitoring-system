@@ -7,7 +7,10 @@ const envSchema = z.object({
     .default("development"),
 
   PORT: z.coerce.number().int().positive().default(3333),
-
+    // Quantos proxies reversos confiáveis existem na frente da API.
+  // 0 = nenhum (API exposta direto): o X-Forwarded-For do cliente é ignorado.
+  TRUST_PROXY: z.coerce.number().int().min(0).default(0),
+  
   DATABASE_URL: z.string().min(1, "DATABASE_URL é obrigatória"),
 
   JWT_SECRET: z

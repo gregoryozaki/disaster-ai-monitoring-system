@@ -19,6 +19,11 @@ import { HttpError } from "../lib/http-error.js"
 import { authenticate, authorize } from "../middlewares/auth.js"
 
 import {
+  accountActionLimiter,
+  credentialAttemptLimiter
+} from "../middlewares/rate-limit.js"
+
+import {
   acceptCurrentCitizenAgreement,
   getCurrentCitizenAgreementStatus
 } from "../modules/user-agreements/user-agreement.service.js"
@@ -143,6 +148,8 @@ function defaultClientForRole(role: UserRole): SessionClient | null {
 router.post(
   "/register",
 
+  accountActionLimiter,
+
   validateBody(registerSchema),
 
   async (req, res, next) => {
@@ -236,6 +243,8 @@ router.post(
 
 router.post(
   "/login",
+
+  credentialAttemptLimiter,
 
   validateBody(credentialsSchema),
 
@@ -334,6 +343,8 @@ router.post(
 
 router.post(
   "/manager-invites/accept",
+
+  credentialAttemptLimiter,
 
   validateBody(acceptManagerInviteSchema),
 
@@ -570,6 +581,8 @@ router.post(
 router.post(
   "/password/forgot",
 
+  accountActionLimiter,
+
   validateBody(forgotPasswordSchema),
 
   async (req, res, next) => {
@@ -596,6 +609,8 @@ router.post(
 
 router.post(
   "/password/reset",
+
+  accountActionLimiter,
 
   validateBody(resetPasswordSchema),
 

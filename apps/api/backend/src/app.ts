@@ -4,6 +4,8 @@ import express from "express"
 import rateLimit from "express-rate-limit"
 import helmet from "helmet"
 
+import { env } from "./config/env.js"
+
 import { errorHandler } from "./middlewares/error-handler.js"
 
 import { adminRouter } from "./routes/admin.js"
@@ -37,7 +39,7 @@ const allowedOrigins = [
 
 export const app = express()
 
-app.set("trust proxy", 1)
+app.set("trust proxy", env.TRUST_PROXY)
 
 app.use(helmet())
 
