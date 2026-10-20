@@ -20,9 +20,13 @@
     "format:check": "prettier --check .",
     "format:api": "prettier --write \"apps/api/backend/**/*.{ts,js,json}\"",
     "format:check:api": "prettier --check \"apps/api/backend/**/*.{ts,js,json}\"",
-    "check:api": "npm run typecheck:api && npm run lint:api && npm run format:check:api"
+    "check:api": "npm run typecheck:api && npm run lint:api && npm run format:check:api",
+    "audit:prod": "npm audit --omit=dev --audit-level=critical"
   },
   "devDependencies": {
     "prettier": "^3.9.6"
+  },
+  "overrides": {
+    "prisma": "7.10.0"
   }
 }

@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 
+import { useParams } from "next/navigation"
+
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import {
@@ -39,13 +41,11 @@ import { urgencyLabels } from "@/lib/labels"
 
 type ManagerDecision = "CONFIRM" | "CORRECT" | "REJECT" | "REQUEST_MORE_INFO"
 
-export default function OccurrenceDetailPage({
-  params
-}: {
-  params: {
+export default function OccurrenceDetailPage() {
+  const params = useParams<{
     id: string
-  }
-}) {
+  }>()
+
   const [occurrence, setOccurrence] = useState<ApiOccurrence | null>(null)
 
   const [media, setMedia] = useState<ApiMedia[]>([])

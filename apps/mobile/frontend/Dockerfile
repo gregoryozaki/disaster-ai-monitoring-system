@@ -30,7 +30,10 @@ ARG NEXT_PUBLIC_API_URL=http://localhost:3333
 
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
-COPY --from=deps /app/node_modules ./node_modules
+# Copia o /app inteiro do estágio deps, não só o node_modules da raiz.
+# O npm às vezes instala uma dependência dentro do próprio workspace
+# (apps/*/frontend/node_modules), e ela sumiria do build.
+COPY --from=deps /app ./
 
 COPY package.json package-lock.json ./
 
